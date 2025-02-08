@@ -8,4 +8,12 @@ enum TrainingResult {
   final int id;
   final String label;
   final String value;
+
+  static TrainingResult? valueOf(String label) {
+    List<TrainingResult?> results = values;
+    
+    return results.firstWhere(
+      (result) => result!.label.toUpperCase() == label.toUpperCase()
+    );
+  }
 }

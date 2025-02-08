@@ -8,6 +8,6 @@ class AssociativeLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("$label: $data");
+    return Text("$label: $data", textAlign: TextAlign.left,);
   }
 }

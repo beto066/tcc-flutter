@@ -10,19 +10,12 @@ class PersonImage extends StatelessWidget {
     this.size = 50.0,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return ClipOval(
-      child: _buildImage(),
-    );
-  }
-
   Widget _buildImage() {
     if (imageUrl == null || imageUrl!.isEmpty) {
       return Icon(
         Icons.person,
         size: size,
-        color: Colors.grey[600],
+        // color: Colors.grey[600],
       );
     } else if (imageUrl!.startsWith('http') || imageUrl!.startsWith('https')) {
       return Image.network(
@@ -53,5 +46,20 @@ class PersonImage extends StatelessWidget {
         },
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      clipBehavior: Clip.none,
+      child: Container(
+        height: size *0.9,
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        child: _buildImage()
+      ),
+    );
   }
 }

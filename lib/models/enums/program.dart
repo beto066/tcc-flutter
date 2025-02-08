@@ -7,4 +7,16 @@ enum Program {
 
   final int id;
   final String description;
+
+  static Program? valueOf(String value) {
+    Program? response;
+
+    for (int i = 0; i < Program.values.length && response == null; i++) {
+      if (Program.values[i].description == value) {
+        response = Program.values[i];
+      }
+    }
+
+    return response;
+  }
 }

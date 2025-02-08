@@ -7,4 +7,13 @@ enum Role {
 
   final int id;
   final String description;
+
+  static Role? valueOf(String label) {
+    List<Role?> rolesValues = values;
+
+    return rolesValues.firstWhere(
+          (role) => role!.description == label,
+      orElse: () => null,
+    );
+  }
 }

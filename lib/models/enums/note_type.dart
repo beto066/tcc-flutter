@@ -7,4 +7,6 @@ enum NoteType {
 
   final int id;
   final String description;
+
+  // float
 }

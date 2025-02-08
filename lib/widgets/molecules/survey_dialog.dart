@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tccflutter/widgets/atoms/card_list_item.dart';
+import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 
 class SurveyDialog extends StatefulWidget {
   const SurveyDialog({super.key});
@@ -25,25 +25,33 @@ class _SurveyDialogState extends State<SurveyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+        side: BorderSide(color: Colors.black, width: 3)
+      ),
+      backgroundColor: Colors.white,
       elevation: 50.0,
       title: const Text(
         'Escolha o tipo de levantamento',
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
-        height: 330,
+        height: 240,
         child: Column(
           children: [
             CardListItem(
               'Testes',
+              initialHeight: 50,
               onTap: () => redirectTo(context, 'Done'),
             ),
             CardListItem(
               'Anotações',
+              initialHeight: 50,
               onTap: () => redirectTo(context, 'Gone'),
             ),
             CardListItem(
               'Tabela',
+              initialHeight: 50,
               onTap: () => redirectTo(context, 'Gone'),
             ),
           ],

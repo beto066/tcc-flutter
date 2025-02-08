@@ -1,4 +1,3 @@
 class DefaultTheme {
-  static const  cyan = '0xFFD9D9D9';
-
+  static const cyan = '0xFFD9D9D9';
 }

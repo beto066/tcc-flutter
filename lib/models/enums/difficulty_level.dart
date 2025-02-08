@@ -8,4 +8,16 @@ enum DifficultyLevel {
 
   final int id;
   final String description;
+
+  static DifficultyLevel? valueOf(String value) {
+    DifficultyLevel? response;
+
+    for (int i = 0; i < DifficultyLevel.values.length && response == null; i++) {
+      if (DifficultyLevel.values[i].description == value) {
+        response = DifficultyLevel.values[i];
+      }
+    }
+
+    return response;
+  }
 }

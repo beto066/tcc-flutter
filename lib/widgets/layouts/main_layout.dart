@@ -1,35 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:tccflutter/util/custom_route_observer.dart';
-import 'package:tccflutter/widgets/molecules/survey_dialog.dart';
-import 'package:tccflutter/widgets/atoms/person_image.dart';
+import 'package:tccflutter/models/note_table_value.dart';
+import 'package:tccflutter/models/user.dart';
+import 'package:tccflutter/stores/auth_store.dart';
 
-class MainLayout extends StatelessWidget {
+class MainLayout extends StatefulWidget {
   final String title;
+  final Widget body;
+  final bool loginRequired;
   final String next;
-  final CustomRouteObserver observer;
 
-  const MainLayout({super.key, required this.title, required this.observer, this.next = 'Done'});
+  const MainLayout({super.key, required this.title, required this.body, this.loginRequired = false, this.next = 'Done'});
+
+  @override
+  State<MainLayout> createState() => _MainLayoutState();
+}
+
+class _MainLayoutState extends State<MainLayout> {
+  User? user;
+
+  List<NoteTableValue> noteTableValues = [
+    NoteTableValue(),
+    NoteTableValue(),
+    NoteTableValue(),
+  ];
+
+  Future<bool?> _verifyLogged() async {
+    user = await AuthStore().loggedUser;
+
+    if (user == null && widget.loginRequired) {
+      await Navigator.of(context).popAndPushNamed('Login');
+    }
+    return user != null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
-      ),
-      body: Column(
-        children: [
+        backgroundColor: const Color(0xFFDEE2E3),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
+        ),
+      body: FutureBuilder(
+        future: _verifyLogged(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return widget.body;
+          } else if (snapshot.hasError) {
+            return widget.body;
+          }
 
-          IconButton(icon: const Icon(Icons.add), onPressed: () {
-            SurveyDialog.showSurveyDialog(context);
-            // Navigator.of(context).pushNamed(next);
-          }),
-          const Center(child: PersonImage(
-            size: 60,
-            imageUrl: 'https://media.licdn.com/dms/image/C4D03AQGQSbQ9X96LVw/profile-displayphoto-shrink_200_200/0/1632959045921?e=2147483647&v=beta&t=h5YH3WkLn88QU-1-LK9Kg71ZVCu40eLgCBYY0q3zSMM'
-          )),
-        ],
-      )
+          return Stack(
+            children: [
+              const CircularProgressIndicator(),
+              Container(color: Colors.white)
+            ],
+          );
+        }
+      ),
     );
   }
 }

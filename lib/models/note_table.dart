@@ -18,6 +18,17 @@ class NoteTable extends Note {
     program = Program.valueOf(map['program'] as String);
     type = NoteType.table;
     level = DifficultyLevel.valueOf(map['level'] as String);
+    createdAt = DateTime.parse(map['createdAt']);
     values = (map['values'] as List<Map<String, dynamic>>).map((value) => NoteTableValue.factory(value)).toList();
+  }
+
+  @override
+  String? getSubTitle() {
+    var subTitle = '';
+    for (int i = 0; i < 3 && (values.isNotEmpty && i < values.length - 1); i++) {
+      subTitle += values[i].label ?? '';
+    }
+
+    return subTitle;
   }
 }

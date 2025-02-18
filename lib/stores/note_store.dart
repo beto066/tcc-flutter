@@ -1,6 +1,6 @@
 import 'package:tccflutter/models/enums/note_type.dart';
-import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/note_table_value.dart';
+import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/services/note_service.dart';
 
 class NoteStore {
@@ -19,7 +19,12 @@ class NoteStore {
 
   Future<List<dynamic>> fetchNotes({String? title, DateTime? from, DateTime? to, NoteType? type}) async {
     var notes = await NoteService().fetchNotes(title: title, from: from, to: to, type: type);
-    return notes ?? [];
+    return notes;
+  }
+
+  Future<List<dynamic>> fetchNotesByPatient(Patient patient) async {
+    var notes = await NoteService().fetchNotesByPatient(patient);
+    return notes;
   }
 
   Future<Map<String, double>> fetchStatistics() async {

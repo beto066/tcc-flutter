@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:tccflutter/exceptions/unexpected_exception.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/util/api_service.dart';

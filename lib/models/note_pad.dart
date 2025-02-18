@@ -5,7 +5,6 @@ import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/patient.dart';
 
 class NotePad extends Note {
-  late final String? title;
   late final List<String>? body;
 
   NotePad();
@@ -19,6 +18,12 @@ class NotePad extends Note {
     type = NoteType.notepad;
     level = DifficultyLevel.valueOf(map['level'] as String);
     title = map['title'] as String?;
-    body = map['body'] as List<String>?;
+    body = (map['body'] as List<dynamic>?)?.map<String>((e) => e.toString()).toList();
+    createdAt = DateTime.parse(map['createdAt']);
+  }
+
+  @override
+  String? getSubTitle() {
+    return body?[0] ?? ' - ';
   }
 }

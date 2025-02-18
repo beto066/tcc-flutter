@@ -6,7 +6,7 @@ import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/patient.dart';
 
 class NoteTraining extends Note {
-  late final List<TrainingResult>? results;
+  List<TrainingResult>? results;
 
   NoteTraining();
 
@@ -18,9 +18,22 @@ class NoteTraining extends Note {
     program = Program.valueOf(map['program'] as String);
     type = NoteType.training;
     level = DifficultyLevel.valueOf(map['level'] as String);
+    createdAt = DateTime.parse(map['createdAt']);
 
-    if (map['results'] is List<String>) {
-      results = (map['results']).map((result) => TrainingResult.valueOf(result)!).toList();
+    results = [];
+    if (map['results'] is List<dynamic>) {
+      results = (map['results'] as List).map((result) => TrainingResult.valueOf(result.toString())!).toList();
     }
+  }
+
+  @override
+  String? getSubTitle() {
+    var subTitle = '';
+
+    for (int i = 0; i < 3 && ((results?.isNotEmpty ?? true) && i < results!.length - 1); i++) {
+      subTitle += '|${results?[i].value ?? ''}| ';
+    }
+
+    return subTitle;
   }
 }

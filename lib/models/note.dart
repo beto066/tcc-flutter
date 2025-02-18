@@ -7,10 +7,12 @@ import 'package:tccflutter/models/note_training.dart';
 import 'package:tccflutter/models/patient.dart';
 
 abstract class Note {
+  String? title;
   late final Patient? patient;
   late final Program? program;
   late final NoteType? type;
   late final DifficultyLevel? level;
+  late final DateTime createdAt;
 
   Note();
 
@@ -29,4 +31,6 @@ abstract class Note {
 
     return NoteTraining.factory(map);
   }
+
+  String? getSubTitle();
 }

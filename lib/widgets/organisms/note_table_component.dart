@@ -55,7 +55,7 @@ class NoteTableComponent extends StatelessWidget {
         if (index < values.length) {
           rowCells.add(
             ButtonTile(
-              values[index].label,
+              values[index].label ?? "",
               textAlign: TextAlign.center,
               onTap: () {
                 selectedTableValue(index);

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       return statistics;
-    } on UnauthorizedException catch (e) {
+    } on UnauthorizedException {
       await _logout();
       return {};
     } catch (e) {

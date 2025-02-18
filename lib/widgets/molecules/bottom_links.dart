@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tccflutter/stores/auth_store.dart';
 import 'package:tccflutter/widgets/atoms/bottom_link.dart';
 
 class BottomLinks extends StatelessWidget {

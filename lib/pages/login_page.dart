@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.inversePrimary),
+                        backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.inversePrimary),
                       ),
                       onPressed: _login,
                       child: Container(

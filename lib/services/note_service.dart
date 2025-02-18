@@ -1,12 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:tccflutter/exceptions/bad_request_exception.dart';
 import 'package:tccflutter/exceptions/internal_server_error_exception.dart';
-import 'package:tccflutter/exceptions/unauthorized_exception.dart';
 import 'package:tccflutter/exceptions/unexpected_exception.dart';
 import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
+import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/util/api_service.dart';
 import 'dart:convert';
 
@@ -43,16 +41,26 @@ class NoteService {
     var body = jsonDecode(utf8.decode(response.bodyBytes));
 
     // if (body is List<Map<String, dynamic>>) {
-      var notes = body.map((e) {
-        if (e is Map<String, dynamic>) {
-          return Note.factory(e);
-        }
-        return NoteTable();
-      }).toList();
+    return body.map((e) {
+      if (e is Map<String, dynamic>) {
+        return Note.factory(e);
+      }
+      return NoteTable();
+    }).toList();
     // }
+  }
 
-    print(notes);
-    return notes;
+  Future<List<dynamic>> fetchNotesByPatient(Patient patient) async {
+    var response = await ApiService().get('/notes/patient/${patient.id}');
+
+    var body = jsonDecode(utf8.decode(response.bodyBytes));
+
+    return body.map((e) {
+      if (e is Map<String, dynamic>) {
+        return Note.factory(e);
+      }
+      return NoteTable();
+    }).toList();
   }
 
   Future<List<NoteTableValue>> fetchNoteValue() async {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tccflutter/widgets/atoms/associative_label.dart';
 import 'package:tccflutter/widgets/atoms/button_tile.dart';
@@ -10,21 +9,24 @@ class PatientHeader extends StatelessWidget {
   final String age;
   final String therapyDuration;
 
-  const PatientHeader({super.key, required this.countNotes, required this.age, required this.therapyDuration});
+  const PatientHeader(
+      {super.key,
+      required this.countNotes,
+      required this.age,
+      required this.therapyDuration});
 
   void _showSurveyDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
           return const SurveyDialog();
-        }
-    );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
-    var contextHeight = MediaQuery.of(context).size.height;
+    // var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
+    // var contextHeight = MediaQuery.of(context).size.height;
     var contextWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -32,7 +34,7 @@ class PatientHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          PersonImage(size: contextWidth * 0.25),
+          PersonImage(size: (contextWidth * 0.25 > 130)? 130: contextWidth * 0.25),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

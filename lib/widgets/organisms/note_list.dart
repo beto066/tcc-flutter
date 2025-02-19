@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/note_pad.dart';
+import 'package:tccflutter/models/note_table.dart';
+import 'package:tccflutter/models/note_training.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 
 class NoteList extends StatelessWidget {
@@ -25,11 +27,6 @@ class NoteList extends StatelessWidget {
         itemCount: notes.length,
         itemBuilder: (context, index) {
           var note = notes[index];
-          var expandHeight = 0.0;
-
-          if (note is NotePad) {
-            expandHeight = (note.body ?? []).length * 15 + 20;
-          }
 
           if (note is Note) {
             return CardListItem(
@@ -38,7 +35,7 @@ class NoteList extends StatelessWidget {
               maxLinesTitle: 1,
               textAlign: TextAlign.left,
               initialHeight: 70,
-              finalHeight: sizeHeight - 90,
+              finalHeight: sizeHeight - 180,
               trailing: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +47,7 @@ class NoteList extends StatelessWidget {
               titleOverflow: TextOverflow.ellipsis,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                height: sizeHeight - 180,
+                height: sizeHeight - 270,
                 child: Builder(
                   builder: (context) {
                     if (note is NotePad) {
@@ -59,9 +56,24 @@ class NoteList extends StatelessWidget {
                         itemBuilder: (context, listIndex) {
                           return Text(
                             note.body?[listIndex] ?? '',
-                            style: const TextStyle(fontSize: 15.0)
+                            textAlign: TextAlign.justify,
+                            style: const TextStyle(fontSize: 16.0)
                           );
                         }
+                      );
+                    } else if (note is NoteTable) {
+                      return Wrap(
+                        spacing: 10,
+                        children: note.values.map((value) {
+                          return ElevatedButton(onPressed: () {}, child: Text(value.label ?? ''));
+                        }).toList(),
+                      );
+                    } else if (note is NoteTraining) {
+                      return Wrap(
+                        spacing: 10,
+                        children: note.results?.map((value) {
+                          return ElevatedButton(onPressed: () {}, child: Text(value.label));
+                        }).toList() ?? [],
                       );
                     }
                     return Container();

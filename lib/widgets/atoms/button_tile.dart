@@ -6,6 +6,7 @@ class ButtonTile extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final double? height;
+  final double? width;
   final double? padding;
   final TextAlign textAlign;
   final TextOverflow? titleOverflow;
@@ -24,6 +25,7 @@ class ButtonTile extends StatelessWidget {
     this.leading,
     this.trailing,
     this.height,
+    this.width,
     this.padding,
     this.titleOverflow,
     this.onTap,

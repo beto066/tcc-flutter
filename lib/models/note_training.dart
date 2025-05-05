@@ -30,7 +30,7 @@ class NoteTraining extends Note {
   String? getSubTitle() {
     var subTitle = '';
 
-    for (int i = 0; i < 3 && ((results?.isNotEmpty ?? true) && i < results!.length - 1); i++) {
+    for (int i = 0; i < 3 && (results?.isNotEmpty ?? true) && i < results!.length; i++) {
       subTitle += '|${results?[i].value ?? ''}| ';
     }
 

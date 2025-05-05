@@ -11,6 +11,7 @@ class CardListItem extends StatefulWidget {
   final TextAlign textAlign;
   final TextOverflow? titleOverflow;
   final Function? onTap;
+  final Function? onExpand;
   final double? finalHeight;
   final String fontFamily;
   final TextOverflow subTitleOverflow;
@@ -26,6 +27,7 @@ class CardListItem extends StatefulWidget {
     this.child,
     this.titleOverflow,
     this.onTap,
+    this.onExpand,
     this.finalHeight,
     this.textAlign = TextAlign.center,
     this.fontFamily = 'Inter',
@@ -49,6 +51,9 @@ class _CardListItemState extends State<CardListItem> {
 
     if (widget.child != null) {
       setState(() {
+        if (widget.onExpand != null) {
+          widget.onExpand!();
+        }
         isExpanded = !isExpanded;
       });
     }
@@ -56,7 +61,7 @@ class _CardListItemState extends State<CardListItem> {
 
   @override
   Widget build(BuildContext context) {
-    double finalHeight =  widget.finalHeight ?? MediaQuery.of(context).size.height * 0.8;
+    double finalHeight = widget.finalHeight ?? MediaQuery.of(context).size.height * 0.8;
     var expands = [
       if (widget.child != null)
         const Divider(
@@ -72,23 +77,23 @@ class _CardListItemState extends State<CardListItem> {
 
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: GestureDetector(
-            onTap: _onTap,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              color: Color(int.parse(DefaultTheme.cyan)),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            color: Color(int.parse(DefaultTheme.cyan)),
 
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                height: isExpanded? finalHeight: widget.initialHeight,
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        ButtonTile(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              height: isExpanded? finalHeight: widget.initialHeight,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: _onTap,
+                        child: ButtonTile(
                           widget.title,
                           textAlign: widget.textAlign,
                           subTitle: widget.subTitle,
@@ -102,9 +107,9 @@ class _CardListItemState extends State<CardListItem> {
                           filled: false,
                           onTap: _onTap,
                         ),
-                        if (isExpanded) ...expands else Container(),
-                      ],
-                    ),
+                      ),
+                      if (isExpanded) ...expands else Container(),
+                    ],
                   ),
                 ),
               ),

@@ -41,4 +41,14 @@ class Patient {
 
     return years;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'birth': birth,
+      'imageName': imageName,
+      'treatmentStartedAt': treatmentStartedAt,
+    };
+  }
 }

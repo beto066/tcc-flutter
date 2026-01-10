@@ -1,4 +1,5 @@
 import 'package:tccflutter/models/enums/note_type.dart';
+import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/services/note_service.dart';
@@ -44,7 +45,11 @@ class NoteStore {
     return countWeeklyNotes;
   }
 
-  List<NoteTableValue> fetchNoteTableValues() {
-    return [];
+  Future<void> updateNote(Note note) async {
+    await NoteService().updateNote(note);
+  }
+
+  Future<List<dynamic>> fetchNoteTableValues() async {
+    return await NoteService().fetchNoteValue();
   }
 }

@@ -15,15 +15,64 @@ class NotePad extends Note {
     }
 
     program = Program.valueOf(map['program'] as String);
+    id = map['id'] as int?;
+    authorId = map['authorId'];
     type = NoteType.notepad;
     level = DifficultyLevel.valueOf(map['level'] as String);
     title = map['title'] as String?;
     body = (map['body'] as List<dynamic>?)?.map<String>((e) => e.toString()).toList();
-    createdAt = DateTime.parse(map['createdAt']);
+    createdAt = map['createdAt'] != null? DateTime.parse(map['createdAt']): null;
+    visibilityForFamily = map['visibilityForFamily'];
+  }
+
+  @override
+  bool hasChanges(Note other) {
+    if (super.hasChanges(other)) {
+      return true;
+    }
+    if (other is! NotePad) {
+      return true;
+    }
+
+    final thisResults = body ?? [];
+    final otherResults = other.body ?? [];
+
+    if (thisResults.length != otherResults.length) {
+      return true;
+    }
+
+    var hasChanges = false;
+
+    for (int i = 0; i < otherResults.length; i++) {
+      if (thisResults[i] != otherResults[i]) {
+        return true;
+      }
+    }
+
+    return hasChanges;
   }
 
   @override
   String? getSubTitle() {
     return body?[0] ?? ' - ';
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    var map = super.toMap();
+
+    map['body'] = body;
+
+    return map;
+  }
+
+  @override
+  NotePad clone({Note? clone}) {
+    var cloned = NotePad();
+    super.clone(clone: cloned);
+
+    cloned.body = body;
+
+    return cloned;
   }
 }

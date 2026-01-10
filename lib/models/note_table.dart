@@ -15,27 +15,66 @@ class NoteTable extends Note {
       patient = Patient.factory(map);
     }
 
-    print(map['values']);
-
     program = Program.valueOf(map['program'] as String);
+    id = map['id'] as int?;
+    authorId = map['authorId'];
     type = NoteType.table;
     level = DifficultyLevel.valueOf(map['level'] as String);
-    createdAt = DateTime.parse(map['createdAt']);
+    createdAt = map['createdAt'] != null? DateTime.parse(map['createdAt']): null;
+    visibilityForFamily = map['visibilityForFamily'];
 
     if (map['values'] is List && map['values'].length > 0) {
-      values = (map['values'] as List<Map<String, dynamic>>).map((value) => NoteTableValue.factory(value)).toList();
+      values = (map['values'] as List<dynamic>).map((value) => NoteTableValue.factory(value)).toList();
     } else {
       values = [];
     }
   }
 
   @override
+  bool hasChanges(Note other) {
+    if (super.hasChanges(other)) {
+      return true;
+    }
+    if (other is! NoteTable) {
+      return true;
+    }
+
+    final thisResults = values;
+    final otherResults = other.values;
+
+    if (thisResults.length != otherResults.length) {
+      return true;
+    }
+
+    var hasChanges = false;
+
+    for (int i = 0; i < otherResults.length; i++) {
+      if (thisResults[i] != otherResults[i]) {
+        return true;
+      }
+    }
+
+    return hasChanges;
+  }
+
+  @override
   String? getSubTitle() {
     var subTitle = '';
-    for (int i = 0; i < 3 && values.isNotEmpty && i < values.length; i++) {
-      subTitle += values[i].label ?? '';
+
+    for (int i = 0; i < 3 && (values.isNotEmpty) && i < values.length; i++) {
+      subTitle += '|${values[i].value ?? ''}| ';
     }
 
     return subTitle;
+  }
+
+  @override
+  NoteTable clone({Note? clone}) {
+    var cloned = NoteTable();
+    super.clone(clone: cloned);
+
+    cloned.values = values;
+
+    return cloned;
   }
 }

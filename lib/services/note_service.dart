@@ -2,8 +2,10 @@ import 'package:tccflutter/exceptions/internal_server_error_exception.dart';
 import 'package:tccflutter/exceptions/unexpected_exception.dart';
 import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/models/note.dart';
+import 'package:tccflutter/models/note_pad.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
+import 'package:tccflutter/models/note_training.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/util/api_service.dart';
 import 'dart:convert';
@@ -50,6 +52,43 @@ class NoteService {
     // }
   }
 
+  Future<void> updateNote(Note note) async {
+    Map<String, dynamic> noteMap = {
+      'body': [],
+      'values': [],
+      'results': [],
+      'visibilityForFamily': note.visibilityForFamily,
+    };
+
+    if (note is NotePad) {
+      noteMap['body'] = note.body ?? [];
+    }
+
+    if (note is NoteTable) {
+      noteMap['values'] = [];
+      for (var i = 0; i < note.values.length; i++) {
+        noteMap['values']!.add({
+          'tableId': note.id,
+          'valueId': note.values[i].id,
+          'position': i
+        });
+      }
+    }
+
+    if (note is NoteTraining) {
+      noteMap['results'] = [];
+      for (var i = 0; i < (note.results?.length ?? 0); i++) {
+        noteMap['results']!.add({
+          'trainingId': note.id,
+          'resultId': note.results![i].id,
+          'position': i
+        });
+      }
+    }
+
+    var response = await ApiService().put('/notes/${note.id}', data: noteMap);
+  }
+
   Future<List<dynamic>> fetchNotesByPatient(Patient patient) async {
     var response = await ApiService().get('/notes/patient/${patient.id}');
 
@@ -63,9 +102,15 @@ class NoteService {
     }).toList();
   }
 
-  Future<List<NoteTableValue>> fetchNoteValue() async {
+  Future<List<dynamic>> fetchNoteValue() async {
     var response = await ApiService().get('/users/notes/values');
-    return [];
+
+    var body = jsonDecode(utf8.decode(response.bodyBytes));return body.map((e) {
+      if (e is Map<String, dynamic>) {
+        return NoteTableValue.factory(e);
+      }
+      return NoteTableValue();
+    }).toList();
   }
 
   Future<double?> fetchCountNote(DateTime? from, DateTime? to) async {

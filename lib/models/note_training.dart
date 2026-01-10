@@ -16,14 +16,44 @@ class NoteTraining extends Note {
     }
 
     program = Program.valueOf(map['program'] as String);
+    id = map['id'] as int?;
+    authorId = map['authorId'];
     type = NoteType.training;
     level = DifficultyLevel.valueOf(map['level'] as String);
-    createdAt = DateTime.parse(map['createdAt']);
+    createdAt = map['createdAt'] != null? DateTime.parse(map['createdAt']): null;
+    visibilityForFamily = map['visibilityForFamily'];
 
     results = [];
     if (map['results'] is List<dynamic>) {
       results = (map['results'] as List).map((result) => TrainingResult.valueOf(result.toString())!).toList();
     }
+  }
+
+  @override
+  bool hasChanges(Note other) {
+    if (super.hasChanges(other)) {
+      return true;
+    }
+    if (other is! NoteTraining) {
+      return true;
+    }
+
+    final thisResults = results ?? [];
+    final otherResults = other.results ?? [];
+
+    if (thisResults.length != otherResults.length) {
+      return true;
+    }
+
+    var hasChanges = false;
+
+    for (int i = 0; i < otherResults.length; i++) {
+      if (thisResults[i] != otherResults[i]) {
+        return true;
+      }
+    }
+
+    return hasChanges;
   }
 
   @override
@@ -35,5 +65,26 @@ class NoteTraining extends Note {
     }
 
     return subTitle;
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    var map = super.toMap();
+
+    map['results'] = results?.map((result) {
+      result.label;
+    });
+
+    return map;
+  }
+
+  @override
+  NoteTraining clone({Note? clone}) {
+    var cloned = NoteTraining();
+    super.clone(clone: cloned);
+
+    cloned.results = results;
+
+    return cloned;
   }
 }

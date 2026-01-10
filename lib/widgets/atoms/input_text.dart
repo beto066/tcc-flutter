@@ -11,6 +11,7 @@ class InputText extends StatefulWidget {
   final double? width;
   final VoidCallback? onTap;
   final TextInputType? keyboardType;
+  final int? maxLines;
   final bool obscureText;
   final double fontSize;
 
@@ -25,6 +26,7 @@ class InputText extends StatefulWidget {
     this.width,
     this.onTap,
     this.keyboardType,
+    this.maxLines,
     this.obscureText = false,
     this.fontSize = 14,
   });
@@ -44,7 +46,9 @@ class _InputTextState extends State<InputText> {
       child: TextFormField(
         focusNode: widget.focusNode,
         controller: widget.controller,
-        obscureText: widget.obscureText,
+        obscureText: widget.maxLines != null && widget.obscureText,
+        keyboardType: widget.keyboardType,
+        maxLines: widget.maxLines,
         style: TextStyle(
           fontSize: widget.fontSize,
         ),

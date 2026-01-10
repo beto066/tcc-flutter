@@ -18,6 +18,7 @@ class CardListItem extends StatefulWidget {
   final int maxLinesTitle;
   final int maxLinesSubTitle;
   final double initialHeight;
+  final bool isExpanded;
 
   const CardListItem(this.title, {
     super.key,
@@ -35,6 +36,7 @@ class CardListItem extends StatefulWidget {
     this.maxLinesTitle = 1,
     this.maxLinesSubTitle = 1,
     this.initialHeight = 70.0,
+    this.isExpanded = false,
   });
 
   @override
@@ -42,7 +44,10 @@ class CardListItem extends StatefulWidget {
 }
 
 class _CardListItemState extends State<CardListItem> {
-  bool isExpanded = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onTap() {
     if (widget.onTap != null) {
@@ -54,7 +59,6 @@ class _CardListItemState extends State<CardListItem> {
         if (widget.onExpand != null) {
           widget.onExpand!();
         }
-        isExpanded = !isExpanded;
       });
     }
   }
@@ -63,13 +67,14 @@ class _CardListItemState extends State<CardListItem> {
   Widget build(BuildContext context) {
     double finalHeight = widget.finalHeight ?? MediaQuery.of(context).size.height * 0.8;
     var expands = [
-      if (widget.child != null)
+      if (widget.child != null) {
         const Divider(
           thickness: 2,
           color: Colors.black26,
         ),
+      },
       widget.child ?? Container(),
-    ];
+    ] as List<Widget>;
 
     return Column(
       children: <Widget>[
@@ -84,9 +89,9 @@ class _CardListItemState extends State<CardListItem> {
             color: Color(int.parse(DefaultTheme.cyan)),
 
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              height: isExpanded? finalHeight: widget.initialHeight,
+              height: widget.isExpanded? finalHeight: widget.initialHeight,
               child: SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -108,7 +113,7 @@ class _CardListItemState extends State<CardListItem> {
                           onTap: _onTap,
                         ),
                       ),
-                      if (isExpanded) ...expands else Container(),
+                      if (widget.isExpanded) ...expands else Container(),
                     ],
                   ),
                 ),

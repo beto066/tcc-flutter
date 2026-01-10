@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tccflutter/models/note.dart';
@@ -8,13 +7,17 @@ import 'package:tccflutter/widgets/molecules/detail_note.dart';
 class NoteList extends StatelessWidget {
   final List<dynamic> notes;
   final double? height;
+  final int? expandedIndex;
   final Map<int, GlobalKey> _keys = {};
+  final VoidCallback? onSave;
+  final void Function(int)? onExpand;
 
-  NoteList({super.key, required this.notes, this.height});
+  final ScrollController _scrollController = ScrollController();
+
+  NoteList({super.key, required this.notes, this.height, this.expandedIndex, this.onSave, this.onExpand});
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
     var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     var contextHeight = MediaQuery.of(context).size.height;
     var contextWidth = MediaQuery.of(context).size.width;
@@ -33,32 +36,35 @@ class NoteList extends StatelessWidget {
             return Container(
               key: key,
               child: CardListItem(
+                key: ValueKey(notes[index].id),
                 note.title ?? 'Sem título',
                 subTitle: note.getSubTitle(),
                 maxLinesTitle: 1,
                 textAlign: TextAlign.left,
                 initialHeight: 70,
-                finalHeight: sizeHeight - 180,
+                finalHeight: sizeHeight -180,
                 trailing: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(DateFormat('dd/MM/yyyy').format(note.createdAt)),
+                    Text(note.createdAt != null? DateFormat('dd/MM/yyyy').format(note.createdAt!): ''),
                     const Icon(Icons.expand_more)
                   ],
                 ),
                 titleOverflow: TextOverflow.ellipsis,
-                child: DetailNote(note: note),
-                onExpand: () {
+                isExpanded: index == expandedIndex,
+                onExpand: () async {
+                  await Future.delayed(const Duration(milliseconds: 300));
                   _scrollToItem(index);
+                  if (onExpand != null) {
+                    onExpand!(index);
+                  }
                 },
+                child: DetailNote(note: note, onSave: onSave),
               ),
             );
           }
 
-          if (kDebugMode) {
-            print('object');
-          }
           return Container();
         }
       ),
@@ -67,14 +73,14 @@ class NoteList extends StatelessWidget {
   }
 
   void _scrollToItem(int index) {
-      final keyContext = _keys[index]?.currentContext;
-      if (keyContext != null) {
-        Scrollable.ensureVisible(
-          keyContext,
-          duration: Duration(milliseconds: 300),
-          alignment: 0, // topo
-          curve: Curves.easeInOut,
-        );
+    final keyContext = _keys[index]?.currentContext;
+    if (keyContext != null) {
+      Scrollable.ensureVisible(
+        keyContext,
+        duration: const Duration(milliseconds: 300),
+        alignment: 0,
+        curve: Curves.easeInOut,
+      );
     }
   }
 }

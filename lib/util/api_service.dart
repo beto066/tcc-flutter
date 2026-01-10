@@ -58,6 +58,17 @@ class ApiService {
     return _validateResponse(await http.post(url, headers: allHeaders, body: body));
   }
 
+  Future<http.Response> put(String endpoint, {Object? data, Map<String, String> headers = const {}}) async {
+    final url = Uri.parse('$baseUrl$endpoint');
+    final body = jsonEncode(data);
+    final allHeaders = {
+      ...(await defaultHeaders),
+      ...headers,
+    };
+
+    return _validateResponse(await http.put(url, headers: allHeaders, body: body));
+  }
+
   String get baseUrl {
     return _baseUrl ??= dotenv.get('API_URL', fallback: 'http://localhost');
   }
@@ -85,10 +96,10 @@ class ApiService {
         throw UnauthorizedException(response.body);
       }
       case 500: {
-        throw InternalServerErrorException('${jsonEncode(response.body)}, with statusCode: ${response.body}');
+        throw InternalServerErrorException('${jsonEncode(response.body)}, with statusCode: ${response.statusCode}');
       }
       default: {
-        throw InternalServerErrorException('${jsonEncode(response.body)}, with statusCode: ${response.body}');
+        throw InternalServerErrorException('${jsonEncode(response.body)}, with statusCode: ${response.statusCode}');
       }
     }
   }

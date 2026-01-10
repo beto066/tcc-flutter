@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/note_store.dart';
@@ -22,6 +23,7 @@ class DetailPatientPage extends StatefulWidget {
 class _DetailPatientPageState extends State<DetailPatientPage> {
   var isLoading = true;
   List<dynamic> notes = [];
+  int? expandedIndex;
 
   @override
   void initState() {
@@ -38,6 +40,16 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
     });
 
     return notes;
+  }
+
+  void _onExpanded(int index) {
+    setState(() {
+      if (expandedIndex == index) {
+        expandedIndex = null;
+        return;
+      }
+      expandedIndex = index;
+    });
   }
 
   @override
@@ -80,7 +92,13 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
                     child: const PatientFormFilter(),
                   ),
 
-                  NoteList(notes: notes, height: contextHeight * 0.85 - 300)
+                  NoteList(
+                    notes: notes,
+                    height: contextHeight * 0.75 - 100,
+                    onSave: _fetchNotes,
+                    onExpand: _onExpanded,
+                    expandedIndex: expandedIndex,
+                  )
                 ],
               ),
             ),

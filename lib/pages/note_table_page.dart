@@ -1,10 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
+import 'package:tccflutter/models/patient.dart';
+import 'package:tccflutter/widgets/molecules/select_note_table_value.dart';
 import 'package:tccflutter/widgets/organisms/note_table_component.dart';
 
 class NoteTablePage extends StatefulWidget {
-  const NoteTablePage({super.key});
+  final Patient patient;
+
+  const NoteTablePage({super.key, required this.patient});
 
   @override
   State<StatefulWidget> createState() {
@@ -14,8 +19,8 @@ class NoteTablePage extends StatefulWidget {
 
 class _NoteTablePageState extends State<NoteTablePage> {
   int? indexSelectedValue;
-  List<NoteTableValue> values = [];
   bool isEditing = false;
+  final _note = NoteTable();
 
   void _setSelectedValue(int index) {
     setState(() {
@@ -27,8 +32,8 @@ class _NoteTablePageState extends State<NoteTablePage> {
     isEditing = true;
   }
 
-  void _removeValue() {
-    values.removeAt(indexSelectedValue!);
+  void _removeValue(int index) {
+    _note.values.removeAt(index!);
   }
 
   Future<void> _fetchNoteValues() async {
@@ -39,56 +44,39 @@ class _NoteTablePageState extends State<NoteTablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
-      child: Stack(
+    var contextWidth = MediaQuery.of(context).size.width;
+    var contextHeight = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: contextHeight,
+      child: Column(
         children: [
-          NoteTableComponent(
-            values: values,
-            selectedTableValue: _setSelectedValue,
-          ),
-          if (indexSelectedValue != null)
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: Material(
-                elevation: 4,
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.yellow[200], // Cor de "post-it"
-                    borderRadius: BorderRadius.circular(8),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
+              child: Stack(
+                children: [
+                  NoteTableComponent(
+                    values: _note.values,
+                    onEditSelected: _setSelectedValue,
+                    onRemoveSelected: _removeValue,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: _editValue,
-                        child: const Text('Editar',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-                      TextButton(
-                        onPressed: _removeValue,
-                        child: const Text('Excluir',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
-          // SingleChildScrollView(
-          //   scrollDirection: Axis.horizontal,
-          //   child: FutureBuilder(
-          //     future: _fetchNoteValues(),
-          //     builder: (context) {
-          //       return Container();
-          //     }
-          //   ),
-          // )
+          ),
+          SelectNoteTableValue(
+            note: _note,
+            onSelect: (value) {
+              setState(() {
+                if (indexSelectedValue != null) {
+                  _note.values[indexSelectedValue!] = value;
+                  indexSelectedValue = null;
+                } else {
+                  _note.values.add(value);
+                }
+              });
+            },
+          ),
         ],
       ),
     );

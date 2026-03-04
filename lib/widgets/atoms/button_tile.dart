@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ButtonTile extends StatelessWidget {
   final String title;
   final String? subTitle;
+  final String? titleLabel;
   final Widget? leading;
   final Widget? trailing;
   final double? height;
@@ -22,6 +23,7 @@ class ButtonTile extends StatelessWidget {
   const ButtonTile(this.title, {
     super.key,
     this.subTitle,
+    this.titleLabel,
     this.leading,
     this.trailing,
     this.height,
@@ -54,15 +56,27 @@ class ButtonTile extends StatelessWidget {
           ),
           // margin: const EdgeInsets.symmetric(horizontal: 4),
           // padding: EdgeInsets.all(padding ?? 0.0),
-          child: Text(
-              title,
-              maxLines: maxLinesTitle,
-              overflow: titleOverflow,
-              textAlign: textAlign,
-              style: TextStyle(
-                fontSize: fontSize,
-                fontFamily: fontFamily,
-              )
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: maxLinesTitle,
+                  overflow: titleOverflow,
+                  textAlign: textAlign,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontFamily: fontFamily,
+                  )
+                ),
+              ),
+              const SizedBox(width: 6),
+
+              Text(
+                titleLabel ?? '',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ],
           ),
         ),
         subtitle: subTitle != null? Container(

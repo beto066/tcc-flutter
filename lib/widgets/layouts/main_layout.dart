@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/models/user.dart';
 import 'package:tccflutter/stores/auth_store.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {
-  final String title;
+  final String screen;
   final Widget body;
   final bool loginRequired;
   final String next;
 
-  const MainLayout({super.key, required this.title, required this.body, this.loginRequired = false, this.next = 'Done'});
+  const MainLayout({super.key, required this.screen, required this.body, this.loginRequired = false, this.next = 'Done'});
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -27,10 +28,25 @@ class _MainLayoutState extends State<MainLayout> {
   Future<bool?> _verifyLogged() async {
     user = await AuthStore().loggedUser;
 
-    if (user == null && widget.loginRequired) {
+    if (user == null && widget.loginRequired && Navigator.of(context).mounted) {
       await Navigator.of(context).popAndPushNamed('Login');
     }
     return user != null;
+  }
+
+  String _mapTitle(String screen) {
+    switch (screen) {
+      case 'login':
+        return AppLocalizations.of(context)!.login;
+      case 'home':
+        return AppLocalizations.of(context)!.home;
+      case 'patients':
+        return AppLocalizations.of(context)!.patients;
+      case 'patient_details':
+        return AppLocalizations.of(context)!.patient_details;
+      default:
+        return '';
+    }
   }
 
   @override
@@ -39,7 +55,7 @@ class _MainLayoutState extends State<MainLayout> {
         backgroundColor: const Color(0xFFDEE2E3),
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: Text(_mapTitle(widget.screen)),
         ),
       body: FutureBuilder(
         future: _verifyLogged(),

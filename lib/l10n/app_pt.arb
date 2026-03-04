@@ -1,0 +1,28 @@
+{
+  "aba": "ABA (Aplicação baseada em ABA)",
+  "average": "Média",
+  "config": "Config.",
+  "home": "Início",
+  "patient_details": "Detalhes do paciente",
+  "login": "Login",
+  "email": "Email",
+  "password": "Senha",
+  "patient": "Paciente",
+  "patients": "Pacientes",
+  "auth_invalid_credentials": "Email ou senha incorreto",
+  "unexpected_error": "Ocorreu um erro inesperado",
+  "auth_email_required": "Por favor, insira seu email",
+  "auth_invalid_email": "Por favor, insira um email válido",
+  "auth_password_required": "Por favor, insira sua senha",
+  "auth_password_min_length": "Password must be at least {length} characters",
+  "weekly_notes": "Anotações na semana",
+  "notes_quantity": "Quantidade de anotações",
+
+  "patients_screen_description": "Selecione um paciente para visualizar ou adicionar anotações.",
+
+  "@auth_password_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  }
+}

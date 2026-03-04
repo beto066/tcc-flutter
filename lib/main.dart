@@ -3,10 +3,13 @@ import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/pages/detail_patient_page.dart';
 import 'package:tccflutter/pages/home_page.dart';
 import 'package:tccflutter/pages/login_page.dart';
+import 'package:tccflutter/pages/note_table_page.dart';
 import 'package:tccflutter/pages/patients_page.dart';
 import 'package:tccflutter/util/custom_route_observer.dart';
 import 'package:tccflutter/widgets/layouts/main_layout.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 
 void main() async {
   final CustomRouteObserver observer = CustomRouteObserver();
@@ -29,8 +32,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+        Locale('pt', 'BR')
+      ],
       navigatorObservers: [widget.observer],
-      title: 'Flutter Demo',
+      title: 'AppLocalizations.of(context)!.aba',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
         primarySwatch: Colors.blue,
@@ -40,18 +54,41 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: 'Home',
       routes: {
-        'Login': (_) => const MainLayout(title: 'Login', body: LoginPage()),
-        'Home': (_) => const MainLayout(title: 'Início', body: HomePage(), loginRequired: true),
-        'Pacientes': (_) => const MainLayout(title: 'Pacientes', body: PatientsPage()),
-        'Paciente': (context) {
-          var arguments = ModalRoute.of(context)!.settings.arguments as Map<String, Patient>;
-
-          return MainLayout(title: "Detalhes do paciente", body: DetailPatientPage(arguments['patient']!));
-        },
-        'Done': (_) => MainLayout(title: 'title', next: 'Gone', body: Container()),
-        'Gone': (_) => MainLayout(title: 'Gone', next: 'Pone', body: Container()),
-        'Pone': (_) => MainLayout(title: 'Gone', next: 'Pone', body: Container()
+        'Login': (_) => const MainLayout(
+          screen: 'login',
+          body: LoginPage()
         ),
+        'Home': (_) => const MainLayout(
+          screen: 'home',
+          body: HomePage(),
+          loginRequired: true
+        ),
+        'Patients': (_) => const MainLayout(
+          screen: 'patients',
+          body: PatientsPage()
+        ),
+        'Patient': (context) {
+          var arguments = ModalRoute
+            .of(context)!
+            .settings
+            .arguments as Map<String, Patient>;
+
+          return MainLayout(
+            screen: 'patient_details',
+            body: DetailPatientPage(arguments['patient']!)
+          );
+        },
+        'NoteTable': (context) {
+          var arguments = ModalRoute
+            .of(context)!
+            .settings
+            .arguments as Map<String, Patient>;
+
+          return MainLayout(
+            screen: 'note_table',
+            body: NoteTablePage(patient: arguments['patient']!)
+          );
+        },
       },
     );
   }

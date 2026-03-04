@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 import 'package:tccflutter/widgets/molecules/detail_note.dart';
@@ -11,10 +12,24 @@ class NoteList extends StatelessWidget {
   final Map<int, GlobalKey> _keys = {};
   final VoidCallback? onSave;
   final void Function(int)? onExpand;
+  final Note? originalNoteExpanded;
 
   final ScrollController _scrollController = ScrollController();
 
-  NoteList({super.key, required this.notes, this.height, this.expandedIndex, this.onSave, this.onExpand});
+  NoteList({super.key, required this.notes, this.originalNoteExpanded, this.height, this.expandedIndex, this.onSave, this.onExpand});
+
+  String _formatTitleLabel(NoteType? type) {
+    switch (type) {
+      case NoteType.table:
+        return '(Tabela)';
+      case NoteType.training:
+        return '(Treinamento)';
+      case NoteType.notepad:
+        return '(Anotação)';
+      default:
+        return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +54,10 @@ class NoteList extends StatelessWidget {
                 key: ValueKey(notes[index].id),
                 note.title ?? 'Sem título',
                 subTitle: note.getSubTitle(),
+                titleLabel: _formatTitleLabel(note.type),
                 maxLinesTitle: 1,
                 textAlign: TextAlign.left,
                 initialHeight: 70,
-                finalHeight: sizeHeight -180,
                 trailing: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +75,7 @@ class NoteList extends StatelessWidget {
                     onExpand!(index);
                   }
                 },
-                child: DetailNote(note: note, onSave: onSave),
+                child: DetailNote(note: note, originalNote: originalNoteExpanded, onSave: onSave),
               ),
             );
           }

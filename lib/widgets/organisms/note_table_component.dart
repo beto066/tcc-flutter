@@ -3,11 +3,18 @@ import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/widgets/atoms/button_tile.dart';
 
 class NoteTableComponent extends StatelessWidget {
-  final void Function(int) selectedTableValue;
+  final void Function(int) onEditSelected;
+  final void Function(int) onRemoveSelected;
   final double? height;
   final List<NoteTableValue> values;
 
-  const NoteTableComponent({super.key, required this.selectedTableValue, this.height, this.values = const []});
+  const NoteTableComponent({
+    super.key,
+    required this.onEditSelected,
+    required this.onRemoveSelected,
+    this.height,
+    this.values = const []
+  });
 
   List<Widget> _formatHeaders(int numberOfColumns) {
     List<Widget> tableHeaders = [];
@@ -44,7 +51,7 @@ class NoteTableComponent extends StatelessWidget {
     return tableHeaders;
   }
 
-  List<TableRow> _formatBody(int numberOfColumns) {
+  List<TableRow> _formatBody(int numberOfColumns, BuildContext context) {
     List<TableRow> tableRows = [];
     int totalRows = (values.length / numberOfColumns).ceil();
 
@@ -54,13 +61,57 @@ class NoteTableComponent extends StatelessWidget {
         int index = row * numberOfColumns + col;
         if (index < values.length) {
           rowCells.add(
-            ButtonTile(
-              values[index].label ?? "",
-              textAlign: TextAlign.center,
-              onTap: () {
-                selectedTableValue(index);
+            PopupMenuButton(
+              onSelected: (value) {
+                if (value == 'edit') {
+                  onEditSelected(index);
+                } else if (value == 'delete') {
+                  onRemoveSelected(index);
+                }
               },
-            ),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Editar'),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text('Excluir'),
+                  ),
+                ),
+              ],
+              child: Material(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.edit,
+                        size: 14,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          values[index].label ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            )
           );
         } else {
           rowCells.add(Container());
@@ -76,7 +127,7 @@ class NoteTableComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    int numberOfColumns = (screenWidth / 200).floor() * 3;
+    int numberOfColumns = (screenWidth / 285).floor() * 3;
     numberOfColumns = numberOfColumns < 3 ? 3 : numberOfColumns;
 
     return SizedBox(
@@ -88,28 +139,31 @@ class NoteTableComponent extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           padding: const EdgeInsets.all(16.0),
-          child: Table(
-            border: TableBorder.all(
-              color: Colors.blue,
-              width: 2,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            columnWidths: const {
-              0: FractionColumnWidth(0.165),
-              1: FractionColumnWidth(0.165),
-              2: FractionColumnWidth(0.17),
-              3: FractionColumnWidth(0.165),
-              4: FractionColumnWidth(0.165),
-              5: FractionColumnWidth(0.17),
-            },
-            children: [
-              TableRow(
-                decoration: BoxDecoration(color: Colors.blue[100]),
-                children: _formatHeaders(numberOfColumns),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Table(
+              border: TableBorder.all(
+                color: Colors.blue,
+                width: 2,
+                borderRadius: BorderRadius.circular(8),
               ),
-              ..._formatBody(numberOfColumns),
-            ],
-          ),
+              columnWidths: const {
+                0: FractionColumnWidth(0.165),
+                1: FractionColumnWidth(0.165),
+                2: FractionColumnWidth(0.17),
+                3: FractionColumnWidth(0.165),
+                4: FractionColumnWidth(0.165),
+                5: FractionColumnWidth(0.17),
+              },
+              children: [
+                TableRow(
+                  decoration: BoxDecoration(color: Colors.blue[100]),
+                  children: _formatHeaders(numberOfColumns),
+                ),
+                ..._formatBody(numberOfColumns, context),
+              ],
+            ),
+          )
         ),
       ),
     );

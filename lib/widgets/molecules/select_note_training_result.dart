@@ -21,7 +21,7 @@ class SelectNoteTrainingResultState extends State<SelectNoteTrainingResult> {
     var contextHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(
-      height: contextHeight * 0.4,
+      height: 110,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,7 +37,7 @@ class SelectNoteTrainingResultState extends State<SelectNoteTrainingResult> {
                 children: TrainingResult.values.map((value) {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    width: 90,
+                    width: 100,
                     child: ElevatedButton(
                       onPressed: () {
                         if (widget.index != null) {

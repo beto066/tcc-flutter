@@ -42,14 +42,12 @@ class NoteService {
 
     var body = jsonDecode(utf8.decode(response.bodyBytes));
 
-    // if (body is List<Map<String, dynamic>>) {
     return body.map((e) {
       if (e is Map<String, dynamic>) {
         return Note.factory(e);
       }
       return NoteTable();
     }).toList();
-    // }
   }
 
   Future<void> updateNote(Note note) async {

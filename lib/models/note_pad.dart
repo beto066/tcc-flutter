@@ -30,6 +30,7 @@ class NotePad extends Note {
     if (super.hasChanges(other)) {
       return true;
     }
+
     if (other is! NotePad) {
       return true;
     }
@@ -71,7 +72,7 @@ class NotePad extends Note {
     var cloned = NotePad();
     super.clone(clone: cloned);
 
-    cloned.body = body;
+    cloned.body = body?.map((value) => value).toList();
 
     return cloned;
   }

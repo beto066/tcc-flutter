@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/note_store.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
@@ -22,6 +22,7 @@ class DetailPatientPage extends StatefulWidget {
 
 class _DetailPatientPageState extends State<DetailPatientPage> {
   var isLoading = true;
+  Note? originalNoteExpanded;
   List<dynamic> notes = [];
   int? expandedIndex;
 
@@ -37,18 +38,32 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
     var fetchedNotes = await NoteStore().fetchNotesByPatient(widget.patient);
     setState(() {
       notes = fetchedNotes;
+      if (expandedIndex == null) {
+        originalNoteExpanded = null;
+        return;
+      }
+      _setOriginalNote(expandedIndex!);
     });
 
     return notes;
   }
 
   void _onExpanded(int index) {
+    if (expandedIndex == index) {
+      expandedIndex = null;
+      originalNoteExpanded = null;
+      return;
+    }
+    _setOriginalNote(index);
+
+    expandedIndex = index;
+  }
+
+  void _setOriginalNote(int index) {
     setState(() {
-      if (expandedIndex == index) {
-        expandedIndex = null;
-        return;
+      if (notes[index] is Note) {
+        originalNoteExpanded = notes[index].clone();
       }
-      expandedIndex = index;
     });
   }
 
@@ -77,7 +92,8 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
           PatientHeader(
             countNotes: '5',
             age: '${widget.patient.age}',
-            therapyDuration: '${widget.patient.therapyDuration}'
+            therapyDuration: '${widget.patient.therapyDuration}',
+            patient: widget.patient,
           ),
 
           SizedBox(
@@ -98,6 +114,7 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
                     onSave: _fetchNotes,
                     onExpand: _onExpanded,
                     expandedIndex: expandedIndex,
+                    originalNoteExpanded: originalNoteExpanded,
                   )
                 ],
               ),

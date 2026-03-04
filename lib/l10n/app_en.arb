@@ -1,0 +1,28 @@
+{
+  "aba": "ABA (ABA-based application)",
+  "average": "Average",
+  "config": "Config.",
+  "home": "Home",
+  "patient_details": "Patient details",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "patient": "Patient",
+  "patients": "Patients",
+  "auth_invalid_credentials": "Incorrect email or password",
+  "unexpected_error": "An unexpected error occurred",
+  "auth_email_required": "Please enter your email",
+  "auth_invalid_email": "Please enter a valid email",
+  "auth_password_required": "Please enter your password",
+  "auth_password_min_length": "Password must be at least {length} characters",
+  "weekly_notes": "Notes this week",
+  "notes_quantity": "Number of notes",
+
+  "patients_screen_description": "Select a patient to view or add notes.",
+
+  "@auth_password_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  }
+}

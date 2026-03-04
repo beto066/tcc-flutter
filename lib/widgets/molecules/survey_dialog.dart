@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 
 class SurveyDialog extends StatefulWidget {
-  const SurveyDialog({super.key});
+  final Patient patient;
 
-  static Future<void> showSurveyDialog(BuildContext context) async {
+  const SurveyDialog({super.key, required this.patient});
+
+  static Future<void> showSurveyDialog(
+    BuildContext context,
+    Patient patient
+  ) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return const SurveyDialog();
+        return SurveyDialog(patient: patient);
       },
     );
   }
@@ -18,8 +24,10 @@ class SurveyDialog extends StatefulWidget {
 }
 
 class _SurveyDialogState extends State<SurveyDialog> {
-  static redirectTo(BuildContext context, String page) {
-    Navigator.of(context).pushNamed(page);
+  static redirectTo(BuildContext context, String page, Patient patient) {
+    Navigator.of(context).popAndPushNamed(page, arguments: {
+      'patient': patient
+    });
   }
 
   @override
@@ -42,17 +50,17 @@ class _SurveyDialogState extends State<SurveyDialog> {
             CardListItem(
               'Testes',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'Done'),
+              onTap: () => redirectTo(context, 'Done', widget.patient),
             ),
             CardListItem(
               'Anotações',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'Gone'),
+              onTap: () => redirectTo(context, 'Gone', widget.patient),
             ),
             CardListItem(
               'Tabela',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'Gone'),
+              onTap: () => redirectTo(context, 'NoteTable', widget.patient),
             ),
           ],
         ),

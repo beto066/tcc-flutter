@@ -72,7 +72,7 @@ class NoteTraining extends Note {
     var map = super.toMap();
 
     map['results'] = results?.map((result) {
-      result.label;
+      return result.label;
     });
 
     return map;
@@ -83,7 +83,7 @@ class NoteTraining extends Note {
     var cloned = NoteTraining();
     super.clone(clone: cloned);
 
-    cloned.results = results;
+    cloned.results = results?.map((value) => value).toList();
 
     return cloned;
   }

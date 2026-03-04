@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/widgets/atoms/associative_label.dart';
 import 'package:tccflutter/widgets/atoms/button_tile.dart';
 import 'package:tccflutter/widgets/atoms/person_image.dart';
@@ -8,19 +9,23 @@ class PatientHeader extends StatelessWidget {
   final String countNotes;
   final String age;
   final String therapyDuration;
+  final Patient patient;
 
-  const PatientHeader(
-      {super.key,
-      required this.countNotes,
-      required this.age,
-      required this.therapyDuration});
+  const PatientHeader({
+    super.key,
+    required this.countNotes,
+    required this.age,
+    required this.therapyDuration,
+    required this.patient,
+  });
 
   void _showSurveyDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const SurveyDialog();
-        });
+      context: context,
+      builder: (context) {
+        return SurveyDialog(patient: patient);
+      }
+    );
   }
 
   @override

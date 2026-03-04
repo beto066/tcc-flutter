@@ -5,6 +5,7 @@ import 'package:tccflutter/widgets/atoms/history_navigation.dart';
 import 'package:tccflutter/widgets/atoms/person_image.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 import 'package:tccflutter/widgets/molecules/survey_dialog.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 
 class PatientsPage extends StatefulWidget {
   const PatientsPage({super.key});
@@ -24,17 +25,17 @@ class _PatientsPageState extends State<PatientsPage> {
   }
 
   void _redirectToPatient(Patient patient) {
-    Navigator.of(context).pushNamed('Paciente', arguments: {
+    Navigator.of(context).pushNamed('Patient', arguments: {
       'patient': patient
     });
   }
 
-  void _showSurveyDialog(BuildContext context) {
+  void _showSurveyDialog(BuildContext context, Patient patient) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return const SurveyDialog();
-        }
+      context: context,
+      builder: (context) {
+        return SurveyDialog(patient: patient);
+      }
     );
   }
 
@@ -47,7 +48,7 @@ class _PatientsPageState extends State<PatientsPage> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Text(
-            'Uma explicação simpes sobre a tela',
+            AppLocalizations.of(context)!.patients_screen_description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: ((contextHeight * 0.025 < 16)? 16: contextHeight * 0.025),
@@ -76,7 +77,7 @@ class _PatientsPageState extends State<PatientsPage> {
                         _redirectToPatient(patient);
                       },
                       trailing:  IconButton(icon: const Icon(Icons.add), onPressed: () {
-                        _showSurveyDialog(context);
+                        _showSurveyDialog(context, patient);
                       }),
                     );
                   }

@@ -13,9 +13,16 @@ import 'package:tccflutter/widgets/molecules/text_note_pad.dart';
 class DetailNote extends StatefulWidget {
   final double? height;
   final Note note;
+  final Note? originalNote;
   final VoidCallback? onSave;
 
-  const DetailNote({super.key, required this.note, this.height, this.onSave});
+  const DetailNote({
+    super.key,
+    required this.note,
+    required this.originalNote,
+    this.height,
+    this.onSave
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -25,14 +32,21 @@ class DetailNote extends StatefulWidget {
 
 class _DetailNoteState extends State<DetailNote> {
   User? _loggedUser;
-  Note? _originalNote;
   bool _loading = false;
+  bool _hasChange = false;
 
   @override
   void initState() {
     super.initState();
-    _originalNote = widget.note.clone();
     _loadLoggedUser();
+
+    setState(() {
+      if (widget.originalNote == null) {
+        _hasChange = true;
+        return;
+      }
+      _hasChange = widget.note.hasChanges(widget.originalNote!);
+    });
   }
 
   Future<void> _loadLoggedUser() async {
@@ -45,14 +59,13 @@ class _DetailNoteState extends State<DetailNote> {
     await NoteStore().updateNote(note);
     setState(() {
       _loading = false;
-      _originalNote = widget.note;
       if (widget.onSave != null) {
         widget.onSave!();
       }
     });
   }
 
-  void _editNotePad(int listIndex) {
+  void _openNotePadModal({int? listIndex}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -73,31 +86,41 @@ class _DetailNoteState extends State<DetailNote> {
     );
   }
 
-  void _editNoteTable(int listIndex) {
+  void _openNoteTableModal({int? listIndex}) {
     showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-            ),
-            child: SelectNoteTableValue(
-              note: widget.note as NoteTable,
-              index: listIndex
-            ),
-          );
-        }
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+          ),
+          child: SelectNoteTableValue(
+            note: widget.note as NoteTable,
+            index: listIndex,
+            onSelect: (value) {
+              var note = widget.note as NoteTable;
+
+              if (listIndex != null) {
+                note.values[listIndex] = value;
+
+                if (Navigator.of(context).mounted) {
+                  Navigator.pop(context);
+                }
+              }
+            },
+          ),
+        );
+      }
     );
   }
 
-  void _editNoteTraining(int listIndex) {
+  void _openNoteTrainingModal({int? listIndex}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -130,6 +153,7 @@ class _DetailNoteState extends State<DetailNote> {
 
     var sizeHeight = widget.height ?? contextHeight * 0.53;
     var isAuthor = _loggedUser?.id == widget.note.authorId;
+    final multipleOf110 = (contextWidth ~/ 110) * 110;
 
     return Column(
       children: [
@@ -145,14 +169,20 @@ class _DetailNoteState extends State<DetailNote> {
                   child: IconButton(
                     disabledColor: Colors.grey[690],
                     color: primary,
-                    onPressed: widget.note.visibilityForFamily != null && isAuthor? () {
-                      setState(() {
-                        widget.note.visibilityForFamily = !widget.note.visibilityForFamily!;
-                      });
-                    }: null,
-                    tooltip: 'Tornar visível',
+                    onPressed: widget.note.visibilityForFamily != null && isAuthor?
+                      () {
+                        setState(() {
+                          widget.note.visibilityForFamily = !widget.note.visibilityForFamily!;
+                        });
+                      }:
+                      null,
+                    tooltip: widget.note.visibilityForFamily ?? false ?
+                      'Tornar visível':
+                      'Tornar invisível',
                     icon:  Icon(
-                      widget.note.visibilityForFamily?? false? Icons.lock_open: Icons.lock,
+                      widget.note.visibilityForFamily ?? false?
+                        Icons.lock_open:
+                        Icons.lock,
                       size: 15,
                     ),
                   ),
@@ -163,10 +193,7 @@ class _DetailNoteState extends State<DetailNote> {
                   child: IconButton(
                     disabledColor: Colors.grey[690],
                     color: primary,
-                    onPressed: isAuthor && (
-                      _originalNote == null ||
-                      widget.note.hasChanges(_originalNote!)
-                    )? () async {
+                    onPressed: isAuthor && _hasChange? () async {
                       _updateNote(widget.note);
                     }: null,
                     tooltip: 'Salvar',
@@ -177,25 +204,48 @@ class _DetailNoteState extends State<DetailNote> {
             ),
           )
         ),
-        SizedBox(
-          height: sizeHeight - 80,
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: sizeHeight - 80,
+          ),
           child: Builder(
             builder: (context) {
               if (widget.note is NotePad) {
                 var note = widget.note as NotePad;
 
+                if (note.body == null || note.body!.isEmpty) {
+                  return const Text('Nenhum texto nessa anotação');
+                }
+
                 return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemCount: (note.body ?? []).length,
+                  itemCount: isAuthor?
+                    (note.body ?? []).length + 1:
+                    (note.body ?? []).length,
                   itemBuilder: (context, listIndex) {
                     Widget? leading;
 
                     if (isAuthor) {
-                      leading = IconButton(onPressed: () => _editNotePad(listIndex), icon: const Icon(Icons.edit));
+                      leading = const Icon(Icons.edit);
+                    }
+
+                    if (isAuthor && listIndex == note.body!.length) {
+                      return ListTile(
+                        leading: const Icon(Icons.add),
+                        onTap: () => {
+                          _openNotePadModal()
+                        },
+                        title: const Text("Adicionar texto"),
+                      );
                     }
 
                     return ListTile(
                       leading: leading,
+                      onTap: () => {
+                        _openNotePadModal(listIndex: listIndex)
+                      },
                       title: Text(
                         note.body?[listIndex] ?? '',
                         textAlign: TextAlign.justify,
@@ -208,58 +258,105 @@ class _DetailNoteState extends State<DetailNote> {
               } else if (widget.note is NoteTable) {
                 var note = widget.note as NoteTable;
 
-                return SizedBox(
-                  width: contextWidth * 0.8,
-                  child: Wrap(
-                    spacing: 10,
-                    children: note.values.asMap().entries.map((entry) {
-                      var value = entry.value;
-                      var index = entry.key;
+                if (note.values.isEmpty) {
+                  return const Text('Nenhum valor nessa anotação');
+                }
 
-                      return SizedBox(
-                        width: isAuthor? 85: 70,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (isAuthor) {
-                              _editNoteTable(index);
-                            }
-                          },
-                          child: Flex(direction: Axis.horizontal, children: [
-                            if (isAuthor) const Icon(Icons.edit),
-                            Text(value.label ?? ''),
-                          ])
-                        ),
-                      );
-                    }).toList(),
+                final children = note.values.asMap().entries.map((entry) {
+                  var value = entry.value;
+                  var index = entry.key;
+
+                  return SizedBox(
+                    width: isAuthor? 100: 70,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (isAuthor) {
+                          _openNoteTableModal(listIndex: index);
+                        }
+                      },
+                      icon: isAuthor? const Icon(Icons.edit): null,
+                      label: Text(
+                        value.label ?? '',
+                        textAlign: TextAlign.center
+                      ),
+                    ),
+                  );
+                }).toList();
+
+                if (isAuthor) {
+                  children.add(
+                    SizedBox(
+                      width: 100,
+                      child: ElevatedButton.icon(
+                        onPressed: () => _openNoteTableModal(),
+                        icon: const Icon(Icons.add),
+                        label: const Text("Novo"),
+                      ),
+                    ),
+                  );
+                }
+
+                return Align(
+                  alignment: Alignment.topCenter,
+                  heightFactor: 1,
+                  child: SizedBox(
+                    width: multipleOf110 * 1,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: children,
+                    ),
                   ),
                 );
 
               } else if (widget.note is NoteTraining) {
                 var note = widget.note as NoteTraining;
 
-                return SizedBox(
-                  width: contextWidth * 0.9,
-                  child: Wrap(
-                    spacing: 10,
-                    children: note.results?.asMap().entries.map((entry) {
-                      var value = entry.value;
-                      var index = entry.key;
+                if (note.results == null || note.results!.isEmpty) {
+                  return const Text('Nenhum resultado nessa anotação');
+                }
 
-                      return SizedBox(
-                        width: isAuthor? 85: 70,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (isAuthor) {
-                              _editNoteTraining(index);
-                            }
-                          },
-                          child: Flex(direction: Axis.horizontal, children: [
-                            if (isAuthor) const Icon(Icons.edit),
-                            Text(value.label, textAlign: TextAlign.center),
-                          ])
-                        ),
-                      );
-                    }).toList() ?? [],
+                final children = note.results?.asMap().entries.map((entry) {
+                  var value = entry.value;
+                  var index = entry.key;
+
+                  return SizedBox(
+                    width: isAuthor? 100: 70,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (isAuthor) {
+                          _openNoteTrainingModal(listIndex: index);
+                        }
+                      },
+                      icon: isAuthor? const Icon(Icons.edit): null,
+                      label: Text(value.label, textAlign: TextAlign.center),
+                    ),
+                  );
+                }).toList() ?? [];
+
+                if (isAuthor) {
+                  children.add(
+                    SizedBox(
+                      width: 100,
+                      child: ElevatedButton.icon(
+                        onPressed: () => _openNoteTrainingModal(),
+                        icon: const Icon(Icons.add),
+                        label: const Text("Novo"),
+                      ),
+                    ),
+                  );
+                }
+
+                return SizedBox(
+                  width: multipleOf110 * 1,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    heightFactor: 1,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: children,
+                    ),
                   ),
                 );
               }
@@ -267,6 +364,7 @@ class _DetailNoteState extends State<DetailNote> {
             }
           ),
         ),
+        const SizedBox(height: 30),
       ],
     );
   }

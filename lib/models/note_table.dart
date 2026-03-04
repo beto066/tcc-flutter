@@ -8,7 +8,9 @@ import 'package:tccflutter/models/patient.dart';
 class NoteTable extends Note {
   late final List<NoteTableValue> values;
 
-  NoteTable();
+  NoteTable() {
+    values = [];
+  }
 
   NoteTable.factory(Map<String, dynamic> map) {
     if (map['patient'] != null) {
@@ -73,7 +75,7 @@ class NoteTable extends Note {
     var cloned = NoteTable();
     super.clone(clone: cloned);
 
-    cloned.values = values;
+    cloned.values = values.map((value) => value).toList();
 
     return cloned;
   }

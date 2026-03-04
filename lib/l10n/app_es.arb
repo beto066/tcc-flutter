@@ -1,0 +1,28 @@
+{
+  "aba": "ABA (Aplicación basada en ABA)",
+  "average": "Promedio",
+  "config": "Cnfg.",
+  "home": "Inicio",
+  "patient_details": "Datos del paciente",
+  "login": "Login",
+  "email": "Correo",
+  "password": "Contraseña",
+  "patient": "Paciente",
+  "patients": "Patients",
+  "auth_invalid_credentials": "Correo o contraseña incorrectos",
+  "unexpected_error": "Ocurrió un error inesperado",
+  "auth_email_required": "Por favor, ingrese su correo",
+  "auth_invalid_email": "Por favor, ingrese un correo válido",
+  "auth_password_required": "Por favor, ingrese su contraseña",
+  "auth_password_min_length": "La contraseña debe tener al menos {length} caracteres",
+  "weekly_notes": "Anotaciones de la semana",
+  "notes_quantity": "Cantidad de anotaciones",
+
+  "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
+
+  "@auth_password_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  }
+}

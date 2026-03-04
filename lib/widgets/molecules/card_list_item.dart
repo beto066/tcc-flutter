@@ -5,6 +5,7 @@ import 'package:tccflutter/widgets/atoms/button_tile.dart';
 class CardListItem extends StatefulWidget {
   final String title;
   final String? subTitle;
+  final String? titleLabel;
   final Widget? leading;
   final Widget? trailing;
   final Widget? child;
@@ -23,6 +24,7 @@ class CardListItem extends StatefulWidget {
   const CardListItem(this.title, {
     super.key,
     this.subTitle,
+    this.titleLabel,
     this.leading,
     this.trailing,
     this.child,
@@ -43,9 +45,12 @@ class CardListItem extends StatefulWidget {
   State<StatefulWidget> createState() => _CardListItemState();
 }
 
-class _CardListItemState extends State<CardListItem> {
+class _CardListItemState extends State<CardListItem> with TickerProviderStateMixin {
+  var _isExpanded = false;
+
   @override
   void initState() {
+    _isExpanded = widget.isExpanded;
     super.initState();
   }
 
@@ -56,27 +61,29 @@ class _CardListItemState extends State<CardListItem> {
 
     if (widget.child != null) {
       setState(() {
-        if (widget.onExpand != null) {
-          widget.onExpand!();
-        }
+        _isExpanded = !_isExpanded;
       });
+      if (widget.onExpand != null) {
+        widget.onExpand!();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     double finalHeight = widget.finalHeight ?? MediaQuery.of(context).size.height * 0.8;
-    var expands = [
-      if (widget.child != null) {
-        const Divider(
-          thickness: 2,
-          color: Colors.black26,
-        ),
-      },
-      widget.child ?? Container(),
-    ] as List<Widget>;
+    List<Widget> expands = [];
+    if (widget.child != null) {
+      expands.add(const Divider(
+        thickness: 2,
+        color: Colors.black26,
+      ));
+      expands.add(widget.child!);
+    }
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 15),
 
@@ -88,34 +95,37 @@ class _CardListItemState extends State<CardListItem> {
             ),
             color: Color(int.parse(DefaultTheme.cyan)),
 
-            child: AnimatedContainer(
+            child: AnimatedSize(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              height: widget.isExpanded? finalHeight: widget.initialHeight,
-              child: SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: finalHeight,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: _onTap,
+                      child: ButtonTile(
+                        widget.title,
+                        textAlign: widget.textAlign,
+                        subTitle: widget.subTitle,
+                        titleLabel: widget.titleLabel,
+                        leading: widget.leading,
+                        trailing: widget.trailing,
+                        fontFamily: widget.fontFamily,
+                        maxLinesSubTitle: widget.maxLinesSubTitle,
+                        maxLinesTitle: widget.maxLinesTitle,
+                        subTitleOverflow: widget.subTitleOverflow,
+                        titleOverflow: widget.titleOverflow,
+                        filled: false,
                         onTap: _onTap,
-                        child: ButtonTile(
-                          widget.title,
-                          textAlign: widget.textAlign,
-                          subTitle: widget.subTitle,
-                          leading: widget.leading,
-                          trailing: widget.trailing,
-                          fontFamily: widget.fontFamily,
-                          maxLinesSubTitle: widget.maxLinesSubTitle,
-                          maxLinesTitle: widget.maxLinesTitle,
-                          subTitleOverflow: widget.subTitleOverflow,
-                          titleOverflow: widget.titleOverflow,
-                          filled: false,
-                          onTap: _onTap,
-                        ),
                       ),
-                      if (widget.isExpanded) ...expands else Container(),
-                    ],
-                  ),
+                    ),
+
+                    if (_isExpanded) ...expands,
+                  ],
                 ),
               ),
             ),

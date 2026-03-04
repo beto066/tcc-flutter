@@ -127,6 +127,12 @@ abstract class AppLocalizations {
   /// **'Patient details'**
   String get patient_details;
 
+  /// No description provided for @note_table_screen.
+  ///
+  /// In en, this message translates to:
+  /// **'New annotation in table'**
+  String get note_table_screen;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:

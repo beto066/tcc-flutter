@@ -4,6 +4,7 @@
   "config": "Cnfg.",
   "home": "Inicio",
   "patient_details": "Datos del paciente",
+  "note_table_screen": "Nueva anotación en la tabla",
   "login": "Login",
   "email": "Correo",
   "password": "Contraseña",

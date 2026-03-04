@@ -24,6 +24,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get patient_details => 'Datos del paciente';
 
   @override
+  String get note_table_screen => 'Nueva anotación en la tabla';
+
+  @override
   String get login => 'Login';
 
   @override

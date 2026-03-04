@@ -4,6 +4,7 @@
   "config": "Config.",
   "home": "Home",
   "patient_details": "Patient details",
+  "note_table_screen": "New annotation in table",
   "login": "Login",
   "email": "Email",
   "password": "Password",

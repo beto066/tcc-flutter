@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:tccflutter/models/note_table_value.dart';
-import 'package:tccflutter/widgets/atoms/button_tile.dart';
 
 class NoteTableComponent extends StatelessWidget {
+  final List<NoteTableValue> values;
+  final double? height;
+  final int? indexSelected;
   final void Function(int) onEditSelected;
   final void Function(int) onRemoveSelected;
-  final double? height;
-  final List<NoteTableValue> values;
 
   const NoteTableComponent({
     super.key,
+    this.values = const [],
+    this.height,
+    this.indexSelected,
     required this.onEditSelected,
     required this.onRemoveSelected,
-    this.height,
-    this.values = const []
   });
+
+  Map<int, TableColumnWidth> _generateColumnWidths(int numberOfColumns) {
+    final Map<int, TableColumnWidth> widths = {};
+
+    print(numberOfColumns);
+
+    for (int i = 0; i < numberOfColumns; i++) {
+      widths[i] = FractionColumnWidth(
+        i % 3 == 2 ? 0.17 : 0.165,
+      );
+    }
+
+    return widths;
+  }
 
   List<Widget> _formatHeaders(int numberOfColumns) {
     List<Widget> tableHeaders = [];
@@ -60,6 +75,8 @@ class NoteTableComponent extends StatelessWidget {
       for (int col = 0; col < numberOfColumns; col++) {
         int index = row * numberOfColumns + col;
         if (index < values.length) {
+          var isSelected = index == indexSelected;
+
           rowCells.add(
             PopupMenuButton(
               onSelected: (value) {
@@ -86,6 +103,8 @@ class NoteTableComponent extends StatelessWidget {
                 ),
               ],
               child: Material(
+                color: isSelected? Colors.white70: Colors.white,
+                elevation: isSelected ? 0: 4,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
@@ -147,14 +166,7 @@ class NoteTableComponent extends StatelessWidget {
                 width: 2,
                 borderRadius: BorderRadius.circular(8),
               ),
-              columnWidths: const {
-                0: FractionColumnWidth(0.165),
-                1: FractionColumnWidth(0.165),
-                2: FractionColumnWidth(0.17),
-                3: FractionColumnWidth(0.165),
-                4: FractionColumnWidth(0.165),
-                5: FractionColumnWidth(0.17),
-              },
+              columnWidths: _generateColumnWidths(numberOfColumns),
               children: [
                 TableRow(
                   decoration: BoxDecoration(color: Colors.blue[100]),

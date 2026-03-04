@@ -4,6 +4,7 @@
   "config": "Config.",
   "home": "Início",
   "patient_details": "Detalhes do paciente",
+  "note_table_screen": "Nova anotação em tabela",
   "login": "Login",
   "email": "Email",
   "password": "Senha",

@@ -44,6 +44,8 @@ class _MainLayoutState extends State<MainLayout> {
         return AppLocalizations.of(context)!.patients;
       case 'patient_details':
         return AppLocalizations.of(context)!.patient_details;
+      case 'note_table':
+        return AppLocalizations.of(context)!.note_table_screen;
       default:
         return '';
     }

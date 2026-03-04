@@ -28,12 +28,18 @@ class _NoteTablePageState extends State<NoteTablePage> {
     });
   }
 
-  void _editValue() {
-    isEditing = true;
+  void _editValue(NoteTableValue value) {
+    if (indexSelectedValue != null) {
+      _note.values[indexSelectedValue!] = value;
+      indexSelectedValue = null;
+    } else {
+      _note.values.add(value);
+    }
   }
 
   void _removeValue(int index) {
-    _note.values.removeAt(index!);
+    _note.values.removeAt(index);
+    indexSelectedValue = null;
   }
 
   Future<void> _fetchNoteValues() async {
@@ -59,6 +65,7 @@ class _NoteTablePageState extends State<NoteTablePage> {
                     values: _note.values,
                     onEditSelected: _setSelectedValue,
                     onRemoveSelected: _removeValue,
+                    indexSelected: indexSelectedValue,
                   ),
                 ],
               ),
@@ -68,12 +75,7 @@ class _NoteTablePageState extends State<NoteTablePage> {
             note: _note,
             onSelect: (value) {
               setState(() {
-                if (indexSelectedValue != null) {
-                  _note.values[indexSelectedValue!] = value;
-                  indexSelectedValue = null;
-                } else {
-                  _note.values.add(value);
-                }
+                _editValue(value);
               });
             },
           ),

@@ -45,11 +45,11 @@ class SelectNoteTrainingResultState extends State<SelectNoteTrainingResult> {
                         } else {
                           widget.note.results!.add(value);
                         }
-                        
+
                         Navigator.pop(context);
                       },
                       child: Flex(direction: Axis.horizontal, children: [
-                        Text(value.label ?? ''),
+                        Text(value.label),
                       ])
                     ),
                   );

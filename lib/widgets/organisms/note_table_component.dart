@@ -20,12 +20,16 @@ class NoteTableComponent extends StatelessWidget {
   Map<int, TableColumnWidth> _generateColumnWidths(int numberOfColumns) {
     final Map<int, TableColumnWidth> widths = {};
 
-    print(numberOfColumns);
+    double totalWeight = 0;
 
     for (int i = 0; i < numberOfColumns; i++) {
-      widths[i] = FractionColumnWidth(
-        i % 3 == 2 ? 0.17 : 0.165,
-      );
+      totalWeight += i % 3 == 2 ? 0.17 : 0.165;
+    }
+
+    for (int i = 0; i < numberOfColumns; i++) {
+      double weight = i % 3 == 2 ? 0.17 : 0.165;
+
+      widths[i] = FractionColumnWidth(weight / totalWeight);
     }
 
     return widths;
@@ -103,8 +107,8 @@ class NoteTableComponent extends StatelessWidget {
                 ),
               ],
               child: Material(
-                color: isSelected? Colors.white70: Colors.white,
-                elevation: isSelected ? 0: 4,
+                color: isSelected? Colors.white54: Colors.white,
+                elevation: isSelected ? 0: 8,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(

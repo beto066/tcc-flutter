@@ -7,7 +7,9 @@ import 'package:tccflutter/models/patient.dart';
 class NotePad extends Note {
   late final List<String>? body;
 
-  NotePad();
+  NotePad() {
+    body = [];
+  }
 
   NotePad.factory(Map<String, dynamic> map) {
     if (map['patient'] != null) {
@@ -20,7 +22,7 @@ class NotePad extends Note {
     type = NoteType.notepad;
     level = DifficultyLevel.valueOf(map['level'] as String);
     title = map['title'] as String?;
-    body = (map['body'] as List<dynamic>?)?.map<String>((e) => e.toString()).toList();
+    body = (map['body'] ?? [] as List<dynamic>?)?.map<String>((e) => e.toString()).toList();
     createdAt = map['createdAt'] != null? DateTime.parse(map['createdAt']): null;
     visibilityForFamily = map['visibilityForFamily'];
   }

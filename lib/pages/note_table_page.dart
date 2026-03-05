@@ -42,10 +42,14 @@ class _NoteTablePageState extends State<NoteTablePage> {
     indexSelectedValue = null;
   }
 
-  Future<void> _fetchNoteValues() async {
-    if (kDebugMode) {
-      print('hello mundo');
-    }
+  void _onToggleVisibility() {
+    setState(() {
+      _note.visibilityForFamily = !(_note.visibilityForFamily ?? false);
+    });
+  }
+
+  Future<void> _onSave() async {
+    return;
   }
 
   @override
@@ -56,9 +60,33 @@ class _NoteTablePageState extends State<NoteTablePage> {
       height: contextHeight,
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12, left: 30, right: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+
+                ElevatedButton.icon(
+                  onPressed: _onSave,
+                  icon: const Icon(Icons.save),
+                  label: const Text("Salvar"),
+                ),
+
+                const SizedBox(width: 12),
+
+                ElevatedButton.icon(
+                  onPressed: _onToggleVisibility,
+                  icon: const Icon(Icons.visibility),
+                  label: _note.visibilityForFamily ?? false?
+                    const Text("Tornar Visível"):
+                    const Text('Tornar Invisível'),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Stack(
                 children: [
                   NoteTableComponent(

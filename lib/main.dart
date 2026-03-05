@@ -3,6 +3,7 @@ import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/pages/detail_patient_page.dart';
 import 'package:tccflutter/pages/home_page.dart';
 import 'package:tccflutter/pages/login_page.dart';
+import 'package:tccflutter/pages/note_pad_page.dart';
 import 'package:tccflutter/pages/note_table_page.dart';
 import 'package:tccflutter/pages/patients_page.dart';
 import 'package:tccflutter/util/custom_route_observer.dart';
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -87,6 +89,17 @@ class _MyAppState extends State<MyApp> {
           return MainLayout(
             screen: 'note_table',
             body: NoteTablePage(patient: arguments['patient']!)
+          );
+        },
+        'NotePad': (context) {
+          var arguments = ModalRoute
+              .of(context)!
+              .settings
+              .arguments as Map<String, Patient>;
+
+          return MainLayout(
+              screen: 'note_table',
+              body: NotePadPage(patient: arguments['patient']!)
           );
         },
       },

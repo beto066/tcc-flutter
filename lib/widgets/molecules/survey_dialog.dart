@@ -55,7 +55,7 @@ class _SurveyDialogState extends State<SurveyDialog> {
             CardListItem(
               'Anotações',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'Gone', widget.patient),
+              onTap: () => redirectTo(context, 'NotePad', widget.patient),
             ),
             CardListItem(
               'Tabela',

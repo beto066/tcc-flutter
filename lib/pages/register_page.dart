@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tccflutter/exceptions/bad_request_exception.dart';
 import 'package:tccflutter/exceptions/unauthorized_exception.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/enums/note_type.dart';
+import 'package:tccflutter/models/enums/role.dart';
+import 'package:tccflutter/models/enums/training_result.dart';
 import 'package:tccflutter/stores/auth_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
@@ -22,30 +25,38 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool isDisabled = false;
   String? message;
+
+  Role _role = Role.family;
+
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeEmail = FocusNode();
   final FocusNode _focusNodePassword = FocusNode();
+  final FocusNode _focusNodeConfirmPassword = FocusNode();
 
   @override
   void dispose() {
+    _focusNodeName.removeListener(() {});
+    _focusNodeName.dispose();
+
     _focusNodeEmail.removeListener(() {});
     _focusNodeEmail.dispose();
 
     _focusNodePassword.removeListener(() {});
     _focusNodePassword.dispose();
 
-    _focusNodeName.removeListener(() {});
-    _focusNodeName.dispose();
+    _focusNodeConfirmPassword.removeListener(() {});
+    _focusNodeConfirmPassword.dispose();
 
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     if (isDisabled) {
       return;
     }
@@ -56,7 +67,12 @@ class _RegisterPageState extends State<RegisterPage> {
     isDisabled = true;
 
     try {
-      await AuthStore().login(_emailController.value.text, _passwordController.value.text);
+      await AuthStore().register(
+        name: _nameController.value.text,
+        email: _emailController.value.text,
+        password: _passwordController.value.text,
+        role: _role,
+      );
 
       if (!context.mounted) return;
 
@@ -103,6 +119,14 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
+  String? _confirmPasswordValidator(String? value) {
+    if (value != _passwordController.value.text) {
+      return AppLocalizations.of(context)!.auth_password_mismatch;
+    }
+
+    return null;
+  }
+
   String? _nameValidator(String? value) {
     if (message != null && message!.isNotEmpty) {
       return message;
@@ -137,12 +161,19 @@ class _RegisterPageState extends State<RegisterPage> {
     var logoWidth = MediaQuery.of(context).size.width * 0.8;
     var containerLogoHeight = MediaQuery.of(context).size.height * 0.2;
 
+    // List<DropdownMenuItem<Role?>> items = Role.values.map((Role option) {
+    //   return DropdownMenuItem<Role?>(
+    //     value: option,
+    //     child: Text(option.name),
+    //   );
+    // }).toList();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            const SizedBox(height: 20),
             SizedBox(
               height: containerLogoHeight,
               child: OverflowBox(
@@ -162,11 +193,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                   InputText(
                     AppLocalizations.of(context)!.name,
-                    focusNode: _focusNodeEmail,
-                    validator: _emailValidator,
+                    focusNode: _focusNodeName,
+                    validator: _nameValidator,
                     controller: _nameController,
-                    keyboardType: TextInputType.emailAddress,
-                    onSubmitted: _login,
+                    keyboardType: TextInputType.text,
+                    onSubmitted: _register,
                   ),
                   const SizedBox(height: 16.0),
                   InputText(
@@ -175,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: _emailValidator,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    onSubmitted: _login,
+                    onSubmitted: _register,
                   ),
                   const SizedBox(height: 16.0),
                   InputText(
@@ -185,7 +216,58 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: _passwordController,
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
-                    onSubmitted: _login,
+                    onSubmitted: _register,
+                  ),
+                  const SizedBox(height: 16.0),
+                  InputText(
+                    AppLocalizations.of(context)!.confirm_password,
+                    focusNode: _focusNodeConfirmPassword,
+                    validator: _passwordValidator,
+                    controller: _confirmPasswordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    onSubmitted: _register,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Container(
+                    // padding: const EdgeInsets.symmetric(horizontal: 50),
+                    decoration: BoxDecoration(
+                        color: Colors.lightBlue[50],
+                        borderRadius: BorderRadius.circular(30.0),
+                        border: Border.all(
+                          color: const Color(0xFFDEE2E3),
+                        )
+                    ),
+                    child: DropdownButton<Role?>(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      style: const TextStyle(color: Colors.black),
+                      borderRadius: BorderRadius.circular(30.0),
+                      dropdownColor: Colors.white,
+                      value: _role,
+                      underline: Container(),
+                      hint: Text(
+                        AppLocalizations.of(context)!.role,
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      icon: const Icon(Icons.arrow_drop_down),
+                      isExpanded: true,
+                      // items: items,
+                      items: [
+                        DropdownMenuItem<Role?>(
+                          value: Role.family,
+                          child: Text(AppLocalizations.of(context)!.family),
+                        ),
+                        DropdownMenuItem<Role?>(
+                          value: Role.therapist,
+                          child: Text(AppLocalizations.of(context)!.therapist),
+                        ),
+                      ],
+                      onChanged: (Role? newValue) {
+                        setState(() {
+                          _role = newValue ?? Role.family;
+                        });
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -209,11 +291,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           Theme.of(context).colorScheme.inversePrimary
                         ),
                       ),
-                      onPressed: _login,
+                      onPressed: _register,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 13),
                         child: Text(
-                          AppLocalizations.of(context)!.email,
+                          AppLocalizations.of(context)!.register,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.black
@@ -225,7 +307,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-          ]
+          ],
         ),
       ),
     );

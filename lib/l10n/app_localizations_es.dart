@@ -39,6 +39,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get password => 'Contraseña';
 
   @override
+  String get confirm_password => 'confirmación de contraseña';
+
+  @override
   String get name => 'Nombre';
 
   @override
@@ -46,6 +49,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get patients => 'Patients';
+
+  @override
+  String get family => 'Family';
+
+  @override
+  String get therapist => 'Therapist';
+
+  @override
+  String get role => 'Rol';
 
   @override
   String get auth_invalid_credentials => 'Correo o contraseña incorrectos.';
@@ -66,6 +78,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String auth_password_min_length(Object length) {
     return 'La contraseña debe tener al menos $length caracteres.';
   }
+
+  @override
+  String get auth_password_mismatch => 'La confirmación de la contraseña no coincide.';
 
   @override
   String get auth_name_required => 'Por favor, introduzca su nombre.';

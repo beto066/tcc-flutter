@@ -157,6 +157,12 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get password;
 
+  /// No description provided for @confirm_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirm_password;
+
   /// No description provided for @name.
   ///
   /// In en, this message translates to:
@@ -174,6 +180,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Patients'**
   String get patients;
+
+  /// No description provided for @family.
+  ///
+  /// In en, this message translates to:
+  /// **'Familia'**
+  String get family;
+
+  /// No description provided for @therapist.
+  ///
+  /// In en, this message translates to:
+  /// **'Terapeuta'**
+  String get therapist;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
 
   /// No description provided for @auth_invalid_credentials.
   ///
@@ -210,6 +234,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password must be at least {length} characters.'**
   String auth_password_min_length(Object length);
+
+  /// No description provided for @auth_password_mismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Password confirmation does not match.'**
+  String get auth_password_mismatch;
 
   /// No description provided for @auth_name_required.
   ///

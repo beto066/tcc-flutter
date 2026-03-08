@@ -173,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 13),
                         child: Text(
-                          AppLocalizations.of(context)!.email,
+                          AppLocalizations.of(context)!.login,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.black

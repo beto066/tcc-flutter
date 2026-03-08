@@ -1,5 +1,6 @@
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tccflutter/models/enums/role.dart';
 import 'package:tccflutter/models/user.dart';
 import 'package:tccflutter/util/api_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,7 +18,26 @@ class AuthService {
   }
 
   Future<String?> login(String email, String password) async {
-    var response = await ApiService().post('/auth', data: {'email': email, 'password': password});
+    var response = await ApiService().post('/auth', data: {
+      'email': email,
+      'password': password
+    });
+
+    return response.headers['authorization'];
+  }
+
+  Future<String?> register({
+    required String name,
+    required String email,
+    required String password,
+    required Role role,
+  }) async {
+    var response = await ApiService().post('/auth/register', data: {
+      'name': name,
+      'email': email,
+      'password': password,
+      'type': role.id
+    });
 
     return response.headers['authorization'];
   }

@@ -140,7 +140,8 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
               ],
             )
           ),
-        )
+        ),
+        SizedBox(width: contextWidth, height: contextHeight * 0.01),
       ],
     );
   }

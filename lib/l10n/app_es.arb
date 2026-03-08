@@ -6,22 +6,37 @@
   "patient_details": "Datos del paciente",
   "note_table_screen": "Nueva anotación en la tabla",
   "login": "Login",
+  "register": "Registro",
   "email": "Correo",
   "password": "Contraseña",
+  "name": "Nombre",
   "patient": "Paciente",
   "patients": "Patients",
-  "auth_invalid_credentials": "Correo o contraseña incorrectos",
-  "unexpected_error": "Ocurrió un error inesperado",
-  "auth_email_required": "Por favor, ingrese su correo",
-  "auth_invalid_email": "Por favor, ingrese un correo válido",
-  "auth_password_required": "Por favor, ingrese su contraseña",
-  "auth_password_min_length": "La contraseña debe tener al menos {length} caracteres",
+  "auth_invalid_credentials": "Correo o contraseña incorrectos.",
+  "unexpected_error": "Ocurrió un error inesperado.",
+  "auth_email_required": "Por favor, ingrese su correo.",
+  "auth_invalid_email": "Por favor, ingrese un correo válido.",
+  "auth_password_required": "Por favor, ingrese su contraseña.",
+  "auth_password_min_length": "La contraseña debe tener al menos {length} caracteres.",
+  "auth_name_required": "Por favor, introduzca su nombre.",
+  "auth_name_min_length": "El nombre debe tener al menos {length} caracteres.",
+  "auth_name_max_length": "El nombre debe tener menos de {length} caracteres.",
   "weekly_notes": "Anotaciones de la semana",
   "notes_quantity": "Cantidad de anotaciones",
 
   "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
 
   "@auth_password_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  },
+  "@auth_name_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  },
+  "@auth_name_max_length": {
     "placeholders": {
       "length": {}
     }

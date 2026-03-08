@@ -6,24 +6,28 @@ import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/stores/auth_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginPageState();
+    return _RegisterPageState();
   }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final minLengthPassword = 6;
+  final minNamePassword = 4;
+  final maxNamePassword = 30;
 
   bool isDisabled = false;
   String? message;
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeEmail = FocusNode();
   final FocusNode _focusNodePassword = FocusNode();
 
@@ -34,6 +38,9 @@ class _LoginPageState extends State<LoginPage> {
 
     _focusNodePassword.removeListener(() {});
     _focusNodePassword.dispose();
+
+    _focusNodeName.removeListener(() {});
+    _focusNodeName.dispose();
 
     super.dispose();
   }
@@ -68,8 +75,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _redirectToRegister() {
-    Navigator.of(context).popAndPushNamed('Register');
+  void _redirectToLogin() {
+    Navigator.of(context).popAndPushNamed('Login');
   }
 
   String? _emailValidator(String? value) {
@@ -85,10 +92,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String? _passwordValidator(String? value) {
-    if (message != null && message!.isNotEmpty) {
-      return message;
-    }
-
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(context)!.auth_password_required;
     }
@@ -100,10 +103,38 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  String? _nameValidator(String? value) {
+    if (message != null && message!.isNotEmpty) {
+      return message;
+    }
+
+    if (value == null || value.isEmpty) {
+      return AppLocalizations.of(context)!.auth_name_required;
+    }
+
+    if (value.length < minNamePassword) {
+      return AppLocalizations.of(context)!.auth_name_min_length(minNamePassword);
+    }
+
+    if (value.length < maxNamePassword) {
+      return AppLocalizations.of(context)!.auth_name_max_length(maxNamePassword);
+    }
+
+    return null;
+  }
+
+  String? _typeValidator(int? value) {
+    if (value != 1 && value != 2) {
+      return AppLocalizations.of(context)!.unexpected_error;
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     var contextWidth = MediaQuery.of(context).size.width;
-    var logoWidth = contextWidth * 0.8;
+    var logoWidth = MediaQuery.of(context).size.width * 0.8;
     var containerLogoHeight = MediaQuery.of(context).size.height * 0.2;
 
     return Container(
@@ -130,6 +161,15 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   InputText(
+                    AppLocalizations.of(context)!.name,
+                    focusNode: _focusNodeEmail,
+                    validator: _emailValidator,
+                    controller: _nameController,
+                    keyboardType: TextInputType.emailAddress,
+                    onSubmitted: _login,
+                  ),
+                  const SizedBox(height: 16.0),
+                  InputText(
                     AppLocalizations.of(context)!.email,
                     focusNode: _focusNodeEmail,
                     validator: _emailValidator,
@@ -153,9 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                       style: const ButtonStyle(
                         alignment: Alignment.centerLeft,
                       ),
-                      onPressed: _redirectToRegister,
+                      onPressed: _redirectToLogin,
                       child: Text(
-                        AppLocalizations.of(context)!.register,
+                        AppLocalizations.of(context)!.login,
                         textAlign: TextAlign.start,
                       ),
                     ),

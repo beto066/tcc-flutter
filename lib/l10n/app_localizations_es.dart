@@ -30,10 +30,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get login => 'Login';
 
   @override
+  String get register => 'Registro';
+
+  @override
   String get email => 'Correo';
 
   @override
   String get password => 'Contraseña';
+
+  @override
+  String get name => 'Nombre';
 
   @override
   String get patient => 'Paciente';
@@ -42,23 +48,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get patients => 'Patients';
 
   @override
-  String get auth_invalid_credentials => 'Correo o contraseña incorrectos';
+  String get auth_invalid_credentials => 'Correo o contraseña incorrectos.';
 
   @override
-  String get unexpected_error => 'Ocurrió un error inesperado';
+  String get unexpected_error => 'Ocurrió un error inesperado.';
 
   @override
-  String get auth_email_required => 'Por favor, ingrese su correo';
+  String get auth_email_required => 'Por favor, ingrese su correo.';
 
   @override
-  String get auth_invalid_email => 'Por favor, ingrese un correo válido';
+  String get auth_invalid_email => 'Por favor, ingrese un correo válido.';
 
   @override
-  String get auth_password_required => 'Por favor, ingrese su contraseña';
+  String get auth_password_required => 'Por favor, ingrese su contraseña.';
 
   @override
   String auth_password_min_length(Object length) {
-    return 'La contraseña debe tener al menos $length caracteres';
+    return 'La contraseña debe tener al menos $length caracteres.';
+  }
+
+  @override
+  String get auth_name_required => 'Por favor, introduzca su nombre.';
+
+  @override
+  String auth_name_min_length(Object length) {
+    return 'El nombre debe tener al menos $length caracteres.';
+  }
+
+  @override
+  String auth_name_max_length(Object length) {
+    return 'El nombre debe tener menos de $length caracteres.';
   }
 
   @override

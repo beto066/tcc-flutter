@@ -6,6 +6,7 @@ import 'package:tccflutter/pages/login_page.dart';
 import 'package:tccflutter/pages/note_pad_page.dart';
 import 'package:tccflutter/pages/note_table_page.dart';
 import 'package:tccflutter/pages/patients_page.dart';
+import 'package:tccflutter/pages/register_page.dart';
 import 'package:tccflutter/util/custom_route_observer.dart';
 import 'package:tccflutter/widgets/layouts/main_layout.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -59,6 +60,10 @@ class _MyAppState extends State<MyApp> {
         'Login': (_) => const MainLayout(
           screen: 'login',
           body: LoginPage()
+        ),
+        'Register': (_) => const MainLayout(
+          screen: 'register',
+          body: RegisterPage()
         ),
         'Home': (_) => const MainLayout(
           screen: 'home',

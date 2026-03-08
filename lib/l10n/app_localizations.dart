@@ -139,6 +139,12 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get login;
 
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -150,6 +156,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
 
   /// No description provided for @patient.
   ///
@@ -166,38 +178,56 @@ abstract class AppLocalizations {
   /// No description provided for @auth_invalid_credentials.
   ///
   /// In en, this message translates to:
-  /// **'Incorrect email or password'**
+  /// **'Incorrect email or password.'**
   String get auth_invalid_credentials;
 
   /// No description provided for @unexpected_error.
   ///
   /// In en, this message translates to:
-  /// **'An unexpected error occurred'**
+  /// **'An unexpected error occurred.'**
   String get unexpected_error;
 
   /// No description provided for @auth_email_required.
   ///
   /// In en, this message translates to:
-  /// **'Please enter your email'**
+  /// **'Please enter your email.'**
   String get auth_email_required;
 
   /// No description provided for @auth_invalid_email.
   ///
   /// In en, this message translates to:
-  /// **'Please enter a valid email'**
+  /// **'Please enter a valid email.'**
   String get auth_invalid_email;
 
   /// No description provided for @auth_password_required.
   ///
   /// In en, this message translates to:
-  /// **'Please enter your password'**
+  /// **'Please enter your password.'**
   String get auth_password_required;
 
   /// No description provided for @auth_password_min_length.
   ///
   /// In en, this message translates to:
-  /// **'Password must be at least {length} characters'**
+  /// **'Password must be at least {length} characters.'**
   String auth_password_min_length(Object length);
+
+  /// No description provided for @auth_name_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name.'**
+  String get auth_name_required;
+
+  /// No description provided for @auth_name_min_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least {length} characters.'**
+  String auth_name_min_length(Object length);
+
+  /// No description provided for @auth_name_max_length.
+  ///
+  /// In en, this message translates to:
+  /// **'The name must be less than {length} characters.'**
+  String auth_name_max_length(Object length);
 
   /// No description provided for @weekly_notes.
   ///

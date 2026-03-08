@@ -6,22 +6,37 @@
   "patient_details": "Patient details",
   "note_table_screen": "New annotation in table",
   "login": "Login",
+  "register": "Register",
   "email": "Email",
   "password": "Password",
+  "name": "Name",
   "patient": "Patient",
   "patients": "Patients",
-  "auth_invalid_credentials": "Incorrect email or password",
-  "unexpected_error": "An unexpected error occurred",
-  "auth_email_required": "Please enter your email",
-  "auth_invalid_email": "Please enter a valid email",
-  "auth_password_required": "Please enter your password",
-  "auth_password_min_length": "Password must be at least {length} characters",
+  "auth_invalid_credentials": "Incorrect email or password.",
+  "unexpected_error": "An unexpected error occurred.",
+  "auth_email_required": "Please enter your email.",
+  "auth_invalid_email": "Please enter a valid email.",
+  "auth_password_required": "Please enter your password.",
+  "auth_password_min_length": "Password must be at least {length} characters.",
+  "auth_name_required": "Please enter your name.",
+  "auth_name_min_length": "Name must be at least {length} characters.", 
+  "auth_name_max_length": "The name must be less than {length} characters.", 
   "weekly_notes": "Notes this week",
   "notes_quantity": "Number of notes",
 
   "patients_screen_description": "Select a patient to view or add notes.",
 
   "@auth_password_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  },
+  "@auth_name_min_length": {
+    "placeholders": {
+      "length": {}
+    }
+  },
+  "@auth_name_max_length": {
     "placeholders": {
       "length": {}
     }

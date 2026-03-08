@@ -38,6 +38,8 @@ class _MainLayoutState extends State<MainLayout> {
     switch (screen) {
       case 'login':
         return AppLocalizations.of(context)!.login;
+      case 'register':
+        return AppLocalizations.of(context)!.register;
       case 'home':
         return AppLocalizations.of(context)!.home;
       case 'patients':

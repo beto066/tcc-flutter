@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tccflutter/exceptions/bad_request_exception.dart';
 import 'package:tccflutter/exceptions/unauthorized_exception.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
-import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/models/enums/role.dart';
-import 'package:tccflutter/models/enums/training_result.dart';
 import 'package:tccflutter/stores/auth_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 

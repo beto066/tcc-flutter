@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:tccflutter/exceptions/bad_request_exception.dart';
 import 'package:tccflutter/exceptions/internal_server_error_exception.dart';
 import 'package:tccflutter/exceptions/unauthorized_exception.dart';
-import 'package:tccflutter/services/auth_service.dart';
 import 'dart:convert';
 
 import 'package:tccflutter/stores/auth_store.dart';
@@ -12,7 +11,6 @@ import 'package:tccflutter/stores/auth_store.dart';
 
 class ApiService {
   String? _baseUrl;
-  String? _token;
 
   static final ApiService _instance = ApiService._internal();
 
@@ -105,7 +103,7 @@ class ApiService {
   }
 
   Future<String?> get token async {
-    return _token ??= await AuthService().getToken();
+    return await AuthStore().token;
   }
 
   Future<Map<String, String>> get defaultHeaders async {

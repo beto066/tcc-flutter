@@ -29,9 +29,9 @@ class _NotePadPageState extends State<NotePadPage> {
   void _setBodyInNote() {
     setState(() {
       if (indexSelectedValue == null) {
-        _note.body!.add(_bodyController.value.text ?? '');
+        _note.body!.add(_bodyController.value.text);
       } else {
-        _note.body![indexSelectedValue!] = _bodyController.value.text ?? '';
+        _note.body![indexSelectedValue!] = _bodyController.value.text;
         indexSelectedValue = null;
       }
 

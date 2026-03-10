@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';

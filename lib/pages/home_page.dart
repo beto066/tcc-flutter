@@ -22,6 +22,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Map<String, double>? statistics;
+  double? countNotes;
+  double? countPatients;
+  double? countWeeklyNotes;
 
   String? statisticsErrorMessage;
   String? patientsErrorMessage;
@@ -34,23 +37,21 @@ class _HomePageState extends State<HomePage> {
     try {
       statisticsErrorMessage = null;
 
-      Map<String, double> statistics = {};
-
-      if (NoteStore().statistics == null) {
+      if (statistics == null) {
         statistics = await NoteStore().fetchStatistics();
       } else {
         statistics = NoteStore().statistics ?? {};
       }
 
       var average = double.tryParse(
-        statistics.remove('average')?.toStringAsFixed(2) ?? ''
+        statistics!.remove('average')?.toStringAsFixed(2) ?? ''
       );
 
       if (average != null && Navigator.of(context).mounted) {
-        statistics[AppLocalizations.of(context)!.average] = average;
+        statistics![AppLocalizations.of(context)!.average] = average;
       }
 
-      return statistics;
+      return statistics!;
     } on UnauthorizedException {
       await _logout();
       return {};
@@ -61,24 +62,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<double?> _fetchCountPatients() async {
-    if (PatientStore().countPatients != null) {
-      return PatientStore().countPatients;
+    if (countPatients != null) {
+      return countPatients;
     }
 
     return PatientStore().fetchCountPatients();
   }
 
   Future<double?> _fetchCountNotes() async {
-    if (NoteStore().countNotes != null) {
-      return NoteStore().countNotes;
+    if (countNotes != null) {
+      return countNotes;
     }
 
     return NoteStore().fetchCountNotes();
   }
 
   Future<double?> _fetchWeeklyCountNotes() async {
-    if (NoteStore().countWeeklyNotes != null) {
-      return NoteStore().countWeeklyNotes;
+    if (countWeeklyNotes != null) {
+      return countWeeklyNotes;
     }
 
     return NoteStore().fetchCountWeeklyNotes();
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     final navigator = Navigator.of(context);
     await AuthStore().logout();
 
-    if (!context.mounted) return;
+    if (!Navigator.of(context).mounted) return;
 
     await navigator.popAndPushNamed('Login');
   }

@@ -67,7 +67,7 @@ class AuthService {
     if (user != null) {
       return user;
     }
-    
+
     var token = await getToken();
     var secret = dotenv.env['JWT_KEY'] ?? '';
 

@@ -22,7 +22,7 @@ class AuthStore {
       throw UnexpectedException('Ocorreu um erro inesperado');
     }
 
-    AuthService().saveToken(_token!);
+    await AuthService().saveToken(_token!);
     _loggedUser = await AuthService().getLoggedUser();
   }
 

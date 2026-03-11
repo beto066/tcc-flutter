@@ -6,7 +6,7 @@ import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/models/patient.dart';
 
 class NoteTable extends Note {
-  late final List<NoteTableValue> values;
+  List<NoteTableValue>? values;
 
   NoteTable() {
     values = [];
@@ -41,8 +41,8 @@ class NoteTable extends Note {
       return true;
     }
 
-    final thisResults = values;
-    final otherResults = other.values;
+    final thisResults = values ?? [];
+    final otherResults = other.values ?? [];
 
     if (thisResults.length != otherResults.length) {
       return true;
@@ -63,8 +63,12 @@ class NoteTable extends Note {
   String? getSubTitle() {
     var subTitle = '';
 
-    for (int i = 0; i < 3 && (values.isNotEmpty) && i < values.length; i++) {
-      subTitle += '|${values[i].value ?? ''}| ';
+    for (
+      int i = 0;
+      i < 3 && (values != null && values!.isNotEmpty) && i < values!.length;
+      i++
+    ) {
+      subTitle += '|${values?[i].value ?? ''}| ';
     }
 
     return subTitle;
@@ -75,7 +79,7 @@ class NoteTable extends Note {
     var cloned = NoteTable();
     super.clone(clone: cloned);
 
-    cloned.values = values.map((value) => value).toList();
+    cloned.values = values?.map((value) => value).toList();
 
     return cloned;
   }

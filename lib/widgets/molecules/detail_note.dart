@@ -106,8 +106,8 @@ class _DetailNoteState extends State<DetailNote> {
             onSelect: (value) {
               var note = widget.note as NoteTable;
 
-              if (listIndex != null) {
-                note.values[listIndex] = value;
+              if (listIndex != null && note.values != null) {
+                note.values![listIndex] = value;
 
                 if (Navigator.of(context).mounted) {
                   Navigator.pop(context);
@@ -258,11 +258,11 @@ class _DetailNoteState extends State<DetailNote> {
               } else if (widget.note is NoteTable) {
                 var note = widget.note as NoteTable;
 
-                if (note.values.isEmpty) {
+                if (note.values == null || note.values!.isEmpty) {
                   return const Text('Nenhum valor nessa anotação');
                 }
 
-                final children = note.values.asMap().entries.map((entry) {
+                final children = note.values?.asMap().entries.map((entry) {
                   var value = entry.value;
                   var index = entry.key;
 
@@ -284,7 +284,7 @@ class _DetailNoteState extends State<DetailNote> {
                 }).toList();
 
                 if (isAuthor) {
-                  children.add(
+                  children?.add(
                     SizedBox(
                       width: 100,
                       child: ElevatedButton.icon(
@@ -304,7 +304,7 @@ class _DetailNoteState extends State<DetailNote> {
                     child: Wrap(
                       spacing: 10,
                       runSpacing: 10,
-                      children: children,
+                      children: children ?? [],
                     ),
                   ),
                 );

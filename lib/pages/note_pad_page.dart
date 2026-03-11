@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:tccflutter/models/note_pad.dart';
 import 'package:tccflutter/models/patient.dart';
+import 'package:tccflutter/stores/note_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
 class NotePadPage extends StatefulWidget {
@@ -54,7 +55,14 @@ class _NotePadPageState extends State<NotePadPage> {
   }
 
   Future<void> _onSave() async {
-    return;
+    _note.patient = widget.patient;
+    await NoteStore().addNote(_note);
+
+    if (Navigator.of(context).mounted) {
+      Navigator.of(context).popAndPushNamed('Patient', arguments: {
+        'patient': widget.patient
+      });
+    }
   }
 
   @override

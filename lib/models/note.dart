@@ -10,11 +10,11 @@ class Note {
   int? id;
   String? title;
   int? authorId;
-  late final Patient? patient;
-  late final Program? program;
-  late final NoteType? type;
-  late final DifficultyLevel? level;                          
-  late final DateTime? createdAt;
+  Patient? patient;
+  Program? program;
+  NoteType? type;
+  DifficultyLevel? level;
+  DateTime? createdAt;
   bool? visibilityForFamily;
 
   Note();

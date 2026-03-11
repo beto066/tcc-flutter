@@ -50,6 +50,41 @@ class NoteService {
     }).toList();
   }
 
+  Future<void> addNote(Note note) async {
+    Map<String, dynamic> noteMap = {
+      'patientId': note.patient?.id,
+      'level': 1,
+      'visibilityForFamily': note.visibilityForFamily,
+      'program': 1,
+    };
+    if (note is NoteTable) {
+      Map<String, dynamic> noteMap = {
+        'patientId': note.patient?.id,
+        'level': 1,
+        'visibilityForFamily': note.visibilityForFamily,
+        'program': 1,
+        'values': [],
+      };
+
+      note.values ??= [];
+
+      for (var i = 0; i < note.values!.length; i++) {
+        noteMap['values'] = [];
+        noteMap['values']!.add({
+          'tableId': note.id,
+          'valueId': note.values![i].id,
+          'position': i
+        });
+      }
+      
+      var response = ApiService().post('/notes/tables', data: noteMap);
+    } else if (note is NotePad) {
+      noteMap['body'] = note.body ?? [];
+
+      var response = ApiService().post('/notes/pad', data: noteMap);
+    }
+  }
+
   Future<void> updateNote(Note note) async {
     Map<String, dynamic> noteMap = {
       'body': [],
@@ -63,11 +98,13 @@ class NoteService {
     }
 
     if (note is NoteTable) {
+      note.values ??= [];
+
       noteMap['values'] = [];
-      for (var i = 0; i < note.values.length; i++) {
+      for (var i = 0; i < note.values!.length; i++) {
         noteMap['values']!.add({
           'tableId': note.id,
-          'valueId': note.values[i].id,
+          'valueId': note.values![i].id,
           'position': i
         });
       }

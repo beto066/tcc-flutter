@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/models/patient.dart';
+import 'package:tccflutter/stores/note_store.dart';
 import 'package:tccflutter/widgets/molecules/select_note_table_value.dart';
 import 'package:tccflutter/widgets/organisms/note_table_component.dart';
 
@@ -28,16 +29,16 @@ class _NoteTablePageState extends State<NoteTablePage> {
   }
 
   void _editValue(NoteTableValue value) {
-    if (indexSelectedValue != null) {
-      _note.values[indexSelectedValue!] = value;
+    if (indexSelectedValue != null && _note.values != null) {
+      _note.values![indexSelectedValue!] = value;
       indexSelectedValue = null;
     } else {
-      _note.values.add(value);
+      _note.values?.add(value);
     }
   }
 
   void _removeValue(int index) {
-    _note.values.removeAt(index);
+    _note.values?.removeAt(index);
     indexSelectedValue = null;
   }
 
@@ -48,7 +49,14 @@ class _NoteTablePageState extends State<NoteTablePage> {
   }
 
   Future<void> _onSave() async {
-    return;
+    _note.patient = widget.patient;
+    await NoteStore().addNote(_note);
+
+    if (Navigator.of(context).mounted) {
+      Navigator.of(context).popAndPushNamed('Patient', arguments: {
+        'patient': widget.patient
+      });
+    }
   }
 
   @override
@@ -89,7 +97,7 @@ class _NoteTablePageState extends State<NoteTablePage> {
               child: Stack(
                 children: [
                   NoteTableComponent(
-                    values: _note.values,
+                    values: _note.values ?? [],
                     onEditSelected: _setSelectedValue,
                     onRemoveSelected: _removeValue,
                     indexSelected: indexSelectedValue,

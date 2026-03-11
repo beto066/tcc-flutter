@@ -44,6 +44,10 @@ class NoteStore {
     return countWeeklyNotes;
   }
 
+  Future<void> addNote(Note note) async {
+    await NoteService().addNote(note);
+  }
+
   Future<void> updateNote(Note note) async {
     await NoteService().updateNote(note);
   }

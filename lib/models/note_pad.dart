@@ -5,7 +5,7 @@ import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/patient.dart';
 
 class NotePad extends Note {
-  late final List<String>? body;
+  List<String>? body;
 
   NotePad() {
     body = [];

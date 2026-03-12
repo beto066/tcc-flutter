@@ -24,7 +24,7 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
   var isLoading = true;
   Note? originalNoteExpanded;
   List<dynamic> notes = [];
-  int? expandedIndex;
+  int? expandedId;
 
   @override
   void initState() {
@@ -32,37 +32,41 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
     super.initState();
   }
 
-  Future<List<dynamic>> _fetchNotes() async {
+  Future<List<dynamic>> _fetchNotes({Map<String, dynamic>? queries}) async {
     isLoading = true;
 
-    var fetchedNotes = await NoteStore().fetchNotesByPatient(widget.patient);
+    var fetchedNotes = await NoteStore().fetchNotesByPatient(widget.patient, queries);
     setState(() {
       notes = fetchedNotes;
-      if (expandedIndex == null) {
+      if (expandedId == null) {
         originalNoteExpanded = null;
         return;
       }
-      _setOriginalNote(expandedIndex!);
+      _setOriginalNote(expandedId!);
     });
 
     return notes;
   }
 
-  void _onExpanded(int index) {
-    if (expandedIndex == index) {
-      expandedIndex = null;
+  void _onExpanded(int? id) {
+    if (expandedId == id) {
+      expandedId = null;
       originalNoteExpanded = null;
       return;
     }
-    _setOriginalNote(index);
+    _setOriginalNote(id);
 
-    expandedIndex = index;
+    expandedId = id;
   }
 
-  void _setOriginalNote(int index) {
+  void _setOriginalNote(int? id) {
     setState(() {
-      if (notes[index] is Note) {
-        originalNoteExpanded = notes[index].clone();
+      var expandedNote = notes.firstWhere((note) {
+        return note is Note && note.id == id;
+      });
+
+      if (expandedNote is Note) {
+        originalNoteExpanded = expandedNote.clone();
       }
     });
   }
@@ -105,7 +109,9 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
                     'Abrir filtros de pesquisa',
                     initialHeight: max(contextHeight * 0.06, 50),
                     finalHeight: max(contextHeight * 0.06, 50) + 170,
-                    child: const PatientFormFilter(),
+                    child: PatientFormFilter(onSearch: (queries) {
+                      _fetchNotes(queries: queries);
+                    }),
                   ),
 
                   NoteList(
@@ -113,7 +119,7 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
                     height: contextHeight * 0.75 - 100,
                     onSave: _fetchNotes,
                     onExpand: _onExpanded,
-                    expandedIndex: expandedIndex,
+                    expandedId: expandedId,
                     originalNoteExpanded: originalNoteExpanded,
                   )
                 ],

@@ -22,8 +22,8 @@ class NoteStore {
     return notes;
   }
 
-  Future<List<dynamic>> fetchNotesByPatient(Patient patient) async {
-    var notes = await NoteService().fetchNotesByPatient(patient);
+  Future<List<dynamic>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
+    var notes = await NoteService().fetchNotesByPatient(patient, queries);
     return notes;
   }
 

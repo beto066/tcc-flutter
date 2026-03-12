@@ -76,7 +76,7 @@ class NoteService {
           'position': i
         });
       }
-      
+
       var response = ApiService().post('/notes/tables', data: noteMap);
     } else if (note is NotePad) {
       noteMap['body'] = note.body ?? [];
@@ -124,8 +124,8 @@ class NoteService {
     var response = await ApiService().put('/notes/${note.id}', data: noteMap);
   }
 
-  Future<List<dynamic>> fetchNotesByPatient(Patient patient) async {
-    var response = await ApiService().get('/notes/patient/${patient.id}');
+  Future<List<dynamic>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
+    var response = await ApiService().get('/notes/patient/${patient.id}', queryParams: queries ?? {});
 
     var body = jsonDecode(utf8.decode(response.bodyBytes));
 

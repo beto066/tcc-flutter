@@ -8,15 +8,15 @@ import 'package:tccflutter/widgets/molecules/detail_note.dart';
 class NoteList extends StatelessWidget {
   final List<dynamic> notes;
   final double? height;
-  final int? expandedIndex;
+  final int? expandedId;
   final Map<int, GlobalKey> _keys = {};
   final VoidCallback? onSave;
-  final void Function(int)? onExpand;
+  final void Function(int?)? onExpand;
   final Note? originalNoteExpanded;
 
   final ScrollController _scrollController = ScrollController();
 
-  NoteList({super.key, required this.notes, this.originalNoteExpanded, this.height, this.expandedIndex, this.onSave, this.onExpand});
+  NoteList({super.key, required this.notes, this.originalNoteExpanded, this.height, this.expandedId, this.onSave, this.onExpand});
 
   String _formatTitleLabel(NoteType? type) {
     switch (type) {
@@ -67,12 +67,12 @@ class NoteList extends StatelessWidget {
                   ],
                 ),
                 titleOverflow: TextOverflow.ellipsis,
-                isExpanded: index == expandedIndex,
+                isExpanded: index == expandedId,
                 onExpand: () async {
                   await Future.delayed(const Duration(milliseconds: 300));
                   _scrollToItem(index);
                   if (onExpand != null) {
-                    onExpand!(index);
+                    onExpand!(note.id);
                   }
                 },
                 child: DetailNote(note: note, originalNote: originalNoteExpanded, onSave: onSave),

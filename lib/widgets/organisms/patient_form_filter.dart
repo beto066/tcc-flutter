@@ -5,7 +5,9 @@ import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
 class PatientFormFilter extends StatefulWidget {
-  const PatientFormFilter({super.key});
+  final void Function(Map<String, dynamic>) onSearch;
+
+  const PatientFormFilter({super.key, required this.onSearch});
 
   @override
   State<PatientFormFilter> createState() => _PatientFormFilterState();

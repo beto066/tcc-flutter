@@ -46,6 +46,15 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
     return picked;
   }
 
+  void _onSearch() {
+    widget.onSearch({
+      'title': _textController.value.text,
+      'from': _fromDateTimeFilter?.toIso8601String(),
+      'to': _toDateTimeFilter?.toIso8601String(),
+      'type': _noteTypeFilter,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var contextHeight = MediaQuery.of(context).size.height;
@@ -133,7 +142,9 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
           width: contextWidth * 0.42,
           height: 40,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              _onSearch();
+            },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

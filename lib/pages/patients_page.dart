@@ -17,17 +17,23 @@ class PatientsPage extends StatefulWidget {
 }
 
 class _PatientsPageState extends State<PatientsPage> {
+  List<Patient> patients = [];
+
   Future<List<Patient>> _fetchPatients() async {
-    if (PatientStore().patients == null) {
-      await PatientStore().fetchPatients();
+    if (patients.isEmpty) {
+      patients = await PatientStore().fetchPatients();
     }
-    return PatientStore().patients!;
+    return patients;
   }
 
   void _redirectToPatient(Patient patient) {
     Navigator.of(context).pushNamed('Patient', arguments: {
       'patient': patient
     });
+  }
+
+  void _redirectToNewPatient() {
+    Navigator.of(context).pushNamed('NewPatient');
   }
 
   void _showSurveyDialog(BuildContext context, Patient patient) {
@@ -64,8 +70,19 @@ class _PatientsPageState extends State<PatientsPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
-                  itemCount: snapshot.data!.length,
+                  itemCount: snapshot.data!.length + 1,
                   itemBuilder: (context, index) {
+                    if (index == snapshot.data!.length) {
+                      return CardListItem(
+                        AppLocalizations.of(context)!.newPatient,
+                        initialHeight: 50,
+                        textAlign: TextAlign.left,
+                        leading: const Icon(Icons.add),
+                        onTap: () {
+                          _redirectToNewPatient();
+                        },
+                      );
+                    }
                     var patient = snapshot.data![index];
 
                     return CardListItem(

@@ -144,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                     validator: _passwordValidator,
                     controller: _passwordController,
                     obscureText: true,
+                    maxLines: 1,
                     keyboardType: TextInputType.visiblePassword,
                     onSubmitted: _login,
                   ),

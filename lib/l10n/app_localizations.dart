@@ -181,6 +181,12 @@ abstract class AppLocalizations {
   /// **'Patients'**
   String get patients;
 
+  /// No description provided for @newPatient.
+  ///
+  /// In en, this message translates to:
+  /// **'New Patient'**
+  String get newPatient;
+
   /// No description provided for @family.
   ///
   /// In en, this message translates to:

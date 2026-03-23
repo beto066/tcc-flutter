@@ -51,6 +51,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patients => 'Patients';
 
   @override
+  String get newPatient => 'New Patient';
+
+  @override
   String get family => 'Familia';
 
   @override

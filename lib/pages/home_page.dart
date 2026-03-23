@@ -124,6 +124,14 @@ class _HomePageState extends State<HomePage> {
             future: _fetchStatistics(),
             builder: (context, snapshot) {
               if (snapshot.hasData && statisticsErrorMessage == null) {
+                bool allZero = snapshot.data!.values.every((v) => v == 0);
+
+                if (allZero) {
+                  return const Center(
+                    child: Text("Sem dados disponíveis"),
+                  );
+                }
+
                 return Chart(
                   inversePrimary: inversePrimary,
                   statistics: snapshot.data!

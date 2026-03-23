@@ -13,6 +13,7 @@
   "name": "Nome",
   "patient": "Paciente",
   "patients": "Pacientes",
+  "newPatient": "Novo Paciente",
   "family": "Família",
   "therapist": "Terapeuta",
   "role": "Função",

@@ -3,6 +3,7 @@ import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/pages/detail_patient_page.dart';
 import 'package:tccflutter/pages/home_page.dart';
 import 'package:tccflutter/pages/login_page.dart';
+import 'package:tccflutter/pages/new_patient_page.dart';
 import 'package:tccflutter/pages/note_pad_page.dart';
 import 'package:tccflutter/pages/note_table_page.dart';
 import 'package:tccflutter/pages/patients_page.dart';
@@ -86,6 +87,10 @@ class _MyAppState extends State<MyApp> {
             body: DetailPatientPage(arguments['patient']!)
           );
         },
+        'NewPatient': (_) => const MainLayout(
+          screen: 'newPatient',
+          body: NewPatientPage()
+        ),
         'NoteTable': (context) {
           var arguments = ModalRoute
             .of(context)!

@@ -20,19 +20,24 @@ class ApiService {
     return _instance;
   }
 
-  Future<http.Response> get(String endpoint, {Map<String, String> headers = const {}, Map<String, dynamic> queryParams = const {}}) async {
+  Future<http.Response> get(String endpoint, {
+    Map<String, String> headers = const {},
+    Map<String, dynamic> queryParams = const {}
+  }) async {
   String stringQueryParams = '';
     if (queryParams.isNotEmpty) {
       stringQueryParams = '?';
       var isFirst = true;
 
       queryParams.forEach((key, value) {
-        if (!isFirst) {
-          stringQueryParams += '&';
-        }
-        isFirst = false;
+        if (value != null) {
+          if (!isFirst) {
+            stringQueryParams += '&';
+          }
+          isFirst = false;
 
-        stringQueryParams += '$key=$value';
+          stringQueryParams += '$key=$value';
+        }
       });
     }
 

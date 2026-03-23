@@ -67,7 +67,7 @@ class NoteList extends StatelessWidget {
                   ],
                 ),
                 titleOverflow: TextOverflow.ellipsis,
-                isExpanded: index == expandedId,
+                isExpanded: notes[index].id == expandedId,
                 onExpand: () async {
                   await Future.delayed(const Duration(milliseconds: 300));
                   _scrollToItem(index);

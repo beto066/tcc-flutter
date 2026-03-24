@@ -10,6 +10,7 @@
   "email": "Correo",
   "password": "Contraseña",
   "confirm_password": "confirmación de contraseña",
+  "birth": "Nacimiento",
   "name": "Nombre",
   "patient": "Paciente",
   "patients": "Patients",
@@ -17,8 +18,14 @@
   "family": "Family",
   "therapist": "Therapist",
   "role": "Rol",
-  "auth_invalid_credentials": "Correo o contraseña incorrectos.",
+  "invalid_date_format": "Formato de fecha incorrecto {format}",
+  "invalid_date": "Fecha no válida",
+  "date_min_value": "La fecha debe ser posterior a {min_value}",
+  "date_is_past": "La fecha no puede ser futura.",
+  "birth_required": "Se requiere fecha de nacimiento",
   "unexpected_error": "Ocurrió un error inesperado.",
+
+  "auth_invalid_credentials": "Correo o contraseña incorrectos.",
   "auth_email_required": "Por favor, ingrese su correo.",
   "auth_invalid_email": "Por favor, ingrese un correo válido.",
   "auth_password_required": "Por favor, ingrese su contraseña.",
@@ -27,10 +34,12 @@
   "auth_name_required": "Por favor, introduzca su nombre.",
   "auth_name_min_length": "El nombre debe tener al menos {length} caracteres.",
   "auth_name_max_length": "El nombre debe tener menos de {length} caracteres.",
+  
   "weekly_notes": "Anotaciones de la semana",
   "notes_quantity": "Cantidad de anotaciones",
 
   "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
+  "patients_treatment_started_at": "El tratamiento comenzó en:",
 
   "@auth_password_min_length": {
     "placeholders": {
@@ -45,6 +54,16 @@
   "@auth_name_max_length": {
     "placeholders": {
       "length": {}
+    }
+  },
+  "@invalid_date_format": {
+    "placeholders": {
+      "format": {}
+    }
+  },
+  "@date_min_value": {
+    "placeholders": {
+      "min_value": {}
     }
   }
 }

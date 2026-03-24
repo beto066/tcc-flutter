@@ -42,6 +42,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_password => 'Confirm password';
 
   @override
+  String get birth => 'Birth';
+
+  @override
   String get name => 'Name';
 
   @override
@@ -63,10 +66,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get role => 'Role';
 
   @override
-  String get auth_invalid_credentials => 'Incorrect email or password.';
+  String invalid_date_format(Object format) {
+    return 'Invalid date format $format';
+  }
+
+  @override
+  String get invalid_date => 'Invalid date';
+
+  @override
+  String date_min_value(Object min_value) {
+    return 'The date should be after $min_value';
+  }
+
+  @override
+  String get date_is_past => 'The date cannot be in the future.';
+
+  @override
+  String get birth_required => 'Birthday is required';
 
   @override
   String get unexpected_error => 'An unexpected error occurred.';
+
+  @override
+  String get auth_invalid_credentials => 'Incorrect email or password.';
 
   @override
   String get auth_email_required => 'Please enter your email.';
@@ -106,4 +128,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get patients_screen_description => 'Select a patient to view or add notes.';
+
+  @override
+  String get patients_treatment_started_at => 'Treatment started at:';
 }

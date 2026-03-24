@@ -34,7 +34,7 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
+      firstDate: DateTime(1934),
       lastDate: DateTime.now(),
     );
     if (picked != null) {

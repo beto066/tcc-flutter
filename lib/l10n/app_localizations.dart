@@ -163,6 +163,12 @@ abstract class AppLocalizations {
   /// **'Confirm password'**
   String get confirm_password;
 
+  /// No description provided for @birth.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth'**
+  String get birth;
+
   /// No description provided for @name.
   ///
   /// In en, this message translates to:
@@ -205,17 +211,47 @@ abstract class AppLocalizations {
   /// **'Role'**
   String get role;
 
-  /// No description provided for @auth_invalid_credentials.
+  /// No description provided for @invalid_date_format.
   ///
   /// In en, this message translates to:
-  /// **'Incorrect email or password.'**
-  String get auth_invalid_credentials;
+  /// **'Invalid date format {format}'**
+  String invalid_date_format(Object format);
+
+  /// No description provided for @invalid_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date'**
+  String get invalid_date;
+
+  /// No description provided for @date_min_value.
+  ///
+  /// In en, this message translates to:
+  /// **'The date should be after {min_value}'**
+  String date_min_value(Object min_value);
+
+  /// No description provided for @date_is_past.
+  ///
+  /// In en, this message translates to:
+  /// **'The date cannot be in the future.'**
+  String get date_is_past;
+
+  /// No description provided for @birth_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday is required'**
+  String get birth_required;
 
   /// No description provided for @unexpected_error.
   ///
   /// In en, this message translates to:
   /// **'An unexpected error occurred.'**
   String get unexpected_error;
+
+  /// No description provided for @auth_invalid_credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get auth_invalid_credentials;
 
   /// No description provided for @auth_email_required.
   ///
@@ -282,6 +318,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a patient to view or add notes.'**
   String get patients_screen_description;
+
+  /// No description provided for @patients_treatment_started_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment started at:'**
+  String get patients_treatment_started_at;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

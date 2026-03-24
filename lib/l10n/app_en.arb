@@ -10,6 +10,7 @@
   "email": "Email",
   "password": "Password",
   "confirm_password": "Confirm password",
+  "birth": "Birth",
   "name": "Name",
   "patient": "Patient",
   "patients": "Patients",
@@ -17,8 +18,14 @@
   "family": "Familia",
   "therapist": "Terapeuta",
   "role": "Role",
-  "auth_invalid_credentials": "Incorrect email or password.",
+  "invalid_date_format": "Invalid date format {format}",
+  "invalid_date": "Invalid date",
+  "date_min_value": "The date should be after {min_value}",
+  "date_is_past": "The date cannot be in the future.",
+  "birth_required": "Birthday is required",
   "unexpected_error": "An unexpected error occurred.",
+
+  "auth_invalid_credentials": "Incorrect email or password.",
   "auth_email_required": "Please enter your email.",
   "auth_invalid_email": "Please enter a valid email.",
   "auth_password_required": "Please enter your password.",
@@ -26,11 +33,13 @@
   "auth_password_mismatch": "Password confirmation does not match.",
   "auth_name_required": "Please enter your name.",
   "auth_name_min_length": "Name must be at least {length} characters.", 
-  "auth_name_max_length": "The name must be less than {length} characters.", 
+  "auth_name_max_length": "The name must be less than {length} characters.",
+
   "weekly_notes": "Notes this week",
   "notes_quantity": "Number of notes",
 
   "patients_screen_description": "Select a patient to view or add notes.",
+  "patients_treatment_started_at": "Treatment started at:",
 
   "@auth_password_min_length": {
     "placeholders": {
@@ -45,6 +54,16 @@
   "@auth_name_max_length": {
     "placeholders": {
       "length": {}
+    }
+  },
+  "@invalid_date_format": {
+    "placeholders": {
+      "format": {}
+    }
+  },
+  "@date_min_value": {
+    "placeholders": {
+      "min_value": {}
     }
   }
 }

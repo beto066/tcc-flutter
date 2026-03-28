@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tccflutter/exceptions/invalid_format_exception.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/patient.dart';
+import 'package:tccflutter/stores/patient_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 import 'package:tccflutter/widgets/atoms/person_image.dart';
 
@@ -15,6 +21,7 @@ class NewPatientPage extends StatefulWidget {
 class NewPatientPageState extends State<NewPatientPage> {
   DateTime? _birthDateTimeFilter;
   DateTime? _treatmentStartedAtDateTimeFilter;
+  File? _selectedFile;
 
   String? message;
   final minNameLength = 4;
@@ -36,7 +43,7 @@ class NewPatientPageState extends State<NewPatientPage> {
   Future<DateTime?> _setTreatmentStartedAtFilter(BuildContext context) async {
     _treatmentStartedAtDateTimeFilter = await _selectDate(
       context,
-      _birthDateTimeController
+      _treatmentStartedAtDateTimeController,
     );
 
     return _treatmentStartedAtDateTimeFilter;
@@ -92,22 +99,8 @@ class NewPatientPageState extends State<NewPatientPage> {
       return AppLocalizations.of(context)!.birth_required;
     }
 
-    final regex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-    if (!regex.hasMatch(value)) {
-      return AppLocalizations.of(context)!.invalid_date_format('(dd/MM/yyyy)');
-    }
-
     try {
-      final parts = value.split('/');
-      final day = int.parse(parts[0]);
-      final month = int.parse(parts[1]);
-      final year = int.parse(parts[2]);
-
-      final date = DateTime(year, month, day);
-
-      if (date.day != day || date.month != month || date.year != year) {
-        return AppLocalizations.of(context)!.invalid_date;
-      }
+      final date =_mountDateTimeFromString(value)!;
 
       final minDate = DateTime(minYear, 1, 1);
 
@@ -123,17 +116,94 @@ class NewPatientPageState extends State<NewPatientPage> {
       }
 
       return null;
+    } on InvalidFormatException {
+      return AppLocalizations.of(context)!.invalid_date_format('(dd/MM/yyyy)');
     } catch (e) {
       return AppLocalizations.of(context)!.invalid_date;
     }
   }
 
-  void _onTapImage() {
+  DateTime? _mountDateTimeFromString(String stringDateTime) {
+    if (stringDateTime.isEmpty) return null;
 
+    final regex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
+    if (!regex.hasMatch(stringDateTime)) {
+      throw Error.safeToString(AppLocalizations.of(context)!.invalid_date_format('(dd/MM/yyyy)'));
+    }
+
+    final parts = stringDateTime.split('/');
+    final day = int.parse(parts[0]);
+    final month = int.parse(parts[1]);
+    final year = int.parse(parts[2]);
+
+    var date =DateTime(year, month, day);
+
+    if (date.day != day || date.month != month || date.year != year) {
+      throw Error();
+    }
+
+    return date;
+  }
+
+  void _onTapImage() {
+    if (_selectedFile != null) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: InteractiveViewer(
+                child: ClipRRect(
+                  child: Image.file(_selectedFile!),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _onEditImage() async {
+    final picker = ImagePicker();
+    final file = await picker.pickImage(source: ImageSource.gallery);
+
+    if (file != null) {
+      setState(() {
+        _selectedFile = File(file.path);
+      });
+    }
+  }
+
+  void _redirectToPatient(Patient patient) {
+    Navigator.of(context).pushNamed('Patient', arguments: {
+      'patient': patient
+    });
   }
 
   Future<void> _create() async {
+    var birth = _birthDateTimeFilter ??
+      _mountDateTimeFromString(_birthDateTimeController.value.text);
 
+    if (birth == null) {
+      throw Error();
+    }
+
+    var treatmentStartedAt = _treatmentStartedAtDateTimeFilter ??
+      _mountDateTimeFromString(_treatmentStartedAtDateTimeController.value.text);
+
+    var patient = await PatientStore().createPatient(
+      name: _nameController.value.text,
+      birthDate: birth,
+      treatmentStartedAt: treatmentStartedAt,
+      image: _selectedFile
+    );
+
+    if (Navigator.of(context).mounted) {
+      _redirectToPatient(patient);
+    }
   }
 
   @override
@@ -147,20 +217,24 @@ class NewPatientPageState extends State<NewPatientPage> {
           children: [
             const SizedBox(height: 30.0),
             PersonImage(
+              selectedImage: _selectedFile,
               size: containerLogoHeight,
               border: Border.all(width: 3, color: Colors.grey[800]!),
               onTapImage: _onTapImage,
-              pointionedChild: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey[900]!, width: 1),
-                ),
-                child: Icon(
-                  Icons.edit,
-                  size: containerLogoHeight * 0.20,
-                  color: Colors.grey[900]!,
+              pointionedChild: GestureDetector(
+                onTap: _onEditImage,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey[900]!, width: 1),
+                  ),
+                  child: Icon(
+                    Icons.edit,
+                    size: containerLogoHeight * 0.20,
+                    color: Colors.grey[900]!,
+                  ),
                 ),
               ),
             ),
@@ -209,7 +283,7 @@ class NewPatientPageState extends State<NewPatientPage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 13),
                         child: Text(
-                          AppLocalizations.of(context)!.register,
+                          AppLocalizations.of(context)!.create,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.black

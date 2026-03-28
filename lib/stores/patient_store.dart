@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:tccflutter/models/patient.dart';
+import 'package:tccflutter/services/image_service.dart';
 import 'package:tccflutter/services/patient_service.dart';
 
 class PatientStore {
@@ -32,5 +35,24 @@ class PatientStore {
     patients = await PatientService().fetchPatients();
 
     return patients!;
+  }
+
+  Future<Patient> createPatient({
+    required String name,
+    required DateTime birthDate,
+    DateTime? treatmentStartedAt,
+    File? image
+  }) async {
+    var newPatient = await PatientService().createPatient(Patient(
+      name: name,
+      birth: birthDate,
+      treatmentStartedAt: treatmentStartedAt,
+    ));
+
+    if (image != null) {
+      await ImageService().saveImage(image, '/assets/images/patients/${name}_${newPatient.id}');
+    }
+
+    return newPatient;
   }
 }

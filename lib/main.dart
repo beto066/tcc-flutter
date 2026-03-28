@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
           );
         },
         'NewPatient': (_) => const MainLayout(
-          screen: 'newPatient',
+          screen: 'new_patient',
           body: NewPatientPage()
         ),
         'NoteTable': (context) {

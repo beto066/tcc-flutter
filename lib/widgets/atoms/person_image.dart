@@ -33,8 +33,8 @@ class PersonImage extends StatelessWidget {
             onTap: onTapImage,
             child: ClipOval(
               child: Container(
-                width: size,
-                height: size,
+                width: size + 1,
+                height: size + 1,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: border ?? Border.all(width: 1),

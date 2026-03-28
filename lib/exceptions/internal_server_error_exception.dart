@@ -5,5 +5,4 @@ class InternalServerErrorException implements Exception {
 
   @override
   String toString() => 'InternalServerErrorException: $message';
-
 }

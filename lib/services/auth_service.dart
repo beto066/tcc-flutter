@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService {
-  User? user;
+  User? _user;
 
   static final AuthService _instance = AuthService._internal();
 
@@ -43,7 +43,7 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    user = null;
+    _user = null;
 
     await removeToken();
   }
@@ -64,8 +64,8 @@ class AuthService {
   }
 
   Future<User?> getLoggedUser() async {
-    if (user != null) {
-      return user;
+    if (_user != null) {
+      return _user;
     }
 
     var token = await getToken();

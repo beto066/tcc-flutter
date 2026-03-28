@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get create => 'Create';
+
+  @override
   String get aba => 'ABA (ABA-based application)';
 
   @override
@@ -54,7 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patients => 'Patients';
 
   @override
-  String get newPatient => 'New Patient';
+  String get new_patient => 'New Patient';
 
   @override
   String get family => 'Familia';

@@ -48,4 +48,14 @@ class PatientService {
 
     return patients;
   }
+
+  Future<Patient> createPatient(Patient patient) async {
+    var response = await ApiService().post('/patients', data: patient.toMap());
+
+    Map<String, dynamic> decoded = jsonDecode(response.body);
+
+    var newPatient = Patient.factory(decoded);
+
+    return newPatient;
+  }
 }

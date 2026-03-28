@@ -97,6 +97,12 @@ abstract class AppLocalizations {
     Locale('pt')
   ];
 
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
   /// No description provided for @aba.
   ///
   /// In en, this message translates to:
@@ -187,11 +193,11 @@ abstract class AppLocalizations {
   /// **'Patients'**
   String get patients;
 
-  /// No description provided for @newPatient.
+  /// No description provided for @new_patient.
   ///
   /// In en, this message translates to:
   /// **'New Patient'**
-  String get newPatient;
+  String get new_patient;
 
   /// No description provided for @family.
   ///

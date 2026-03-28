@@ -1,11 +1,17 @@
 class Patient {
-  late final int? id;
-  late final String? name;
-  late final DateTime? birth;
-  late final String? imageName;
-  late final DateTime? treatmentStartedAt;
+  int? id;
+  String? name;
+  DateTime? birth;
+  String? imageName;
+  DateTime? treatmentStartedAt;
 
-  Patient();
+  Patient({
+    this.id,
+    this.name,
+    this.birth,
+    this.imageName,
+    this.treatmentStartedAt
+  });
 
   Patient.factory(Map<String, dynamic> map) {
     id = map['id'] as int?;
@@ -46,9 +52,9 @@ class Patient {
     return {
       'id': id,
       'name': name,
-      'birth': birth,
+      'birth': birth?.toIso8601String(),
       'imageName': imageName,
-      'treatmentStartedAt': treatmentStartedAt,
+      'treatmentStartedAt': treatmentStartedAt?.toIso8601String(),
     };
   }
 }

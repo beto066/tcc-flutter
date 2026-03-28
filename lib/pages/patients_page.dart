@@ -74,7 +74,7 @@ class _PatientsPageState extends State<PatientsPage> {
                   itemBuilder: (context, index) {
                     if (index == snapshot.data!.length) {
                       return CardListItem(
-                        AppLocalizations.of(context)!.newPatient,
+                        AppLocalizations.of(context)!.new_patient,
                         initialHeight: 50,
                         textAlign: TextAlign.left,
                         leading: const Icon(Icons.add),

@@ -49,8 +49,8 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
   void _onSearch() {
     widget.onSearch({
       'title': _textController.value.text,
-      'from': _fromDateTimeFilter?.toIso8601String(),
-      'to': _toDateTimeFilter?.toIso8601String(),
+      'from': _fromDateTimeFilter?.toUtc().toIso8601String(),
+      'to': _toDateTimeFilter?.toUtc().toIso8601String(),
       'type': _noteTypeFilter,
     });
   }

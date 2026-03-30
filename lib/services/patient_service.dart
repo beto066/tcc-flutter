@@ -17,11 +17,11 @@ class PatientService {
     Map<String, String> queryParams = {};
 
     if (from != null) {
-      queryParams['from'] = from.toIso8601String();
+      queryParams['from'] = from.toUtc().toIso8601String();
     }
 
     if (to != null) {
-      queryParams['to'] = to.toIso8601String();
+      queryParams['to'] = to.toUtc().toIso8601String();
     }
 
     var response = await ApiService().get('/patients/count', queryParams: queryParams);

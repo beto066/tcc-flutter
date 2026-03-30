@@ -50,7 +50,8 @@ class PatientStore {
     ));
 
     if (image != null) {
-      await ImageService().saveImage(image, '/assets/images/patients/${name}_${newPatient.id}');
+
+      await ImageService().saveImage(image, '/local-assets/images/patients/', '${name}_${newPatient.id}');
     }
 
     return newPatient;

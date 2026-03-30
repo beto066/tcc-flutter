@@ -52,9 +52,9 @@ class Patient {
     return {
       'id': id,
       'name': name,
-      'birth': birth?.toIso8601String(),
+      'birth': birth?.toUtc().toIso8601String(),
       'imageName': imageName,
-      'treatmentStartedAt': treatmentStartedAt?.toIso8601String(),
+      'treatmentStartedAt': treatmentStartedAt?.toUtc().toIso8601String(),
     };
   }
 }

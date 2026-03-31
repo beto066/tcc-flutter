@@ -56,4 +56,12 @@ class PatientStore {
 
     return newPatient;
   }
+
+  Future<void> saveImage(File image, Patient patient) async {
+    await ImageService().saveImage(image, '/local-assets/images/patients/', '${patient.name}_${patient.id}');
+  }
+
+  Future<File?> getImage(Patient patient) async {
+    return await ImageService().getImage('/local-assets/images/patients/', '${patient.name}_${patient.id}');
+  }
 }

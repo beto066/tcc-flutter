@@ -221,7 +221,7 @@ class NewPatientPageState extends State<NewPatientPage> {
               size: containerLogoHeight,
               border: Border.all(width: 3, color: Colors.grey[800]!),
               onTapImage: _onTapImage,
-              pointionedChild: GestureDetector(
+              positionedChild: GestureDetector(
                 onTap: _onEditImage,
                 child: Container(
                   padding: const EdgeInsets.all(4),

@@ -7,7 +7,7 @@ class PersonImage extends StatelessWidget {
   final String? imageUrl;
   final File? selectedImage;
   final Border? border;
-  final Widget? pointionedChild;
+  final Widget? positionedChild;
   final VoidCallback? onTapImage;
   final double size;
 
@@ -16,7 +16,7 @@ class PersonImage extends StatelessWidget {
     this.imageUrl,
     this.selectedImage,
     this.border,
-    this.pointionedChild,
+    this.positionedChild,
     this.onTapImage,
     this.size = 50.0,
   });
@@ -50,11 +50,11 @@ class PersonImage extends StatelessWidget {
             ),
           ),
 
-          if (pointionedChild != null)
+          if (positionedChild != null)
             Positioned(
               bottom: 0,
               right: 0,
-              child: pointionedChild!
+              child: positionedChild!
             ),
         ],
       ),

@@ -15,10 +15,8 @@ class ImageService {
     Future<File> saveImage(File image, String filePath, String imageName) async {
     final directory = await getApplicationDocumentsDirectory();
 
-    var extension = p.extension(image.path);
-
     var completeFilePath = '${directory.path}$filePath';
-    var completePath = '$completeFilePath$imageName.$extension';
+    var completePath = '$completeFilePath$imageName.png';
 
     final dir = Directory(completeFilePath);
 
@@ -31,5 +29,20 @@ class ImageService {
     final newImage = await image.copy(completePath);
 
     return newImage;
+  }
+
+  Future<File?> getImage(String filePath, String imageName) async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    var completeFilePath = '${directory.path}$filePath';
+    var completePath = '$completeFilePath$imageName.png';
+
+    var file = File(completePath);
+
+    if (await file.exists()) {
+      return file;
+    }
+
+    return null;
   }
 }

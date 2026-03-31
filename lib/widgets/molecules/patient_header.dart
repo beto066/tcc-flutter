@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/widgets/atoms/associative_label.dart';
@@ -10,6 +12,9 @@ class PatientHeader extends StatelessWidget {
   final String age;
   final String therapyDuration;
   final Patient patient;
+  final File? image;
+  final VoidCallback? onTapImage;
+  final VoidCallback? onEditImage;
 
   const PatientHeader({
     super.key,
@@ -17,6 +22,9 @@ class PatientHeader extends StatelessWidget {
     required this.age,
     required this.therapyDuration,
     required this.patient,
+    this.image,
+    this.onTapImage,
+    this.onEditImage,
   });
 
   void _showSurveyDialog(BuildContext context) {
@@ -33,13 +41,33 @@ class PatientHeader extends StatelessWidget {
     // var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     // var contextHeight = MediaQuery.of(context).size.height;
     var contextWidth = MediaQuery.of(context).size.width;
+    double imageWidth = (contextWidth * 0.25 > 130)? 130: contextWidth * 0.25;
 
     return SizedBox(
       width: contextWidth * 0.75,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          PersonImage(size: (contextWidth * 0.25 > 130)? 130: contextWidth * 0.25),
+          PersonImage(
+            size: imageWidth,
+            selectedImage: image,
+            positionedChild: GestureDetector(
+              onTap: onEditImage,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.grey[900]!, width: 1),
+                ),
+                child: Icon(
+                  Icons.edit,
+                  size: imageWidth * 0.20,
+                  color: Colors.grey[900]!,
+                ),
+              ),
+            ),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

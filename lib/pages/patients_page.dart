@@ -89,7 +89,15 @@ class _PatientsPageState extends State<PatientsPage> {
                       patient.name ?? '',
                       initialHeight: 50,
                       textAlign: TextAlign.left,
-                      leading: const PersonImage(size: 40),
+                      leading: FutureBuilder(
+                        future: PatientStore().getImage(patient),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return PersonImage(size: 40, selectedImage: snapshot.data);
+                          }
+                          return const PersonImage(size: 40);
+                        }
+                      ),
                       onTap: () {
                         _redirectToPatient(patient);
                       },

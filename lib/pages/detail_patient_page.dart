@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/note_store.dart';
+import 'package:tccflutter/stores/patient_store.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 import 'package:tccflutter/widgets/molecules/patient_header.dart';
 import 'package:tccflutter/widgets/organisms/note_list.dart';
@@ -25,11 +28,51 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
   Note? originalNoteExpanded;
   List<dynamic> notes = [];
   int? expandedId;
+  File? image;
 
   @override
   void initState() {
     _fetchNotes();
+    _loadImage();
     super.initState();
+  }
+
+  void _onTapImage() {
+    if (image != null) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: InteractiveViewer(
+                child: ClipRRect(
+                  child: Image.file(image!),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _onEditImage() async {
+    final picker = ImagePicker();
+    final file = await picker.pickImage(source: ImageSource.gallery);
+
+    if (file != null) {
+      await PatientStore().saveImage(File(file.path), widget.patient);
+      _loadImage();
+    }
+  }
+
+  Future<void> _loadImage() async {
+    var loadedImage = await PatientStore().getImage(widget.patient);
+    setState(() {
+      image = loadedImage;
+    });
   }
 
   Future<List<dynamic>> _fetchNotes({Map<String, dynamic>? queries}) async {
@@ -98,6 +141,9 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
             age: '${widget.patient.age}',
             therapyDuration: '${widget.patient.therapyDuration}',
             patient: widget.patient,
+            image: image,
+            onTapImage: _onTapImage,
+            onEditImage: _onEditImage,
           ),
 
           SizedBox(

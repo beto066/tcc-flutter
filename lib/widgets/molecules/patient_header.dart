@@ -31,9 +31,15 @@ class PatientHeader extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return SurveyDialog(patient: patient);
+        return SurveyDialog(patient: patient, rootNavigator: true);
       }
-    );
+    ).then((value) => {
+      if (Navigator.of(context).mounted && value != null && value is String) {
+        Navigator.popAndPushNamed(context, value, arguments: {
+          'patient': patient
+        })
+      }
+    });
   }
 
   @override
@@ -68,6 +74,7 @@ class PatientHeader extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(width: contextWidth * 0.05),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,7 +82,7 @@ class PatientHeader extends StatelessWidget {
               AssociativeLabel(label: 'Idade', data: age),
               AssociativeLabel(label: 'Anos de terapia', data: therapyDuration),
               SizedBox(
-                width: contextWidth * 0.5,
+                width: contextWidth * 0.45,
                 child: ButtonTile(
                   'Levantar dados',
                   fontSize: 13.5,

@@ -178,7 +178,7 @@ class NewPatientPageState extends State<NewPatientPage> {
   }
 
   void _redirectToPatient(Patient patient) {
-    Navigator.of(context).pushNamed('Patient', arguments: {
+    Navigator.of(context).popAndPushNamed('Patient', arguments: {
       'patient': patient
     });
   }

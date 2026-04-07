@@ -69,7 +69,6 @@ class NoteService {
       note.values ??= [];
 
       for (var i = 0; i < note.values!.length; i++) {
-        noteMap['values'] = [];
         noteMap['values']!.add({
           'tableId': note.id,
           'valueId': note.values![i].id,

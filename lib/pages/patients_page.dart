@@ -18,22 +18,49 @@ class PatientsPage extends StatefulWidget {
 
 class _PatientsPageState extends State<PatientsPage> {
   List<Patient> patients = [];
+  bool isLoading = false;
+  String? message;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPatients();
+  }
 
   Future<List<Patient>> _fetchPatients() async {
-    if (patients.isEmpty) {
-      patients = await PatientStore().fetchPatients();
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var fetchedPatients = await PatientStore().fetchPatients();
+      setState(() {
+        patients = fetchedPatients;
+        isLoading = false;
+        message = null;
+      });
+    } catch (e) {
+      message = AppLocalizations.of(context)!.patients_fetch_error;
+      setState(() {
+        isLoading = false;
+      });
     }
+
     return patients;
   }
 
-  void _redirectToPatient(Patient patient) {
-    Navigator.of(context).pushNamed('Patient', arguments: {
+  void _redirectToPatient(Patient patient) async {
+    await Navigator.of(context).pushNamed('Patient', arguments: {
       'patient': patient
     });
+
+    _fetchPatients();
   }
 
-  void _redirectToNewPatient() {
-    Navigator.of(context).pushNamed('NewPatient');
+  void _redirectToNewPatient() async {
+    await Navigator.of(context).pushNamed('NewPatient');
+
+    _fetchPatients();
   }
 
   void _showSurveyDialog(BuildContext context, Patient patient) {
@@ -48,74 +75,84 @@ class _PatientsPageState extends State<PatientsPage> {
   @override
   Widget build(BuildContext context) {
     var contextHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children:[
         SizedBox(height: contextHeight * (contextHeight > 600? 0.08: 0.06)),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 50),
           child: Text(
             AppLocalizations.of(context)!.patients_screen_description,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: ((contextHeight * 0.025 < 16)? 16: contextHeight * 0.025),
+              fontSize: (
+                (contextHeight * 0.025 < 16)?
+                16:
+                contextHeight * 0.025
+              ),
             ),
           ),
         ),
         SizedBox(height: contextHeight * (contextHeight > 600? 0.04: 0.06)),
         const HistoryNavigation(),
-        SizedBox(
-          height: contextHeight * 0.5 ,
-          child: FutureBuilder(
-            future: _fetchPatients(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == snapshot.data!.length) {
-                      return CardListItem(
-                        AppLocalizations.of(context)!.new_patient,
-                        initialHeight: 50,
-                        textAlign: TextAlign.left,
-                        leading: const Icon(Icons.add),
-                        onTap: () {
-                          _redirectToNewPatient();
-                        },
-                      );
-                    }
-                    var patient = snapshot.data![index];
+        if (isLoading) const Center(child: CircularProgressIndicator()),
 
-                    return CardListItem(
-                      patient.name ?? '',
-                      initialHeight: 50,
-                      textAlign: TextAlign.left,
-                      leading: FutureBuilder(
-                        future: PatientStore().getImage(patient),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return PersonImage(size: 40, selectedImage: snapshot.data);
-                          }
-                          return const PersonImage(size: 40);
-                        }
-                      ),
-                      onTap: () {
-                        _redirectToPatient(patient);
-                      },
-                      trailing:  IconButton(icon: const Icon(Icons.add), onPressed: () {
-                        _showSurveyDialog(context, patient);
-                      }),
-                    );
-                  }
+        if (!isLoading && message != null) Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Text(
+            message!,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+
+        if (!isLoading && message == null) Expanded(
+          child: ListView.builder(
+            itemCount: patients.length + 1,
+            itemBuilder: (context, index) {
+              if (index == patients.length) {
+                return CardListItem(
+                  AppLocalizations.of(context)!.new_patient,
+                  initialHeight: 50,
+                  textAlign: TextAlign.left,
+                  leading: const Icon(Icons.add),
+                  onTap: () {
+                    _redirectToNewPatient();
+                  },
                 );
               }
-              if (snapshot.hasError) {
-                return const Text('deu ruim');
-              }
+              var patient = patients[index];
 
-              return Container();
+              return CardListItem(
+                patient.name ?? '',
+                initialHeight: 50,
+                textAlign: TextAlign.left,
+                leading: FutureBuilder(
+                  future: PatientStore().getImage(patient),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return PersonImage(
+                        size: 40,
+                        selectedImage: snapshot.data
+                      );
+                    }
+                    return const PersonImage(size: 40);
+                  }
+                ),
+                onTap: () {
+                  _redirectToPatient(patient);
+                },
+                trailing:  IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    _showSurveyDialog(context, patient);
+                  }
+                ),
+              );
             }
           ),
-        )
+        ),
+        SizedBox(height: contextHeight * (contextHeight > 600? 0.04: 0.06)),
       ]
     );
   }

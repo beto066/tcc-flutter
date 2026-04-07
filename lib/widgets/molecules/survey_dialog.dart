@@ -4,17 +4,19 @@ import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 
 class SurveyDialog extends StatefulWidget {
   final Patient patient;
+  final bool rootNavigator;
 
-  const SurveyDialog({super.key, required this.patient});
+  const SurveyDialog({super.key, required this.patient, this.rootNavigator = false});
 
   static Future<void> showSurveyDialog(
     BuildContext context,
-    Patient patient
+    Patient patient,
+    { bool rootNavigator = false }
   ) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return SurveyDialog(patient: patient);
+        return SurveyDialog(patient: patient, rootNavigator: rootNavigator);
       },
     );
   }
@@ -24,10 +26,11 @@ class SurveyDialog extends StatefulWidget {
 }
 
 class _SurveyDialogState extends State<SurveyDialog> {
-  static redirectTo(BuildContext context, String page, Patient patient) {
-    Navigator.of(context).popAndPushNamed(page, arguments: {
-      'patient': patient
-    });
+  static redirectTo(BuildContext context, String page, Patient patient, bool rootNavigator) {
+    Navigator.of(
+      context,
+      rootNavigator: rootNavigator
+    ).pop(page);
   }
 
   @override
@@ -50,17 +53,32 @@ class _SurveyDialogState extends State<SurveyDialog> {
             CardListItem(
               'Testes',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'Done', widget.patient),
+              onTap: () => redirectTo(
+                context,
+                'Done',
+                widget.patient,
+                widget.rootNavigator
+              ),
             ),
             CardListItem(
               'Anotações',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'NotePad', widget.patient),
+              onTap: () => redirectTo(
+                context,
+                'NotePad',
+                widget.patient,
+                widget.rootNavigator
+              ),
             ),
             CardListItem(
               'Tabela',
               initialHeight: 50,
-              onTap: () => redirectTo(context, 'NoteTable', widget.patient),
+              onTap: () => redirectTo(
+                context,
+                'NoteTable',
+                widget.patient,
+                widget.rootNavigator
+              ),
             ),
           ],
         ),

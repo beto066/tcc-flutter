@@ -134,4 +134,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get patients_treatment_started_at => 'Treatment started at:';
+
+  @override
+  String get patients_fetch_error => 'An error occurred while fetching patients. Please try again later.';
 }

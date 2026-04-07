@@ -134,4 +134,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get patients_treatment_started_at => 'El tratamiento comenzó en:';
+
+  @override
+  String get patients_fetch_error => 'Ocurrió un error al buscar los pacientes. Por favor, intente nuevamente más tarde.';
 }

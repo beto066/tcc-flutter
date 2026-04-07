@@ -41,6 +41,7 @@
 
   "patients_screen_description": "Select a patient to view or add notes.",
   "patients_treatment_started_at": "Treatment started at:",
+  "patients_fetch_error": "An error occurred while fetching patients. Please try again later.",
 
   "@auth_password_min_length": {
     "placeholders": {

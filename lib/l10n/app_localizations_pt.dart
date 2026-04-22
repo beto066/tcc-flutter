@@ -148,5 +148,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get patients_treatment_started_at => 'O tratamento começou em:';
 
   @override
+  String get patients_fetch_error => 'Ocorreu um erro ao buscar os pacientes. Por favor, tente novamente mais tarde.';
+
+  @override
   String get configurations_screen_language => 'Idioma';
 }

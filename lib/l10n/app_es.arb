@@ -45,6 +45,7 @@
 
   "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
   "patients_treatment_started_at": "El tratamiento comenzó en:",
+  "patients_fetch_error": "Ocurrió un error al buscar los pacientes. Por favor, intente nuevamente más tarde.",
 
   "configurations_screen_language": "Idioma",
 

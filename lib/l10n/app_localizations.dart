@@ -355,6 +355,12 @@ abstract class AppLocalizations {
   /// **'Treatment started at:'**
   String get patients_treatment_started_at;
 
+  /// No description provided for @patients_fetch_error.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while fetching patients. Please try again later.'**
+  String get patients_fetch_error;
+
   /// No description provided for @configurations_screen_language.
   ///
   /// In en, this message translates to:

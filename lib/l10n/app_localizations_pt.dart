@@ -21,6 +21,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get config => 'Config.';
 
   @override
+  String get settings => 'Configurações';
+
+  @override
   String get home => 'Início';
 
   @override
@@ -28,6 +31,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get note_table_screen => 'Nova anotação em tabela';
+
+  @override
+  String get note_pad_screen => 'Anotação por texto';
+
+  @override
+  String get note_training_screen => 'Novo treinamento';
 
   @override
   String get login => 'Login';
@@ -55,6 +64,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get patients => 'Pacientes';
+
+  @override
+  String get notes => 'Anotações';
 
   @override
   String get new_patient => 'Novo Paciente';
@@ -134,4 +146,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get patients_treatment_started_at => 'O tratamento começou em:';
+
+  @override
+  String get configurations_screen_language => 'Idioma';
 }

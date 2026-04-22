@@ -121,6 +121,12 @@ abstract class AppLocalizations {
   /// **'Config.'**
   String get config;
 
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
   /// No description provided for @home.
   ///
   /// In en, this message translates to:
@@ -138,6 +144,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New annotation in table'**
   String get note_table_screen;
+
+  /// No description provided for @note_pad_screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Note'**
+  String get note_pad_screen;
+
+  /// No description provided for @note_training_screen.
+  ///
+  /// In en, this message translates to:
+  /// **'New training'**
+  String get note_training_screen;
 
   /// No description provided for @login.
   ///
@@ -192,6 +210,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Patients'**
   String get patients;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
 
   /// No description provided for @new_patient.
   ///
@@ -330,6 +354,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Treatment started at:'**
   String get patients_treatment_started_at;
+
+  /// No description provided for @configurations_screen_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get configurations_screen_language;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

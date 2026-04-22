@@ -26,7 +26,7 @@ class DetailPatientPage extends StatefulWidget {
 class _DetailPatientPageState extends State<DetailPatientPage> {
   var isLoading = true;
   Note? originalNoteExpanded;
-  List<dynamic> notes = [];
+  List<Note> notes = [];
   int? expandedId;
   File? image;
 
@@ -105,12 +105,10 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
   void _setOriginalNote(int? id) {
     setState(() {
       var expandedNote = notes.firstWhere((note) {
-        return note is Note && note.id == id;
+        return note.id == id;
       });
 
-      if (expandedNote is Note) {
-        originalNoteExpanded = expandedNote.clone();
-      }
+      originalNoteExpanded = expandedNote.clone();
     });
   }
 

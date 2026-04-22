@@ -17,12 +17,12 @@ class NoteStore {
     return _instance;
   }
 
-  Future<List<dynamic>> fetchNotes({String? title, DateTime? from, DateTime? to, NoteType? type}) async {
+  Future<List<Note>> fetchNotes({String? title, DateTime? from, DateTime? to, NoteType? type}) async {
     var notes = await NoteService().fetchNotes(title: title, from: from, to: to, type: type);
     return notes;
   }
 
-  Future<List<dynamic>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
+  Future<List<Note>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
     var notes = await NoteService().fetchNotesByPatient(patient, queries);
     return notes;
   }

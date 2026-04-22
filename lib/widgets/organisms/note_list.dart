@@ -6,7 +6,7 @@ import 'package:tccflutter/widgets/molecules/card_list_item.dart';
 import 'package:tccflutter/widgets/molecules/detail_note.dart';
 
 class NoteList extends StatelessWidget {
-  final List<dynamic> notes;
+  final List<Note> notes;
   final double? height;
   final int? expandedId;
   final Map<int, GlobalKey> _keys = {};
@@ -47,40 +47,36 @@ class NoteList extends StatelessWidget {
           var note = notes[index];
           final key = _keys[index] ??= GlobalKey();
 
-          if (note is Note) {
-            return Container(
-              key: key,
-              child: CardListItem(
-                key: ValueKey(notes[index].id),
-                note.title ?? 'Sem título',
-                subTitle: note.getSubTitle(),
-                titleLabel: _formatTitleLabel(note.type),
-                maxLinesTitle: 1,
-                textAlign: TextAlign.left,
-                initialHeight: 70,
-                trailing: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(note.createdAt != null? DateFormat('dd/MM/yyyy').format(note.createdAt!): ''),
-                    const Icon(Icons.expand_more)
-                  ],
-                ),
-                titleOverflow: TextOverflow.ellipsis,
-                isExpanded: notes[index].id == expandedId,
-                onExpand: () async {
-                  await Future.delayed(const Duration(milliseconds: 300));
-                  _scrollToItem(index);
-                  if (onExpand != null) {
-                    onExpand!(note.id);
-                  }
-                },
-                child: DetailNote(note: note, originalNote: originalNoteExpanded, onSave: onSave),
+          return Container(
+            key: key,
+            child: CardListItem(
+              key: ValueKey(notes[index].id),
+              note.title ?? 'Sem título',
+              subTitle: note.getSubTitle(),
+              titleLabel: _formatTitleLabel(note.type),
+              maxLinesTitle: 1,
+              textAlign: TextAlign.left,
+              initialHeight: 70,
+              trailing: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(note.createdAt != null? DateFormat('dd/MM/yyyy').format(note.createdAt!): ''),
+                  const Icon(Icons.expand_more)
+                ],
               ),
-            );
-          }
-
-          return Container();
+              titleOverflow: TextOverflow.ellipsis,
+              isExpanded: notes[index].id == expandedId,
+              onExpand: () async {
+                await Future.delayed(const Duration(milliseconds: 300));
+                _scrollToItem(index);
+                if (onExpand != null) {
+                  onExpand!(note.id);
+                }
+              },
+              child: DetailNote(note: note, originalNote: originalNoteExpanded, onSave: onSave),
+            ),
+          );
         }
       ),
     );

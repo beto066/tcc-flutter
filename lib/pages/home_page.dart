@@ -33,6 +33,14 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushNamed('Patients');
   }
 
+  void _redirectToNotes() {
+    Navigator.of(context).pushNamed('Notes');
+  }
+
+  void _redirectToConfig() {
+    Navigator.of(context).pushNamed('Configurations');
+  }
+
   Future<Map<String, double>> _fetchStatistics() async {
     try {
       statisticsErrorMessage = null;
@@ -241,7 +249,11 @@ class _HomePageState extends State<HomePage> {
         ),
 
         SizedBox(height: contextHeight * (contextHeight > 600? 0.04: 0.02)),
-        BottomLinks(logout: _logout),
+        BottomLinks(
+          logout: _logout,
+          toConfig: _redirectToConfig,
+          toNotes: _redirectToNotes
+        ),
       ],
     );
   }

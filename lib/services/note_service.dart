@@ -19,7 +19,7 @@ class NoteService {
     return _instance;
   }
 
-  Future<List<dynamic>> fetchNotes({String? title, DateTime? from, DateTime? to, NoteType? type}) async {
+  Future<List<Note>> fetchNotes({String? title, DateTime? from, DateTime? to, NoteType? type}) async {
     Map<String, dynamic> queryParams = {};
 
     if (title != null) {
@@ -42,12 +42,16 @@ class NoteService {
 
     var body = jsonDecode(utf8.decode(response.bodyBytes));
 
-    return body.map((e) {
-      if (e is Map<String, dynamic>) {
-        return Note.factory(e);
-      }
-      return NoteTable();
-    }).toList();
+    if (body is List) {
+      return body.map((e) {
+        if (e is Map<String, dynamic>) {
+          return Note.factory(e);
+        }
+        return NoteTable();
+      }).toList().cast<Note>();
+    } else {
+      throw Exception();
+    }
   }
 
   Future<void> addNote(Note note) async {
@@ -124,17 +128,21 @@ class NoteService {
     var response = await ApiService().put('/notes/${note.id}', data: noteMap);
   }
 
-  Future<List<dynamic>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
+  Future<List<Note>> fetchNotesByPatient(Patient patient, Map<String, dynamic>? queries) async {
     var response = await ApiService().get('/notes/patient/${patient.id}', queryParams: queries ?? {});
 
     var body = jsonDecode(utf8.decode(response.bodyBytes));
 
-    return body.map((e) {
-      if (e is Map<String, dynamic>) {
-        return Note.factory(e);
-      }
-      return NoteTable();
-    }).toList();
+    if (body is List) {
+      return body.map((e) {
+        if (e is Map<String, dynamic>) {
+          return Note.factory(e);
+        }
+        return NoteTable();
+      }).toList().cast<Note>();
+    } else {
+      throw Exception();
+    }
   }
 
   Future<List<dynamic>> fetchNoteValue() async {

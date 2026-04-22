@@ -3,9 +3,12 @@
   "aba": "ABA (ABA-based application)",
   "average": "Average",
   "config": "Config.",
+  "settings": "Settings",
   "home": "Home",
   "patient_details": "Patient details",
   "note_table_screen": "New annotation in table",
+  "note_pad_screen": "Text Note",
+  "note_training_screen": "New training",
   "login": "Login",
   "register": "Register",
   "email": "Email",
@@ -15,6 +18,7 @@
   "name": "Name",
   "patient": "Patient",
   "patients": "Patients",
+  "notes": "Notes",
   "new_patient": "New Patient",
   "family": "Familia",
   "therapist": "Terapeuta",
@@ -41,6 +45,8 @@
 
   "patients_screen_description": "Select a patient to view or add notes.",
   "patients_treatment_started_at": "Treatment started at:",
+
+  "configurations_screen_language": "Language",
 
   "@auth_password_min_length": {
     "placeholders": {

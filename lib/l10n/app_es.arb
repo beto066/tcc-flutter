@@ -3,9 +3,12 @@
   "aba": "ABA (Aplicación basada en ABA)",
   "average": "Promedio",
   "config": "Cnfg.",
+  "settings": "Ajustes",
   "home": "Inicio",
   "patient_details": "Datos del paciente",
   "note_table_screen": "Nueva anotación en la tabla",
+  "note_pad_screen": "Anotación de texto",
+  "note_training_screen": "Nueva formación",
   "login": "Login",
   "register": "Registro",
   "email": "Correo",
@@ -14,7 +17,8 @@
   "birth": "Nacimiento",
   "name": "Nombre",
   "patient": "Paciente",
-  "patients": "Patients",
+  "patients": "Pacientes",
+  "notes": "Notas",
   "new_patient": "Nuevo Paciente",
   "family": "Family",
   "therapist": "Therapist",
@@ -41,6 +45,8 @@
 
   "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
   "patients_treatment_started_at": "El tratamiento comenzó en:",
+
+  "configurations_screen_language": "Idioma",
 
   "@auth_password_min_length": {
     "placeholders": {

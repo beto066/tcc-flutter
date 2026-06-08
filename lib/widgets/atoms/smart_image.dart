@@ -7,11 +7,13 @@ class SmartImage extends StatelessWidget {
   final String? imageUrl;
   final double width;
   final double height;
+  final IconData? defaultIcon;
 
   const SmartImage({
     super.key,
     this.file,
     this.imageUrl,
+    this.defaultIcon,
     this.width = 50,
     this.height = 50,
   });
@@ -19,7 +21,7 @@ class SmartImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget fallback = Icon(
-      Icons.person,
+      defaultIcon ?? Icons.person,
       size: width,
       color: Colors.grey[600],
     );

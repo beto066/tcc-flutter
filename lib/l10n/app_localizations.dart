@@ -366,6 +366,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get configurations_screen_language;
+
+  /// No description provided for @configurations_screen_difficulty_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty level'**
+  String get configurations_screen_difficulty_level;
+
+  /// No description provided for @configurations_screen_register_cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Add training cards'**
+  String get configurations_screen_register_cards;
+
+  /// No description provided for @configurations_screen_register_send_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload image'**
+  String get configurations_screen_register_send_image;
+
+  /// No description provided for @configurations_screen_select_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a label'**
+  String get configurations_screen_select_label;
+
+  /// No description provided for @configurations_screen_register_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Card'**
+  String get configurations_screen_register_card;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

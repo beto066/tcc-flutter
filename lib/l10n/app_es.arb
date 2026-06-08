@@ -48,6 +48,11 @@
   "patients_fetch_error": "Ocurrió un error al buscar los pacientes. Por favor, intente nuevamente más tarde.",
 
   "configurations_screen_language": "Idioma",
+  "configurations_screen_difficulty_level": "Nivel de dificultad",
+  "configurations_screen_register_cards": "Agregar tarjetas de entrenamiento",
+  "configurations_screen_register_send_image": "Subir imagen",
+  "configurations_screen_select_label": "Seleccione una etiqueta",
+  "configurations_screen_register_card": "Agregar Tarjeta",
 
   "@auth_password_min_length": {
     "placeholders": {

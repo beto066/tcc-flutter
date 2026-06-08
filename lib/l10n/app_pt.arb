@@ -50,6 +50,11 @@
   "patients_no_patients": "Nenhum paciente encontrado. Por favor, adicione um paciente para começar.",
 
   "configurations_screen_language": "Idioma",
+  "configurations_screen_difficulty_level": "Dificuldade",
+  "configurations_screen_register_cards": "Adicionar cards de treinamento",
+  "configurations_screen_register_send_image": "Subir imagem",
+  "configurations_screen_select_label": "Selecione um apelido",
+  "configurations_screen_register_card": "Cadastrar Card",
   
   "@auth_password_min_length": {
     "placeholders": {

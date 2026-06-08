@@ -152,4 +152,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get configurations_screen_language => 'Language';
+
+  @override
+  String get configurations_screen_difficulty_level => 'Difficulty level';
+
+  @override
+  String get configurations_screen_register_cards => 'Add training cards';
+
+  @override
+  String get configurations_screen_register_send_image => 'Upload image';
+
+  @override
+  String get configurations_screen_select_label => 'Select a label';
+
+  @override
+  String get configurations_screen_register_card => 'Add Card';
 }

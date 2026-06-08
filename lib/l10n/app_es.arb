@@ -23,6 +23,7 @@
   "family": "Family",
   "therapist": "Therapist",
   "role": "Rol",
+  "save": "ahorrar",
   "invalid_date_format": "Formato de fecha incorrecto {format}",
   "invalid_date": "Fecha no válida",
   "date_min_value": "La fecha debe ser posterior a {min_value}",
@@ -52,6 +53,7 @@
   "configurations_screen_register_cards": "Agregar tarjetas de entrenamiento",
   "configurations_screen_register_send_image": "Subir imagen",
   "configurations_screen_select_label": "Seleccione una etiqueta",
+  "configurations_screen_register_card_label_required": "Se requiere etiqueta",
   "configurations_screen_register_card": "Agregar Tarjeta",
 
   "@auth_password_min_length": {

@@ -36,6 +36,14 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
     });
   }
 
+  String? _validateLabel(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppLocalizations.of(context)!.configurations_screen_register_card_label_required;
+    }
+
+    return null;
+  }
+
   void _onEditImage() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
@@ -50,6 +58,8 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context)!;
+    var buttonColor = Theme.of(context).colorScheme.inversePrimary;
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28),
@@ -99,7 +109,7 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
                           borderRadius: BorderRadius.circular(20),
 
                           border: Border.all(
-                            color: const Color(0xFF7A8CBA),
+                            color: buttonColor,
                             width: 2,
                           ),
                         ),
@@ -120,6 +130,7 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
                 focusNode: _focusNodeLabel,
                 controller: _labelController,
                 options: _labels,
+                validator: _validateLabel,
               ),
 
               const SizedBox(height: 28),
@@ -133,16 +144,16 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
                   icon: const Icon(Icons.save, color: Colors.black),
 
                   label: Text(
-                    'localization.save',
+                    localization.save,
                     style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
+                      fontSize: 12,
+                      color: Colors.black
                     ),
                   ),
 
                   style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).colorScheme.inversePrimary
+                    backgroundColor: WidgetStatePropertyAll(
+                      buttonColor
                     ),
                   ),
                 ),

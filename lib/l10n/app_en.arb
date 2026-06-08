@@ -23,6 +23,7 @@
   "family": "Familia",
   "therapist": "Terapeuta",
   "role": "Role",
+  "save": "Save",
   "invalid_date_format": "Invalid date format {format}",
   "invalid_date": "Invalid date",
   "date_min_value": "The date should be after {min_value}",
@@ -52,6 +53,7 @@
   "configurations_screen_register_cards": "Add training cards",
   "configurations_screen_register_send_image": "Upload image",
   "configurations_screen_select_label": "Select a label",
+  "configurations_screen_register_card_label_required": "Label is required",
   "configurations_screen_register_card": "Add Card",
 
   "@auth_password_min_length": {

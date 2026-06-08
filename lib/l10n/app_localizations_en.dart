@@ -81,6 +81,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get role => 'Role';
 
   @override
+  String get save => 'Save';
+
+  @override
   String invalid_date_format(Object format) {
     return 'Invalid date format $format';
   }
@@ -164,6 +167,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get configurations_screen_select_label => 'Select a label';
+
+  @override
+  String get configurations_screen_register_card_label_required => 'Label is required';
 
   @override
   String get configurations_screen_register_card => 'Add Card';

@@ -11,6 +11,7 @@ class InputAutocomplete extends StatelessWidget {
   final TextInputType? keyboardType;
   final int? maxLines;
   final double fontSize;
+  final String? Function(String?)? validator;
 
   const InputAutocomplete(
     this.label, {
@@ -24,6 +25,7 @@ class InputAutocomplete extends StatelessWidget {
       this.keyboardType,
       this.maxLines,
       this.fontSize = 14,
+      this.validator,
     }
   );
 
@@ -62,6 +64,7 @@ class InputAutocomplete extends StatelessWidget {
           height: height,
           width: width,
           child: TextFormField(
+            validator: validator,
             controller: textController,
             focusNode: textFocusNode,
 

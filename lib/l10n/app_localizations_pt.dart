@@ -81,6 +81,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get role => 'Função';
 
   @override
+  String get save => 'Salvar';
+
+  @override
   String invalid_date_format(Object format) {
     return 'Formato da data errado $format';
   }
@@ -164,6 +167,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get configurations_screen_select_label => 'Selecione um apelido';
+
+  @override
+  String get configurations_screen_register_card_label_required => 'Apelido é obrigatório';
 
   @override
   String get configurations_screen_register_card => 'Cadastrar Card';

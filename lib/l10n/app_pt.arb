@@ -23,6 +23,7 @@
   "family": "Família",
   "therapist": "Terapeuta",
   "role": "Função",
+  "save": "Salvar",
   "invalid_date_format": "Formato da data errado {format}",
   "invalid_date": "Data inválida",
   "date_required": "Data é obrigatória",
@@ -54,8 +55,9 @@
   "configurations_screen_register_cards": "Adicionar cards de treinamento",
   "configurations_screen_register_send_image": "Subir imagem",
   "configurations_screen_select_label": "Selecione um apelido",
+  "configurations_screen_register_card_label_required": "Apelido é obrigatório",
   "configurations_screen_register_card": "Cadastrar Card",
-  
+
   "@auth_password_min_length": {
     "placeholders": {
       "length": {}

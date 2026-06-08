@@ -241,6 +241,12 @@ abstract class AppLocalizations {
   /// **'Role'**
   String get role;
 
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
   /// No description provided for @invalid_date_format.
   ///
   /// In en, this message translates to:
@@ -390,6 +396,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a label'**
   String get configurations_screen_select_label;
+
+  /// No description provided for @configurations_screen_register_card_label_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Label is required'**
+  String get configurations_screen_register_card_label_required;
 
   /// No description provided for @configurations_screen_register_card.
   ///

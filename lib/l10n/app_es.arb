@@ -30,6 +30,7 @@
   "date_is_past": "La fecha no puede ser futura.",
   "birth_required": "Se requiere fecha de nacimiento",
   "unexpected_error": "Ocurrió un error inesperado.",
+  "no_data": "Sem dados disponíveis",
 
   "auth_invalid_credentials": "Correo o contraseña incorrectos.",
   "auth_email_required": "Por favor, ingrese su correo.",
@@ -52,9 +53,12 @@
   "configurations_screen_difficulty_level": "Nivel de dificultad",
   "configurations_screen_register_cards": "Agregar tarjetas de entrenamiento",
   "configurations_screen_register_send_image": "Subir imagen",
-  "configurations_screen_select_label": "Seleccione una etiqueta",
+  "configurations_screen_select_label": "Seleccione o escriba una etiqueta (por ejemplo, manzana).",
   "configurations_screen_register_card_label_required": "Se requiere etiqueta",
   "configurations_screen_register_card": "Agregar Tarjeta",
+  "configurations_screen_card_saved": "Tarjeta guardada correctamente.",
+  "configurations_screen_cards": "Tarjeta",
+  "configurations_screen_image_required": "Se requere la imagem.",
 
   "@auth_password_min_length": {
     "placeholders": {

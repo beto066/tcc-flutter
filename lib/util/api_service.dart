@@ -7,8 +7,6 @@ import 'dart:convert';
 
 import 'package:tccflutter/stores/auth_store.dart';
 
-
-
 class ApiService {
   String? _baseUrl;
 

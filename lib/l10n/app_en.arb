@@ -30,6 +30,7 @@
   "date_is_past": "The date cannot be in the future.",
   "birth_required": "Birthday is required",
   "unexpected_error": "An unexpected error occurred.",
+  "no_data": "No hay datos disponibles",
 
   "auth_invalid_credentials": "Incorrect email or password.",
   "auth_email_required": "Please enter your email.",
@@ -52,9 +53,12 @@
   "configurations_screen_difficulty_level": "Difficulty level",
   "configurations_screen_register_cards": "Add training cards",
   "configurations_screen_register_send_image": "Upload image",
-  "configurations_screen_select_label": "Select a label",
+  "configurations_screen_select_label": "Select or type a nickname (e.g., apple)",
   "configurations_screen_register_card_label_required": "Label is required",
   "configurations_screen_register_card": "Add Card",
+  "configurations_screen_card_saved": "Card saved successfully.",
+  "configurations_screen_cards": "Cards",
+  "configurations_screen_image_required": "Image is required.",
 
   "@auth_password_min_length": {
     "placeholders": {

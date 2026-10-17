@@ -44,4 +44,23 @@ class ImageService {
 
     return null;
   }
+
+  Future<List<File>> getImagesByPath(String path) async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    var completePath = '${directory.path}$path';
+    final directoryImages = Directory(completePath);
+
+    if (!await directoryImages.exists()) {
+      return [];
+    }
+
+    final files = await directoryImages
+        .list()
+        .where((file) => file is File)
+        .map((file) => File(file.path))
+        .toList();
+
+    return files;
+  }
 }

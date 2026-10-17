@@ -106,6 +106,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unexpected_error => 'An unexpected error occurred.';
 
   @override
+  String get no_data => 'No hay datos disponibles';
+
+  @override
   String get auth_invalid_credentials => 'Incorrect email or password.';
 
   @override
@@ -166,11 +169,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get configurations_screen_register_send_image => 'Upload image';
 
   @override
-  String get configurations_screen_select_label => 'Select a label';
+  String get configurations_screen_select_label => 'Select or type a nickname (e.g., apple)';
 
   @override
   String get configurations_screen_register_card_label_required => 'Label is required';
 
   @override
   String get configurations_screen_register_card => 'Add Card';
+
+  @override
+  String get configurations_screen_card_saved => 'Card saved successfully.';
+
+  @override
+  String get configurations_screen_cards => 'Cards';
+
+  @override
+  String get configurations_screen_image_required => 'Image is required.';
 }

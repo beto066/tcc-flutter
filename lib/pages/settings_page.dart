@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/theme/default_theme.dart';
 import 'package:tccflutter/util/event_controller.dart';
+import 'package:tccflutter/widgets/molecules/card_training_list.dart';
 import 'package:tccflutter/widgets/molecules/register_card_dialog.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -131,29 +132,18 @@ class SettingsState extends State<SettingsPage> {
                           ),
                         ]
                       ),
-                      // TableRow(
-                      //   children: [
-                      //     Text(
-                      //       "${localization.configurations_screen_difficulty_level}: ",
-                      //       style: const TextStyle(fontSize: 16),
-                      //       softWrap: false,
-                      //     ),
-                      //     Container(),
-                      //   ]
-                      // )
-                      // TableRow(
-                      //   children: [
-                      //     Text(
-                      //       "${localization.configurations_screen_difficulty_level}: ",
-                      //       style: const TextStyle(fontSize: 16),
-                      //       softWrap: false,
-                      //     ),
-                      //     Container(),
-                      //   ]
-                      // )
                     ],
                   ),
                 ),
+
+                Text(localization.configurations_screen_cards),
+
+                Container(
+                  height: 200,
+                  padding: const EdgeInsetsGeometry.all(20),
+                  child: const CardTrainingList(),
+                ),
+
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(

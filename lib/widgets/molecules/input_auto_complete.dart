@@ -55,11 +55,11 @@ class InputAutocomplete extends StatelessWidget {
       },
 
       fieldViewBuilder: (
-          context,
-          textController,
-          textFocusNode,
-          onFieldSubmitted,
-          ) {
+        context,
+        textController,
+        textFocusNode,
+        onFieldSubmitted,
+      ) {
         return SizedBox(
           height: height,
           width: width,

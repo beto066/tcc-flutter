@@ -7,6 +7,7 @@ import 'package:tccflutter/pages/login_page.dart';
 import 'package:tccflutter/pages/new_patient_page.dart';
 import 'package:tccflutter/pages/note_pad_page.dart';
 import 'package:tccflutter/pages/note_table_page.dart';
+
 import 'package:tccflutter/pages/note_training_page.dart';
 import 'package:tccflutter/pages/notes_page.dart';
 import 'package:tccflutter/pages/patients_page.dart';

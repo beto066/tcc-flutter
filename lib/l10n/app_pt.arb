@@ -31,6 +31,7 @@
   "date_is_past": "A data não pode estar no futuro.",
   "birth_required": "Data de nacimento é obrigatório",
   "unexpected_error": "Ocorreu um erro inesperado.",
+  "no_data": "Sem dados disponíveis",
 
   "auth_invalid_credentials": "Email ou senha incorreto.",
   "auth_email_required": "Por favor, insira seu email.",
@@ -54,9 +55,12 @@
   "configurations_screen_difficulty_level": "Dificuldade",
   "configurations_screen_register_cards": "Adicionar cards de treinamento",
   "configurations_screen_register_send_image": "Subir imagem",
-  "configurations_screen_select_label": "Selecione um apelido",
+  "configurations_screen_select_label": "Selecione ou digite um apelido (ex: maçã)",
   "configurations_screen_register_card_label_required": "Apelido é obrigatório",
   "configurations_screen_register_card": "Cadastrar Card",
+  "configurations_screen_card_saved": "Card salvo com sucesso.",
+  "configurations_screen_cards": "Cards",
+  "configurations_screen_image_required": "Imagem é obrigatória",
 
   "@auth_password_min_length": {
     "placeholders": {

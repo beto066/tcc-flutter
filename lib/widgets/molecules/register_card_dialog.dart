@@ -17,8 +17,11 @@ class RegisterCardDialog extends StatefulWidget {
 }
 
 class _RegisterCardDialogState extends State<RegisterCardDialog> {
+  final _formKey = GlobalKey<FormState>();
   final _labelController = TextEditingController();
   final _focusNodeLabel = FocusNode();
+  String? _imageErrorMessage;
+
   File? _image;
   List<String> _labels = [];
 
@@ -44,7 +47,7 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
     return null;
   }
 
-  void _onEditImage() async {
+  Future<void> _onEditImage() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
 
@@ -55,18 +58,52 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
     }
   }
 
+  Future<void> _save() async {
+    if (_image == null) {
+      setState(() {
+        _imageErrorMessage = AppLocalizations.of(context)!
+          .configurations_screen_image_required;
+      });
+      return;
+    }
+    if (_labelController.value.text.isEmpty) return;
+
+    final label = _labelController.value.text;
+
+    CardStore().saveImage(
+      _image!,
+      label,
+      "/${_labels.length}"
+    );
+
+    if (!context.mounted) return;
+
+    Navigator.pop(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(
+        AppLocalizations.of(context)!.configurations_screen_card_saved)
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context)!;
     var buttonColor = Theme.of(context).colorScheme.inversePrimary;
+
+    var contextHeight = MediaQuery.of(context).size.height;
+    var contextWidth = MediaQuery.of(context).size.width;
 
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28),
       ),
       child: Container(
-        margin: const EdgeInsets.all(24),
+        margin: const EdgeInsets.only(top: 20, left: 24, right: 24, bottom: 36),
         child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             mainAxisSize: MainAxisSize.min,
 
@@ -82,8 +119,6 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
                   ),
                 ),
               ),
-
-              const SizedBox(height: 28),
 
               Center(
                 child: Column(
@@ -102,44 +137,61 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
                       borderRadius: BorderRadius.circular(20),
                       onTap: _onEditImage,
                       child: Ink(
-                        width: 140,
+                        width: 100,
+                        height: 100,
+
+                        padding: const EdgeInsetsGeometry.all(5),
 
                         decoration: BoxDecoration(
                           color: Colors.lightBlue[50],
                           borderRadius: BorderRadius.circular(20),
 
                           border: Border.all(
-                            color: buttonColor,
+                            color: const Color(0xFF7A8CBA),
                             width: 2,
                           ),
                         ),
-                        child: SmartImage(
-                          file: _image,
-                          defaultIcon: Icons.add_photo_alternate,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: SmartImage(
+                            file: _image,
+                            defaultIcon: Icons.add_photo_alternate,
+                          ),
                         ),
                       ),
                     ),
+                    if (
+                      _imageErrorMessage != null &&
+                      _imageErrorMessage!.isNotEmpty
+                    ) Text(
+                      _imageErrorMessage!,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.red,
+                      ),
+                    )
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height:  12),
 
               InputAutocomplete(
                 localization.configurations_screen_select_label,
                 focusNode: _focusNodeLabel,
                 controller: _labelController,
                 options: _labels,
+                fontSize: 10,
                 validator: _validateLabel,
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 12),
 
               SizedBox(
                 width: double.infinity,
 
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: _save,
 
                   icon: const Icon(Icons.save, color: Colors.black),
 

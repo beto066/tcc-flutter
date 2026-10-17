@@ -283,6 +283,12 @@ abstract class AppLocalizations {
   /// **'An unexpected error occurred.'**
   String get unexpected_error;
 
+  /// No description provided for @no_data.
+  ///
+  /// In en, this message translates to:
+  /// **'No hay datos disponibles'**
+  String get no_data;
+
   /// No description provided for @auth_invalid_credentials.
   ///
   /// In en, this message translates to:
@@ -394,7 +400,7 @@ abstract class AppLocalizations {
   /// No description provided for @configurations_screen_select_label.
   ///
   /// In en, this message translates to:
-  /// **'Select a label'**
+  /// **'Select or type a nickname (e.g., apple)'**
   String get configurations_screen_select_label;
 
   /// No description provided for @configurations_screen_register_card_label_required.
@@ -408,6 +414,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Card'**
   String get configurations_screen_register_card;
+
+  /// No description provided for @configurations_screen_card_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Card saved successfully.'**
+  String get configurations_screen_card_saved;
+
+  /// No description provided for @configurations_screen_cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards'**
+  String get configurations_screen_cards;
+
+  /// No description provided for @configurations_screen_image_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Image is required.'**
+  String get configurations_screen_image_required;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

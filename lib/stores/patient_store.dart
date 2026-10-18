@@ -64,4 +64,11 @@ class PatientStore {
   Future<File?> getImage(Patient patient) async {
     return await ImageService().getImage('/local-assets/images/patients/', '${patient.name}_${patient.id}');
   }
+
+  Future<void> deleteImage(Patient patient) async {
+    var file = await getImage(patient);
+    if (file != null) {
+      await ImageService().deleteImage(file);
+    }
+  }
 }

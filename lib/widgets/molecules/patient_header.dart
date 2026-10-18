@@ -27,19 +27,20 @@ class PatientHeader extends StatelessWidget {
     this.onEditImage,
   });
 
-  void _showSurveyDialog(BuildContext context) {
-    showDialog(
+  void _showSurveyDialog(BuildContext context) async {
+    final value = await showDialog(
       context: context,
       builder: (context) {
         return SurveyDialog(patient: patient, rootNavigator: true);
       }
-    ).then((value) => {
-      if (Navigator.of(context).mounted && value != null && value is String) {
-        Navigator.popAndPushNamed(context, value, arguments: {
-          'patient': patient
-        })
-      }
-    });
+    );
+
+    if (!context.mounted) return;
+    if (value != null && value is String) {
+      Navigator.popAndPushNamed(context, value, arguments: {
+        'patient': patient
+      });
+    }
   }
 
   @override
@@ -57,22 +58,7 @@ class PatientHeader extends StatelessWidget {
           PersonImage(
             size: imageWidth,
             selectedImage: image,
-            positionedChild: GestureDetector(
-              onTap: onEditImage,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey[900]!, width: 1),
-                ),
-                child: Icon(
-                  Icons.edit,
-                  size: imageWidth * 0.20,
-                  color: Colors.grey[900]!,
-                ),
-              ),
-            ),
+            onTapImage: onTapImage,
           ),
           SizedBox(width: contextWidth * 0.05),
           Column(

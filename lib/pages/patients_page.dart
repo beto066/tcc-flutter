@@ -40,7 +40,9 @@ class _PatientsPageState extends State<PatientsPage> {
         message = null;
       });
     } catch (e) {
-      message = AppLocalizations.of(context)!.patients_fetch_error;
+      if (mounted) {
+        message = AppLocalizations.of(context)!.patients_fetch_error;
+      }
       setState(() {
         isLoading = false;
       });
@@ -63,13 +65,22 @@ class _PatientsPageState extends State<PatientsPage> {
     _fetchPatients();
   }
 
-  void _showSurveyDialog(BuildContext context, Patient patient) {
-    showDialog(
+  void _showSurveyDialog(BuildContext context, Patient patient) async {
+    final value = await showDialog(
       context: context,
       builder: (context) {
-        return SurveyDialog(patient: patient);
+        return SurveyDialog(patient: patient, rootNavigator: true);
       }
     );
+
+    if (!context.mounted) return;
+    if (value != null && value is String) {
+      await Navigator.of(context).pushNamed(value, arguments: {
+        'patient': patient
+      });
+
+      _fetchPatients();
+    }
   }
 
   @override

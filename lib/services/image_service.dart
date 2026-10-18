@@ -63,4 +63,21 @@ class ImageService {
 
     return files;
   }
+
+  Future<void> deleteImage(File image) async {
+    if (await image.exists()) {
+      await image.delete();
+    }
+  }
+
+  Future<void> deleteDirectory(String path) async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    var completePath = '${directory.path}$path';
+    final directoryImages = Directory(completePath);
+
+    if (await directoryImages.exists()) {
+      await directoryImages.delete(recursive: true);
+    }
+  }
 }

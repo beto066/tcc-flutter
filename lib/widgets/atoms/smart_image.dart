@@ -27,8 +27,16 @@ class SmartImage extends StatelessWidget {
     );
 
     if (file != null) {
+      Key? imageKey;
+      try {
+        if (file!.existsSync()) {
+          imageKey = ValueKey('${file!.path}_${file!.lastModifiedSync().microsecondsSinceEpoch}');
+        }
+      } catch (_) {}
+
       return Image.file(
         file!,
+        key: imageKey,
         width: width,
         height: height,
         fit: BoxFit.cover,

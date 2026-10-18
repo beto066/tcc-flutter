@@ -51,8 +51,16 @@ class _CardTrainingListState extends State<CardTrainingList> {
 
     if (mounted) {
       setState(() => _loading = false);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !_controller.hasClients) return;
+        if (_controller.position.maxScrollExtent <= 0 && _hasMore) {
+          _loadPage();
+        }
+      });
     }
   }
+
 
   @override
   void dispose() {
@@ -75,7 +83,18 @@ class _CardTrainingListState extends State<CardTrainingList> {
 
         final card = _cards[index];
 
-        return WrapCardTraining(card: card);
+        return WrapCardTraining(
+          key: ValueKey('${card.label}_${card.images?.length}_${card.images?.fold('', (prev, img) => '${prev}_${img.path}_${img.existsSync() ? img.lastModifiedSync().microsecondsSinceEpoch : ''}')}'),
+          card: card,
+          onCardChanged: () {
+            setState(() {});
+          },
+          onCardDeleted: () {
+            setState(() {
+              _cards.removeWhere((c) => c.label == card.label);
+            });
+          },
+        );
       },
     );
   }

@@ -8,6 +8,7 @@ import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/note_store.dart';
 import 'package:tccflutter/stores/patient_store.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
+import 'package:tccflutter/widgets/molecules/modal_image.dart';
 import 'package:tccflutter/widgets/molecules/patient_header.dart';
 import 'package:tccflutter/widgets/organisms/note_list.dart';
 import 'package:tccflutter/widgets/organisms/patient_form_filter.dart';
@@ -38,24 +39,34 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
   }
 
   void _onTapImage() {
-    if (image != null) {
-      showDialog(
-        context: context,
-        builder: (_) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: InteractiveViewer(
-                child: ClipRRect(
-                  child: Image.file(image!),
-                ),
-              ),
-            ),
-          );
-        },
-      );
+    if (image == null) {
+      _onEditImage();
+      return;
     }
+
+    ModalImage.show(
+      context,
+      image: image!,
+      onEdit: () async {
+        final picker = ImagePicker();
+        final file = await picker.pickImage(source: ImageSource.gallery);
+        if (file != null) {
+          final newFile = File(file.path);
+          await PatientStore().saveImage(newFile, widget.patient);
+          await _loadImage();
+          return image;
+        }
+        return null;
+      },
+      onDelete: () async {
+        if (image != null) {
+          await PatientStore().deleteImage(widget.patient);
+          setState(() {
+            image = null;
+          });
+        }
+      },
+    );
   }
 
   void _onEditImage() async {
@@ -114,7 +125,6 @@ class _DetailPatientPageState extends State<DetailPatientPage> {
 
   @override
   Widget build(BuildContext context) {
-    var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     var contextHeight = MediaQuery.of(context).size.height;
     var contextWidth = MediaQuery.of(context).size.width;
 

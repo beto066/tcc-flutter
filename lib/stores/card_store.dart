@@ -38,6 +38,7 @@ class CardStore {
         prefsKey,
         labels,
       );
+      _labels = labels;
     }
   }
 
@@ -91,10 +92,33 @@ class CardStore {
     return await ImageService().getImagesByPath('/local-assets/images/cards/$label');
   }
 
+  Future<void> deleteImage(File image, String label) async {
+    await ImageService().deleteImage(image);
+    final remainingImages = await getImages(label);
+    if (remainingImages.isEmpty) {
+      await deleteLabel(label);
+    }
+  }
+
+  Future<void> deleteLabel(String label) async {
+    final prefs = await SharedPreferences.getInstance();
+    final labels = prefs.getStringList(prefsKey) ?? [];
+    labels.remove(label);
+    await prefs.setStringList(prefsKey, labels);
+    _labels = labels;
+    await ImageService().deleteDirectory('/local-assets/images/cards/$label');
+  }
+
+  Future<File> editImage(File oldImage, File newImage) async {
+    final updated = await newImage.copy(oldImage.path);
+    return updated;
+  }
+
   Future<List<String>> get labels async {
     if (_labels != null) return _labels!;
 
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(prefsKey) ?? [];
+    _labels = prefs.getStringList(prefsKey) ?? [];
+    return _labels!;
   }
 }

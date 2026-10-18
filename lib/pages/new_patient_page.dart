@@ -8,6 +8,7 @@ import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/patient_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 import 'package:tccflutter/widgets/atoms/person_image.dart';
+import 'package:tccflutter/widgets/molecules/modal_image.dart';
 
 class NewPatientPage extends StatefulWidget {
   const NewPatientPage({super.key});
@@ -146,24 +147,32 @@ class NewPatientPageState extends State<NewPatientPage> {
   }
 
   void _onTapImage() {
-    if (_selectedFile != null) {
-      showDialog(
-        context: context,
-        builder: (_) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: InteractiveViewer(
-                child: ClipRRect(
-                  child: Image.file(_selectedFile!),
-                ),
-              ),
-            ),
-          );
-        },
-      );
+    if (_selectedFile == null) {
+      _onEditImage();
+      return;
     }
+
+    ModalImage.show(
+      context,
+      image: _selectedFile!,
+      onEdit: () async {
+        final picker = ImagePicker();
+        final file = await picker.pickImage(source: ImageSource.gallery);
+        if (file != null) {
+          final newFile = File(file.path);
+          setState(() {
+            _selectedFile = newFile;
+          });
+          return newFile;
+        }
+        return null;
+      },
+      onDelete: () async {
+        setState(() {
+          _selectedFile = null;
+        });
+      },
+    );
   }
 
   void _onEditImage() async {
@@ -221,22 +230,6 @@ class NewPatientPageState extends State<NewPatientPage> {
               size: containerLogoHeight,
               border: Border.all(width: 3, color: Colors.grey[800]!),
               onTapImage: _onTapImage,
-              positionedChild: GestureDetector(
-                onTap: _onEditImage,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey[900]!, width: 1),
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    size: containerLogoHeight * 0.20,
-                    color: Colors.grey[900]!,
-                  ),
-                ),
-              ),
             ),
             Form(
               key: _formKey,

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/models/card_training.dart';
 import 'package:tccflutter/services/image_service.dart';
 
@@ -17,10 +16,10 @@ class CardStore {
   }
 
   Future<void> saveImage(
-      File image,
-      String label,
-      String name,
-      ) async {
+    AppImage image,
+    String label,
+    String name,
+  ) async {
     await ImageService().saveImage(
       image,
       '/local-assets/images/cards/$label',
@@ -53,10 +52,10 @@ class CardStore {
     if (filter != null && filter.isNotEmpty) {
       labels = labels
           .where(
-            (label) => label.toLowerCase().contains(
-          filter.toLowerCase(),
-        ),
-      )
+            (label) => label.trim().toLowerCase().contains(
+                  filter.toLowerCase(),
+                ),
+          )
           .toList();
     }
 
@@ -72,10 +71,10 @@ class CardStore {
 
     final cards = await Future.wait(
       pageLabels.map((label) async {
-        final images = await getImages(label);
+        final images = await getImages(label.trim());
 
         return CardTraining(
-          label: label,
+          label: label.trim(),
           images: images,
         );
       }),
@@ -84,34 +83,39 @@ class CardStore {
     return cards;
   }
 
-  Future<File?> getImage(String label, String name) async {
-    return await ImageService().getImage('/local-assets/images/cards/$label', name);
+  Future<AppImage?> getImage(String label, String name) async {
+    return await ImageService()
+        .getImage('/local-assets/images/cards/$label', name);
   }
 
-  Future<List<File>> getImages(String label) async {
-    return await ImageService().getImagesByPath('/local-assets/images/cards/$label');
+  Future<List<AppImage>> getImages(String label) async {
+    return await ImageService()
+        .getImagesByPath('/local-assets/images/cards/$label');
   }
 
-  Future<void> deleteImage(File image, String label) async {
+  Future<void> deleteImage(AppImage image, String label) async {
     await ImageService().deleteImage(image);
-    final remainingImages = await getImages(label);
+    final remainingImages = await getImages(label.trim());
+
     if (remainingImages.isEmpty) {
-      await deleteLabel(label);
+      await deleteLabel(label.trim());
     }
   }
 
   Future<void> deleteLabel(String label) async {
     final prefs = await SharedPreferences.getInstance();
     final labels = prefs.getStringList(prefsKey) ?? [];
-    labels.remove(label);
+    labels.remove(label.trim());
+
     await prefs.setStringList(prefsKey, labels);
+
     _labels = labels;
+
     await ImageService().deleteDirectory('/local-assets/images/cards/$label');
   }
 
-  Future<File> editImage(File oldImage, File newImage) async {
-    final updated = await newImage.copy(oldImage.path);
-    return updated;
+  Future<AppImage> editImage(AppImage oldImage, AppImage newImage) async {
+    return ImageService().replaceImage(oldImage, newImage);
   }
 
   Future<List<String>> get labels async {

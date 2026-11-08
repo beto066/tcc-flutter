@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class InputText extends StatefulWidget {
   final String label;
-  final String? Function(String?) validator;
+  final FormFieldValidator<String>? validator;
   final TextEditingController controller;
   final OutlineInputBorder? enabledBorder;
   final OutlineInputBorder? focusedBorder;
@@ -16,9 +16,10 @@ class InputText extends StatefulWidget {
   final bool obscureText;
   final double fontSize;
 
-  const InputText(this.label, {
+  const InputText(
+    this.label, {
     super.key,
-    required this.validator,
+    this.validator,
     required this.controller,
     this.enabledBorder,
     this.focusedBorder,
@@ -46,9 +47,8 @@ class _InputTextState extends State<InputText> {
       height: widget.height,
       width: widget.width,
       child: TextFormField(
-        onFieldSubmitted: widget.onSubmitted != null ?
-          (_) => widget.onSubmitted!():
-          null,
+        onFieldSubmitted:
+            widget.onSubmitted != null ? (_) => widget.onSubmitted!() : null,
         focusNode: widget.focusNode,
         controller: widget.controller,
         obscureText: widget.maxLines != null && widget.obscureText,
@@ -64,28 +64,26 @@ class _InputTextState extends State<InputText> {
           floatingLabelStyle: const TextStyle(
             color: Color(0xFF7A8CBA),
           ),
-
-          border: widget.enabledBorder ?? OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFFDEE2E3)),
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-
-          focusedBorder: widget.focusedBorder ?? OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFF7A8CBA)),
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-
-          enabledBorder: widget.enabledBorder ?? OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFFBEC2C3)),
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-
+          border: widget.enabledBorder ??
+              OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFFDEE2E3)),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+          focusedBorder: widget.focusedBorder ??
+              OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFF7A8CBA)),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+          enabledBorder: widget.enabledBorder ??
+              OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFFBEC2C3)),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 16.0,
             horizontal: 20.0,
           ),
         ),
-
         onTap: widget.onTap,
         validator: widget.validator,
       ),

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/stores/note_store.dart';
 import 'package:tccflutter/widgets/molecules/card_list_item.dart';
@@ -70,32 +71,23 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     var contextHeight = MediaQuery.of(context).size.height;
-    var contextWidth = MediaQuery.of(context).size.width;
+    final localization = AppLocalizations.of(context)!;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          CardListItem(
-            'Abrir filtros de pesquisa',
-            initialHeight: max(contextHeight * 0.06, 50),
-            finalHeight: max(contextHeight * 0.06, 50) + 170,
-            child: PatientFormFilter(onSearch: (queries) {
-              _fetchNotes(queries: queries);
-            }),
-          ),
-
-          NoteList(
-            notes: notes,
-            height: contextHeight * 0.75 - 100,
-            onSave: _fetchNotes,
-            onExpand: _onExpanded,
-            expandedId: expandedId,
-            originalNoteExpanded: originalNoteExpanded,
-          )
-        ],
+    return NoteList(
+      notes: notes,
+      header: CardListItem(
+        localization.note_filter_title,
+        initialHeight: max(contextHeight * 0.06, 50),
+        finalHeight: max(contextHeight * 0.06, 50) + 170,
+        child: PatientFormFilter(onSearch: (queries) {
+          _fetchNotes(queries: queries);
+        }),
       ),
+      onSave: _fetchNotes,
+      onExpand: _onExpanded,
+      expandedId: expandedId,
+      originalNoteExpanded: originalNoteExpanded,
     );
   }
 }

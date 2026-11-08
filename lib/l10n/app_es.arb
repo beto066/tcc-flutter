@@ -5,6 +5,9 @@
   "config": "Cnfg.",
   "settings": "Ajustes",
   "home": "Inicio",
+  "bottom_link_settings": "Ajustes",
+  "bottom_link_notes": "Notas",
+  "bottom_link_logout": "Salir",
   "patient_details": "Datos del paciente",
   "note_table_screen": "Nueva anotación en la tabla",
   "note_pad_screen": "Anotación de texto",
@@ -20,17 +23,18 @@
   "patients": "Pacientes",
   "notes": "Notas",
   "new_patient": "Nuevo Paciente",
-  "family": "Family",
-  "therapist": "Therapist",
+  "family": "Familia",
+  "therapist": "Terapeuta",
   "role": "Rol",
-  "save": "ahorrar",
+  "save": "Guardar",
   "invalid_date_format": "Formato de fecha incorrecto {format}",
   "invalid_date": "Fecha no válida",
+  "date_required": "La fecha es obligatoria",
   "date_min_value": "La fecha debe ser posterior a {min_value}",
   "date_is_past": "La fecha no puede ser futura.",
   "birth_required": "Se requiere fecha de nacimiento",
   "unexpected_error": "Ocurrió un error inesperado.",
-  "no_data": "Sem dados disponíveis",
+  "no_data": "No hay datos disponibles",
 
   "auth_invalid_credentials": "Correo o contraseña incorrectos.",
   "auth_email_required": "Por favor, ingrese su correo.",
@@ -48,6 +52,7 @@
   "patients_screen_description": "Seleccione un paciente para verlo o agregar notas.",
   "patients_treatment_started_at": "El tratamiento comenzó en:",
   "patients_fetch_error": "Ocurrió un error al buscar los pacientes. Por favor, intente nuevamente más tarde.",
+  "patients_no_patients": "No se encontraron pacientes. Agregue uno para comenzar.",
 
   "configurations_screen_language": "Idioma",
   "configurations_screen_difficulty_level": "Nivel de dificultad",
@@ -57,8 +62,126 @@
   "configurations_screen_register_card_label_required": "Se requiere etiqueta",
   "configurations_screen_register_card": "Agregar Tarjeta",
   "configurations_screen_card_saved": "Tarjeta guardada correctamente.",
-  "configurations_screen_cards": "Tarjeta",
-  "configurations_screen_image_required": "Se requere la imagem.",
+  "configurations_screen_cards": "Tarjetas",
+  "configurations_screen_image_required": "La imagen es obligatoria.",
+  "training_result_success": "Éxito",
+  "training_result_success_compact": "ÉXIT",
+  "training_result_success_with_tip": "Éxito con ayuda",
+  "training_result_error": "Error",
+  "training_result_error_compact": "ERR",
+  "training_result_tip_short": "Ayuda",
+  "average_short": "PROM",
+  "training_result_select": "Seleccione un resultado",
+  "training_feedback_success": "¡Muy bien!",
+  "training_feedback_success_with_tip": "¡Muy bien! Respuesta con ayuda.",
+  "training_feedback_error": "Está bien, intentemos con otro elemento.",
+  "training_feedback_try_again": "¡Casi! Inténtalo de nuevo.",
+  "training_action_success": "Éxito",
+  "training_action_error": "Error",
+  "training_action_tip": "Ayuda",
+  "training_action_success_with_tip": "Éxito con ayuda",
+  "training_successes": "Éxitos {count}",
+  "training_errors": "Errores {count}",
+  "training_saving": "Guardando",
+  "training_finish": "Finalizar",
+  "home_training_chart_title": "Resultados de los entrenamientos",
+  "home_training_chart_description": "Este gráfico solo incluye casos de entrenamiento.",
+  "error_prefix": "Error",
+  "note_field_empty": "Este campo no puede estar vacío",
+  "note_visible": "Hacer visible",
+  "note_hidden": "Hacer invisible",
+  "note_add_text": "Agregar texto",
+  "note_text_placeholder": "Escriba el texto",
+  "note_empty_text": "No hay texto en esta anotación",
+  "note_empty_table": "No hay valores en esta anotación",
+  "note_empty_training": "No hay resultados en esta anotación",
+  "note_new_value": "Nuevo",
+  "note_edit": "Editar",
+  "note_delete": "Eliminar",
+  "note_save_tooltip": "Guardar",
+  "note_filter_title": "Abrir filtros de búsqueda",
+  "note_filter_title_label": "Título",
+  "note_filter_from": "Desde:",
+  "note_filter_to": "Hasta:",
+  "note_filter_type": "Tipo",
+  "note_type_notepad": "Anotación",
+  "note_type_table": "Tabla",
+  "note_type_training": "Entrenamiento",
+  "patient_note_count": "Cant. anotaciones",
+  "patient_age": "Edad",
+  "patient_therapy_duration": "Años de terapia",
+  "patient_collect_data": "Recopilar datos",
+  "note_filter_submit": "Buscar",
+  "note_untitled": "Sin título",
+  "navigation_history_empty": "No hay historial de navegación",
+  "survey_dialog_title": "Elija el tipo de recopilación",
+  "survey_dialog_description": "Seleccione cómo desea registrar los datos.",
+  "survey_tests": "Pruebas",
+  "survey_tests_description": "Consulte los resultados de la recopilación.",
+  "survey_notes": "Anotaciones",
+  "survey_notes_description": "Registre observaciones en texto libre.",
+  "survey_table": "Tabla",
+  "survey_table_description": "Organice los datos en una tabla.",
+  "close": "Cerrar",
+  "image_edit": "Editar imagen",
+  "image_delete": "Eliminar imagen",
+  "training_program_matching": "Correspondencia",
+  "training_program_receptive": "Receptivo",
+  "training_program_expressive": "Expresivo",
+  "training_difficulty_mass": "Entrenamiento masivo",
+  "training_difficulty_distraction": "Fase de distracción",
+  "training_difficulty_extended": "Entrenamiento extendido",
+  "training_difficulty_random": "Rotación aleatoria",
+  "training_lets_start": "¡Vamos a entrenar!",
+  "training_type": "Tipo de entrenamiento",
+  "training_difficulty_level": "Nivel de dificultad",
+  "training_target_stimulus": "Estímulo objetivo",
+  "training_options_quantity": "Cantidad de opciones",
+  "training_option_singular": "opción",
+  "training_option_plural": "opciones",
+  "training_random_options_description": "La rotación aleatoria usa todos los estímulos disponibles ({count}).",
+  "training_register_target_images": "Agregue imágenes para elegir el estímulo objetivo de este nivel.",
+  "training_register_images": "Agregue imágenes para los estímulos del entrenamiento.",
+  "training_start": "Comenzar",
+  "training_mass_description": "Entrene con una opción o aumente la cantidad para garantizar el éxito.",
+  "training_distraction_description": "Comience con estímulos neutros y luego avance a tarjetas distractoras.",
+  "training_extended_description": "Varíe las imágenes del estímulo objetivo y use estímulos ya entrenados como distractores.",
+  "training_random_description": "Los estímulos e imágenes se seleccionan y mezclan aleatoriamente.",
+  "training_find_matching_image": "Encuentre la imagen igual",
+  "training_tap_target": "Toque: {target}",
+  "training_expressive_prompt": "¿Qué es esto?",
+  "training_distraction_phase": "Fase de distractores",
+  "training_neutral_distractions": "Neutros",
+  "training_neutral_stimulus": "Estímulo neutro",
+  "training_cards": "Tarjetas",
+  "training_complete_title": "¡Entrenamiento completado!",
+  "training_complete_summary": "Respuestas registradas: {total}\nAciertos: {successes}\nIntentos incorrectos: {errors}",
+  "training_complete_action": "Finalizar",
+  "training_no_cards": "Agregue imágenes a al menos una tarjeta para comenzar un entrenamiento.",
+  "training_preferences_error": "No se pudieron cargar las preferencias: {error}",
+  "training_cards_error": "No se pudieron cargar las tarjetas: {error}",
+  "training_history_error": "No se pudo cargar el historial de entrenamiento: {error}",
+  "training_history_save_error": "No se pudo guardar el historial del entrenamiento: {error}",
+  "training_visual_distraction_requires_cards": "Agregue otra tarjeta para usar distractores visuales.",
+  "training_save_error": "No se pudo guardar el entrenamiento: {error}",
+  "training_preferences_save_error": "No se pudo guardar la preferencia: {error}",
+  "training_defaults_load_error": "No se pudieron cargar los valores predeterminados: {error}",
+  "training_defaults_save_error": "No se pudo guardar el valor predeterminado: {error}",
+  "training_unexpected_user": "No hay un usuario autenticado para guardar la preferencia.",
+  "training_unexpected_user_load": "No hay un usuario autenticado para cargar las preferencias.",
+  "training_identity_error": "No se pudo identificar al paciente o al usuario autenticado.",
+  "training_patient_identity_error": "No se pudo identificar al paciente del entrenamiento.",
+  "image_storage_unsupported": "El almacenamiento local de imágenes no es compatible con esta plataforma.",
+  "image_storage_path_missing": "La imagen no tiene una ruta de almacenamiento.",
+  "image_view_tooltip": "Ver imagen",
+  "image_add_tooltip": "Agregar imagen",
+  "training_hint_after": "Ayuda después de",
+  "seconds": "segundos",
+  "training_default": "Entrenamiento predeterminado",
+  "training_difficulty_default": "Dificultad predeterminada",
+  "training_defaults_title": "Valores predeterminados del entrenamiento",
+  "try_again": "Intentar de nuevo",
+  "note_pad_enter_text": "Escriba algo",
 
   "@auth_password_min_length": {
     "placeholders": {
@@ -83,6 +206,73 @@
   "@date_min_value": {
     "placeholders": {
       "min_value": {}
+    }
+  },
+  "@training_successes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_errors": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_random_options_description": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_history_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_tap_target": {
+    "placeholders": {
+      "target": {}
+    }
+  },
+  "@training_complete_summary": {
+    "placeholders": {
+      "total": {},
+      "successes": {},
+      "errors": {}
+    }
+  },
+  "@training_preferences_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_cards_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_history_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_preferences_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_defaults_load_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_defaults_save_error": {
+    "placeholders": {
+      "error": {}
     }
   }
 }

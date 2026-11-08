@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/enums/note_type.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
@@ -57,19 +58,24 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     var contextHeight = MediaQuery.of(context).size.height;
     var contextWidth = MediaQuery.of(context).size.width;
 
     List<DropdownMenuItem<NoteType?>> items = NoteType.values.map((NoteType option) {
       return DropdownMenuItem<NoteType?>(
         value: option,
-        child: Text(option.name),
+        child: Text(switch (option) {
+          NoteType.notepad => localization.note_type_notepad,
+          NoteType.table => localization.note_type_table,
+          NoteType.training => localization.note_type_training,
+        }),
       );
     }).toList();
 
-    items.add(const DropdownMenuItem<NoteType?>(
+    items.add(DropdownMenuItem<NoteType?>(
       value: null,
-      child: Text('Tipo'),
+      child: Text(localization.note_filter_type),
     ));
 
     return Wrap(
@@ -78,7 +84,7 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: InputText(
-            'Título',
+            localization.note_filter_title_label,
             height: 40,
             validator: (_) => null,
             controller: _textController,
@@ -88,7 +94,7 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
         SizedBox(width: contextWidth, height: contextHeight * 0.01),
         const SizedBox(width: 10),
         InputText(
-          'Desde: ',
+          localization.note_filter_from,
           validator: (_) => null,
           controller: _fromDateTimeController,
           width: contextWidth * 0.42,
@@ -99,7 +105,7 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
         SizedBox(width: max((contextWidth * 0.16) - 48, 0)),
         // SizedBox(width: contextWidth, height: contextHeight * 0.01),
         InputText(
-          'Até: ',
+          localization.note_filter_to,
           validator: (_) => null,
           controller: _toDateTimeController,
           width: contextWidth * 0.42,
@@ -126,7 +132,10 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
             dropdownColor: Colors.white,
             value: _noteTypeFilter,
             underline: Container(),
-            hint: const Text("Tipo", style: TextStyle(color: Colors.black),),
+            hint: Text(
+              localization.note_filter_type,
+              style: const TextStyle(color: Colors.black),
+            ),
             icon: const Icon(Icons.arrow_drop_down),
             isExpanded: true,
             items: items,
@@ -145,11 +154,11 @@ class _PatientFormFilterState extends State<PatientFormFilter> {
             onPressed: () {
               _onSearch();
             },
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Enviar'),
-                Icon(Icons.send)
+                Text(localization.note_filter_submit),
+                const Icon(Icons.send)
               ],
             )
           ),

@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:tccflutter/models/app_image.dart';
 
 class SmartImage extends StatelessWidget {
-  final File? file;
+  final AppImage? file;
   final String? imageUrl;
   final double width;
   final double height;
@@ -27,16 +26,9 @@ class SmartImage extends StatelessWidget {
     );
 
     if (file != null) {
-      Key? imageKey;
-      try {
-        if (file!.existsSync()) {
-          imageKey = ValueKey('${file!.path}_${file!.lastModifiedSync().microsecondsSinceEpoch}');
-        }
-      } catch (_) {}
-
-      return Image.file(
-        file!,
-        key: imageKey,
+      return Image.memory(
+        file!.bytes,
+        key: ValueKey(file!.id),
         width: width,
         height: height,
         fit: BoxFit.cover,

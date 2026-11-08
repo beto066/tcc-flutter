@@ -1,83 +1,58 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'package:tccflutter/exceptions/localized_app_exception.dart';
+import 'package:tccflutter/models/app_image.dart';
+import 'package:tccflutter/services/image_storage_stub.dart'
+    if (dart.library.io) 'package:tccflutter/services/image_storage_io.dart'
+    if (dart.library.html) 'package:tccflutter/services/image_storage_web.dart'
+    as platform;
 
 class ImageService {
   static final ImageService _instance = ImageService._internal();
 
   ImageService._internal();
 
-  factory ImageService() {
-    return _instance;
+  factory ImageService() => _instance;
+
+  final _storage = platform.createImageStorage();
+
+  Future<AppImage> saveImage(
+    AppImage image,
+    String filePath,
+    String imageName,
+  ) {
+    final normalizedName = imageName.replaceAll(RegExp(r'^/+'), '');
+    final relativePath = p.join(
+      _normalizePath(filePath),
+      '$normalizedName.png',
+    );
+    return _storage.save(image.bytes, relativePath);
   }
 
-    Future<File> saveImage(File image, String filePath, String imageName) async {
-    final directory = await getApplicationDocumentsDirectory();
+  Future<AppImage?> getImage(String filePath, String imageName) {
+    final normalizedName = imageName.replaceAll(RegExp(r'^/+'), '');
+    final relativePath = p.join(
+      _normalizePath(filePath),
+      '$normalizedName.png',
+    );
+    return _storage.get(relativePath);
+  }
 
-    var completeFilePath = '${directory.path}$filePath';
-    var completePath = '$completeFilePath$imageName.png';
+  Future<List<AppImage>> getImagesByPath(String path) =>
+      _storage.getAll(_normalizePath(path));
 
-    final dir = Directory(completeFilePath);
+  Future<void> deleteImage(AppImage image) => _storage.delete(image);
 
-    if (!await dir.exists()) {
-      await dir.create(recursive: true);
+  Future<void> deleteDirectory(String path) =>
+      _storage.deleteDirectory(_normalizePath(path));
+
+  Future<AppImage> replaceImage(AppImage existing, AppImage replacement) {
+    final relativePath = existing.relativePath;
+    if (relativePath == null) {
+      throw LocalizedStateError(AppErrorCode.imageStoragePathMissing);
     }
-
-    final destination = File(completePath);
-
-    final newImage = await image.copy(completePath);
-
-    return newImage;
+    return _storage.save(replacement.bytes, relativePath);
   }
 
-  Future<File?> getImage(String filePath, String imageName) async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    var completeFilePath = '${directory.path}$filePath';
-    var completePath = '$completeFilePath$imageName.png';
-
-    var file = File(completePath);
-
-    if (await file.exists()) {
-      return file;
-    }
-
-    return null;
-  }
-
-  Future<List<File>> getImagesByPath(String path) async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    var completePath = '${directory.path}$path';
-    final directoryImages = Directory(completePath);
-
-    if (!await directoryImages.exists()) {
-      return [];
-    }
-
-    final files = await directoryImages
-        .list()
-        .where((file) => file is File)
-        .map((file) => File(file.path))
-        .toList();
-
-    return files;
-  }
-
-  Future<void> deleteImage(File image) async {
-    if (await image.exists()) {
-      await image.delete();
-    }
-  }
-
-  Future<void> deleteDirectory(String path) async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    var completePath = '${directory.path}$path';
-    final directoryImages = Directory(completePath);
-
-    if (await directoryImages.exists()) {
-      await directoryImages.delete(recursive: true);
-    }
-  }
+  String _normalizePath(String path) =>
+      p.normalize(path.replaceAll(RegExp(r'^/+'), ''));
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/util/custom_route_observer.dart';
 
 class HistoryNavigation extends StatefulWidget {
@@ -16,6 +17,22 @@ class HistoryNavigationState extends State<HistoryNavigation> {
     List<Widget> navItems = [];
 
     CustomRouteObserver observer = widget.observer ??  CustomRouteObserver();
+    final localization = AppLocalizations.of(context)!;
+
+    String routeLabel(String route) => switch (route) {
+          'Login' => localization.login,
+          'Register' => localization.register,
+          'Home' => localization.home,
+          'Patients' => localization.patients,
+          'Notes' => localization.notes,
+          'Configurations' => localization.settings,
+          'Patient' => localization.patient_details,
+          'NewPatient' => localization.new_patient,
+          'NoteTable' => localization.note_table_screen,
+          'NotePad' => localization.note_pad_screen,
+          'NoteTraining' => localization.note_training_screen,
+          _ => route,
+        };
 
     int quantPages = observer.pages.length;
 
@@ -26,17 +43,17 @@ class HistoryNavigationState extends State<HistoryNavigation> {
         navItems.add(
             GestureDetector(
               onTap: () => popAndNavigateTo(observer.pages[i]),
-              child: Text(observer.pages[i]),
+              child: Text(routeLabel(observer.pages[i])),
             )
         );
         if (i < quantPages - 1) {
           navItems.add(const SizedBox(width: 7.5));
-          navItems.add(const Text(' > '));
+          navItems.add(const Text(' › '));
           navItems.add(const SizedBox(width: 7.5));
         }
       }
     } else {
-      navItems.add(const Text('No navigation history'));
+      navItems.add(Text(AppLocalizations.of(context)!.navigation_history_empty));
     }
 
     return navItems;

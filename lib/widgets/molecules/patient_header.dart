@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/widgets/atoms/associative_label.dart';
 import 'package:tccflutter/widgets/atoms/button_tile.dart';
@@ -12,7 +12,7 @@ class PatientHeader extends StatelessWidget {
   final String age;
   final String therapyDuration;
   final Patient patient;
-  final File? image;
+  final AppImage? image;
   final VoidCallback? onTapImage;
   final VoidCallback? onEditImage;
 
@@ -45,8 +45,7 @@ class PatientHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
-    // var contextHeight = MediaQuery.of(context).size.height;
+    final localization = AppLocalizations.of(context)!;
     var contextWidth = MediaQuery.of(context).size.width;
     double imageWidth = (contextWidth * 0.25 > 130)? 130: contextWidth * 0.25;
 
@@ -64,13 +63,19 @@ class PatientHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AssociativeLabel(label: 'quant. anotações', data: countNotes),
-              AssociativeLabel(label: 'Idade', data: age),
-              AssociativeLabel(label: 'Anos de terapia', data: therapyDuration),
+              AssociativeLabel(
+                label: localization.patient_note_count,
+                data: countNotes,
+              ),
+              AssociativeLabel(label: localization.patient_age, data: age),
+              AssociativeLabel(
+                label: localization.patient_therapy_duration,
+                data: therapyDuration,
+              ),
               SizedBox(
                 width: contextWidth * 0.45,
                 child: ButtonTile(
-                  'Levantar dados',
+                  localization.patient_collect_data,
                   fontSize: 13.5,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   onTap: () {

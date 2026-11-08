@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/models/patient.dart';
@@ -61,6 +62,7 @@ class _NoteTablePageState extends State<NoteTablePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     var contextWidth = MediaQuery.of(context).size.width;
     var contextHeight = MediaQuery.of(context).size.height;
     return SizedBox(
@@ -76,7 +78,7 @@ class _NoteTablePageState extends State<NoteTablePage> {
                 ElevatedButton.icon(
                   onPressed: _onSave,
                   icon: const Icon(Icons.save),
-                  label: const Text("Salvar"),
+                  label: Text(localization.save),
                 ),
 
                 const SizedBox(width: 12),
@@ -85,8 +87,8 @@ class _NoteTablePageState extends State<NoteTablePage> {
                   onPressed: _onToggleVisibility,
                   icon: const Icon(Icons.visibility),
                   label: _note.visibilityForFamily ?? false?
-                    const Text("Tornar Visível"):
-                    const Text('Tornar Invisível'),
+                    Text(localization.note_visible):
+                    Text(localization.note_hidden),
                 ),
               ],
             ),

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_table.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 import 'package:tccflutter/stores/note_store.dart';
+import 'package:tccflutter/util/training_result_localization.dart';
 
-class SelectNoteTableValue extends StatefulWidget
-{
+class SelectNoteTableValue extends StatefulWidget {
   final NoteTable note;
   final int? index;
   final void Function(NoteTableValue) onSelect;
 
-  const SelectNoteTableValue({super.key, required this.note, required this.onSelect, this.index});
+  const SelectNoteTableValue(
+      {super.key, required this.note, required this.onSelect, this.index});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,59 +27,69 @@ class SelectNoteTableValueState extends State<SelectNoteTableValue> {
   @override
   Widget build(BuildContext context) {
     var contextWidth = MediaQuery.of(context).size.width;
-    var contextHeight = MediaQuery.of(context).size.height;
-    
+    final localization = AppLocalizations.of(context)!;
+
     return SizedBox(
       height: 110,
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Text(
-              'Selecione um resultado',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              localization.training_result_select,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             SizedBox(
               width: contextWidth,
               child: FutureBuilder(
-                future: _fetchNoteValues(),
-                builder: (context, snapshot) {
+                  future: _fetchNoteValues(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Wrap(
+                        spacing: 10,
+                        alignment: WrapAlignment.center,
+                        children: snapshot.data!.map((value) {
+                          if (value is NoteTableValue) {
+                            return SizedBox(
+                              width: 80,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    widget.onSelect(value);
+                                  },
+                                  child: Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            localizedTableValueLabel(
+                                              value,
+                                              localization,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ])),
+                            );
+                          }
+                          return Container();
+                        }).toList(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text(
+                          '${localization.error_prefix}: ${snapshot.error}',
+                        ),
+                      );
+                    }
 
-                  if (snapshot.hasData) {
-                    return Wrap(
-                      spacing: 10,
-                      alignment: WrapAlignment.center,
-                      children: snapshot.data!.map((value) {
-                        if (value is NoteTableValue) {
-                          return SizedBox(
-                            width: 80,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                widget.onSelect(value);
-                              },
-                              child: Flex(direction: Axis.horizontal, children: [
-                                Text(value.label ?? ''),
-                              ])
-                            ),
-                          );
-                        }
-                        return Container();
-                      }).toList(),
+                    return const SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
                     );
-                  } else if (snapshot.hasError) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  }
-
-                  return const SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              ),
+                  }),
             ),
           ],
         ),

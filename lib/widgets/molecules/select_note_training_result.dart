@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/enums/training_result.dart';
 import 'package:tccflutter/models/note_training.dart';
+import 'package:tccflutter/util/training_result_localization.dart';
 
 class SelectNoteTrainingResult extends StatefulWidget {
   final NoteTraining note;
@@ -18,16 +20,16 @@ class SelectNoteTrainingResultState extends State<SelectNoteTrainingResult> {
   @override
   Widget build(BuildContext context) {
     var contextWidth = MediaQuery.of(context).size.width;
-    var contextHeight = MediaQuery.of(context).size.height;
+    final localization = AppLocalizations.of(context)!;
 
     return SizedBox(
       height: 110,
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Text(
-              'Selecione um resultado',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              localization.training_result_select,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -48,9 +50,11 @@ class SelectNoteTrainingResultState extends State<SelectNoteTrainingResult> {
 
                         Navigator.pop(context);
                       },
-                      child: Flex(direction: Axis.horizontal, children: [
-                        Text(value.label),
-                      ])
+                      child: Text(
+                        localizedTrainingResult(value, localization),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   );
                 }).toList(),

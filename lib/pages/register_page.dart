@@ -111,7 +111,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     if (value.length < minLengthPassword) {
-      return AppLocalizations.of(context)!.auth_password_min_length(minLengthPassword);
+      return AppLocalizations.of(context)!
+          .auth_password_min_length(minLengthPassword);
     }
 
     return null;
@@ -135,11 +136,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     if (value.length < minNamePassword) {
-      return AppLocalizations.of(context)!.auth_name_min_length(minNamePassword);
+      return AppLocalizations.of(context)!
+          .auth_name_min_length(minNamePassword);
     }
 
     if (value.length < maxNamePassword) {
-      return AppLocalizations.of(context)!.auth_name_max_length(maxNamePassword);
+      return AppLocalizations.of(context)!
+          .auth_name_max_length(maxNamePassword);
     }
 
     return null;
@@ -155,154 +158,172 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var contextWidth = MediaQuery.of(context).size.width;
-    var logoWidth = MediaQuery.of(context).size.width * 0.8;
-    var containerLogoHeight = MediaQuery.of(context).size.height * 0.2;
+    final localization = AppLocalizations.of(context)!;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            SizedBox(
-              height: containerLogoHeight,
-              child: OverflowBox(
-                maxHeight: logoWidth * 0.8,
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: logoWidth * 0.8,
-                  child: Center(child: Image.asset('assets/images/logo.png'))
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final contentWidth =
+            constraints.maxWidth > constraints.maxHeight ? 1040.0 : 520.0;
+        final form = Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputText(
+                localization.name,
+                focusNode: _focusNodeName,
+                validator: _nameValidator,
+                controller: _nameController,
+                keyboardType: TextInputType.text,
+                onSubmitted: _register,
+              ),
+              const SizedBox(height: 12),
+              InputText(
+                localization.email,
+                focusNode: _focusNodeEmail,
+                validator: _emailValidator,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                onSubmitted: _register,
+              ),
+              const SizedBox(height: 12),
+              InputText(
+                localization.password,
+                focusNode: _focusNodePassword,
+                validator: _passwordValidator,
+                controller: _passwordController,
+                obscureText: true,
+                maxLines: 1,
+                keyboardType: TextInputType.visiblePassword,
+                onSubmitted: _register,
+              ),
+              const SizedBox(height: 12),
+              InputText(
+                localization.confirm_password,
+                focusNode: _focusNodeConfirmPassword,
+                validator: _passwordValidator,
+                controller: _confirmPasswordController,
+                obscureText: true,
+                maxLines: 1,
+                keyboardType: TextInputType.visiblePassword,
+                onSubmitted: _register,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue[50],
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: const Color(0xFFDEE2E3)),
                 ),
-              )
-            ),
-            const SizedBox(height: 20),
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  InputText(
-                    AppLocalizations.of(context)!.name,
-                    focusNode: _focusNodeName,
-                    validator: _nameValidator,
-                    controller: _nameController,
-                    keyboardType: TextInputType.text,
-                    onSubmitted: _register,
+                child: DropdownButton<Role?>(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  style: const TextStyle(color: Colors.black),
+                  borderRadius: BorderRadius.circular(30),
+                  dropdownColor: Colors.white,
+                  value: _role,
+                  underline: Container(),
+                  hint: Text(
+                    localization.role,
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  const SizedBox(height: 16.0),
-                  InputText(
-                    AppLocalizations.of(context)!.email,
-                    focusNode: _focusNodeEmail,
-                    validator: _emailValidator,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    onSubmitted: _register,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  isExpanded: true,
+                  items: [
+                    DropdownMenuItem<Role?>(
+                      value: Role.family,
+                      child: Text(localization.family),
+                    ),
+                    DropdownMenuItem<Role?>(
+                      value: Role.therapist,
+                      child: Text(localization.therapist),
+                    ),
+                  ],
+                  onChanged: (Role? newValue) {
+                    setState(() {
+                      _role = newValue ?? Role.family;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: TextButton(
+                  style: const ButtonStyle(
+                    alignment: Alignment.centerLeft,
                   ),
-                  const SizedBox(height: 16.0),
-                  InputText(
-                    AppLocalizations.of(context)!.password,
-                    focusNode: _focusNodePassword,
-                    validator: _passwordValidator,
-                    controller: _passwordController,
-                    obscureText: true,
-                    maxLines: 1,
-                    keyboardType: TextInputType.visiblePassword,
-                    onSubmitted: _register,
+                  onPressed: _redirectToLogin,
+                  child: Text(
+                    localization.login,
+                    textAlign: TextAlign.start,
                   ),
-                  const SizedBox(height: 16.0),
-                  InputText(
-                    AppLocalizations.of(context)!.confirm_password,
-                    focusNode: _focusNodeConfirmPassword,
-                    validator: _passwordValidator,
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    maxLines: 1,
-                    keyboardType: TextInputType.visiblePassword,
-                    onSubmitted: _register,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(
+                    Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  const SizedBox(height: 20.0),
-                  Container(
-                    // padding: const EdgeInsets.symmetric(horizontal: 50),
-                    decoration: BoxDecoration(
-                        color: Colors.lightBlue[50],
-                        borderRadius: BorderRadius.circular(30.0),
-                        border: Border.all(
-                          color: const Color(0xFFDEE2E3),
+                ),
+                onPressed: _register,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  child: Text(
+                    localization.register,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: contentWidth),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: LayoutBuilder(
+                builder: (context, contentConstraints) {
+                  final isLandscape = contentConstraints.maxWidth >
+                      contentConstraints.maxHeight;
+                  final logo = Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.contain,
+                    height:
+                        (contentConstraints.maxHeight * 0.65).clamp(0.0, 220.0),
+                  );
+                  final scrollableForm = SingleChildScrollView(
+                    child: form,
+                  );
+
+                  return isLandscape
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Center(child: logo),
+                            ),
+                            const SizedBox(width: 32),
+                            Expanded(flex: 3, child: scrollableForm),
+                          ],
                         )
-                    ),
-                    child: DropdownButton<Role?>(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      style: const TextStyle(color: Colors.black),
-                      borderRadius: BorderRadius.circular(30.0),
-                      dropdownColor: Colors.white,
-                      value: _role,
-                      underline: Container(),
-                      hint: Text(
-                        AppLocalizations.of(context)!.role,
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      icon: const Icon(Icons.arrow_drop_down),
-                      isExpanded: true,
-                      // items: items,
-                      items: [
-                        DropdownMenuItem<Role?>(
-                          value: Role.family,
-                          child: Text(AppLocalizations.of(context)!.family),
-                        ),
-                        DropdownMenuItem<Role?>(
-                          value: Role.therapist,
-                          child: Text(AppLocalizations.of(context)!.therapist),
-                        ),
-                      ],
-                      onChanged: (Role? newValue) {
-                        setState(() {
-                          _role = newValue ?? Role.family;
-                        });
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: TextButton(
-                      style: const ButtonStyle(
-                        alignment: Alignment.centerLeft,
-                      ),
-                      onPressed: _redirectToLogin,
-                      child: Text(
-                        AppLocalizations.of(context)!.login,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).colorScheme.inversePrimary
-                        ),
-                      ),
-                      onPressed: _register,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 13),
-                        child: Text(
-                          AppLocalizations.of(context)!.register,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                      : Column(
+                          children: [
+                            logo,
+                            const SizedBox(height: 20),
+                            Expanded(child: scrollableForm),
+                          ],
+                        );
+                },
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

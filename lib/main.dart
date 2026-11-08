@@ -51,126 +51,96 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: EventController().locale,
-      builder: (context, locale, _) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          locale: locale ?? widget.initialLocale,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en'),
-            Locale('es'),
-            Locale('pt', 'BR')
-          ],
-          localeResolutionCallback: (deviceLocale, supportedLocales) {
-            if (deviceLocale == null) {
-              return const Locale('en');
-            }
-
-            for (final locale in supportedLocales) {
-              if (
-                locale.languageCode == deviceLocale.languageCode &&
-                (locale.countryCode == null ||
-                locale.countryCode == deviceLocale.countryCode
-              )) {
-                return locale;
+        valueListenable: EventController().locale,
+        builder: (context, locale, _) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            locale: locale ?? widget.initialLocale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('es'),
+              Locale('pt', 'BR')
+            ],
+            localeResolutionCallback: (deviceLocale, supportedLocales) {
+              if (deviceLocale == null) {
+                return const Locale('en');
               }
-            }
 
-            return const Locale('en');
-          },
-          navigatorObservers: [widget.observer],
-          title: 'AppLocalizations.of(context)!.aba',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.blue,
-            ).copyWith(
-              inversePrimary: const Color(0xFF7B9FB2),
-            ),
-          ),
-          initialRoute: 'Home',
-          routes: {
-            'Login': (_) => const MainLayout(
-              screen: 'login',
-              body: LoginPage()
-            ),
-            'Register': (_) => const MainLayout(
-              screen: 'register',
-              body: RegisterPage()
-            ),
-            'Home': (_) => const MainLayout(
-              screen: 'home',
-              body: HomePage(),
-              loginRequired: true
-            ),
-            'Patients': (_) => const MainLayout(
-              screen: 'patients',
-              body: PatientsPage()
-            ),
-            'Notes': (_) => const MainLayout(
-              screen: 'notes',
-              body: NotesPage()
-            ),
-            'Configurations': (_) => const MainLayout(
-              screen: 'configurations',
-              body: SettingsPage()
-            ),
-            'Patient': (context) {
-              var arguments = ModalRoute
-                .of(context)!
-                .settings
-                .arguments as Map<String, Patient>;
+              for (final locale in supportedLocales) {
+                if (locale.languageCode == deviceLocale.languageCode &&
+                    (locale.countryCode == null ||
+                        locale.countryCode == deviceLocale.countryCode)) {
+                  return locale;
+                }
+              }
 
-              return MainLayout(
-                screen: 'patient_details',
-                body: DetailPatientPage(arguments['patient']!)
-              );
+              return const Locale('en');
             },
-            'NewPatient': (_) => const MainLayout(
-              screen: 'new_patient',
-              body: NewPatientPage()
+            navigatorObservers: [widget.observer],
+            onGenerateTitle: (context) => AppLocalizations.of(context)!.aba,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.blue,
+              ).copyWith(
+                inversePrimary: const Color(0xFF7B9FB2),
+              ),
             ),
-            'NoteTable': (context) {
-              var arguments = ModalRoute
-                .of(context)!
-                .settings
-                .arguments as Map<String, Patient>;
+            initialRoute: 'Home',
+            routes: {
+              'Login': (_) =>
+                  const MainLayout(screen: 'login', body: LoginPage()),
+              'Register': (_) =>
+                  const MainLayout(screen: 'register', body: RegisterPage()),
+              'Home': (_) => const MainLayout(
+                  screen: 'home', body: HomePage(), loginRequired: true),
+              'Patients': (_) =>
+                  const MainLayout(screen: 'patients', body: PatientsPage()),
+              'Notes': (_) =>
+                  const MainLayout(screen: 'notes', body: NotesPage()),
+              'Configurations': (_) => const MainLayout(
+                  screen: 'configurations', body: SettingsPage()),
+              'Patient': (context) {
+                var arguments = ModalRoute.of(context)!.settings.arguments
+                    as Map<String, Patient>;
 
-              return MainLayout(
-                screen: 'note_table',
-                body: NoteTablePage(patient: arguments['patient']!)
-              );
+                return MainLayout(
+                    screen: 'patient_details',
+                    body: DetailPatientPage(arguments['patient']!));
+              },
+              'NewPatient': (_) => const MainLayout(
+                  screen: 'new_patient', body: NewPatientPage()),
+              'NoteTable': (context) {
+                var arguments = ModalRoute.of(context)!.settings.arguments
+                    as Map<String, Patient>;
+
+                return MainLayout(
+                    screen: 'note_table',
+                    body: NoteTablePage(patient: arguments['patient']!));
+              },
+              'NotePad': (context) {
+                var arguments = ModalRoute.of(context)!.settings.arguments
+                    as Map<String, Patient>;
+
+                return MainLayout(
+                    screen: 'note_pad',
+                    body: NotePadPage(patient: arguments['patient']!));
+              },
+              'NoteTraining': (context) {
+                var arguments = ModalRoute.of(context)!.settings.arguments
+                    as Map<String, Patient>;
+
+                return MainLayout(
+                    screen: 'note_training',
+                    body: NoteTrainingPage(patient: arguments['patient']!));
+              }
             },
-            'NotePad': (context) {
-              var arguments = ModalRoute
-                  .of(context)!
-                  .settings
-                  .arguments as Map<String, Patient>;
-
-              return MainLayout(
-                  screen: 'note_pad',
-                  body: NotePadPage(patient: arguments['patient']!)
-              );
-            },
-            'NoteTraining': (context) {
-              var arguments = ModalRoute
-                  .of(context)!
-                  .settings
-                  .arguments as Map<String, Patient>;
-
-              return MainLayout(
-                screen: 'note_table',
-                body: NoteTrainingPage(patient: arguments['patient']!)
-              );
-            }
-          },
-        );
-      }
-    );
+          );
+        });
   }
 }

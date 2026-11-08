@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/services/image_service.dart';
 import 'package:tccflutter/services/patient_service.dart';
@@ -41,7 +40,7 @@ class PatientStore {
     required String name,
     required DateTime birthDate,
     DateTime? treatmentStartedAt,
-    File? image
+    AppImage? image
   }) async {
     var newPatient = await PatientService().createPatient(Patient(
       name: name,
@@ -57,11 +56,11 @@ class PatientStore {
     return newPatient;
   }
 
-  Future<void> saveImage(File image, Patient patient) async {
+  Future<void> saveImage(AppImage image, Patient patient) async {
     await ImageService().saveImage(image, '/local-assets/images/patients/', '${patient.name}_${patient.id}');
   }
 
-  Future<File?> getImage(Patient patient) async {
+  Future<AppImage?> getImage(Patient patient) async {
     return await ImageService().getImage('/local-assets/images/patients/', '${patient.name}_${patient.id}');
   }
 

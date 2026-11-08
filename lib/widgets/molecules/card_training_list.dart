@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/card_training.dart';
 import 'package:tccflutter/stores/card_store.dart';
 import 'package:tccflutter/widgets/molecules/wrap_card_training.dart';
 
 class CardTrainingList extends StatefulWidget {
-
   const CardTrainingList({
     super.key,
   });
@@ -28,8 +28,9 @@ class _CardTrainingListState extends State<CardTrainingList> {
     _loadPage();
 
     _controller.addListener(() {
-      if (_controller.position.pixels >=
-          _controller.position.maxScrollExtent - 200) {
+      if (_controller.hasClients &&
+          _controller.position.pixels >=
+              _controller.position.maxScrollExtent - 200) {
         _loadPage();
       }
     });
@@ -61,7 +62,6 @@ class _CardTrainingListState extends State<CardTrainingList> {
     }
   }
 
-
   @override
   void dispose() {
     _controller.dispose();
@@ -70,8 +70,15 @@ class _CardTrainingListState extends State<CardTrainingList> {
 
   @override
   Widget build(BuildContext context) {
+    if (_cards.isEmpty && !_loading) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.no_data),
+      );
+    }
+
     return ListView.builder(
       controller: _controller,
+      physics: const ClampingScrollPhysics(),
       itemCount: _cards.length + (_loading ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= _cards.length) {
@@ -84,7 +91,8 @@ class _CardTrainingListState extends State<CardTrainingList> {
         final card = _cards[index];
 
         return WrapCardTraining(
-          key: ValueKey('${card.label}_${card.images?.length}_${card.images?.fold('', (prev, img) => '${prev}_${img.path}_${img.existsSync() ? img.lastModifiedSync().microsecondsSinceEpoch : ''}')}'),
+          key: ValueKey(
+              '${card.label}_${card.images?.length}_${card.images?.fold('', (prev, img) => '${prev}_${img.id}')}'),
           card: card,
           onCardChanged: () {
             setState(() {});

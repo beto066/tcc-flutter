@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/stores/card_store.dart';
 import 'package:tccflutter/widgets/atoms/smart_image.dart';
 import 'package:tccflutter/widgets/molecules/input_auto_complete.dart';
@@ -22,7 +21,7 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
   final _focusNodeLabel = FocusNode();
   String? _imageErrorMessage;
 
-  File? _image;
+  AppImage? _image;
   List<String> _labels = [];
 
   @override
@@ -52,8 +51,9 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
     final file = await picker.pickImage(source: ImageSource.gallery);
 
     if (file != null) {
+      final selectedImage = await AppImage.fromXFile(file);
       setState(() {
-        _image = File(file.path);
+        _image = selectedImage;
       });
     }
   }
@@ -70,21 +70,15 @@ class _RegisterCardDialogState extends State<RegisterCardDialog> {
 
     final label = _labelController.value.text;
 
-    CardStore().saveImage(
+    await CardStore().saveImage(
       _image!,
-      label,
+      label.trim(),
       "/${_labels.length}"
     );
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
-    Navigator.pop(context);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(
-        AppLocalizations.of(context)!.configurations_screen_card_saved)
-      )
-    );
+    Navigator.pop(context, true);
   }
 
   @override

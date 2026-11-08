@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tccflutter/exceptions/invalid_format_exception.dart';
 import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/models/patient.dart';
 import 'package:tccflutter/stores/patient_store.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
@@ -22,7 +21,7 @@ class NewPatientPage extends StatefulWidget {
 class NewPatientPageState extends State<NewPatientPage> {
   DateTime? _birthDateTimeFilter;
   DateTime? _treatmentStartedAtDateTimeFilter;
-  File? _selectedFile;
+  AppImage? _selectedFile;
 
   String? message;
   final minNameLength = 4;
@@ -159,7 +158,7 @@ class NewPatientPageState extends State<NewPatientPage> {
         final picker = ImagePicker();
         final file = await picker.pickImage(source: ImageSource.gallery);
         if (file != null) {
-          final newFile = File(file.path);
+          final newFile = await AppImage.fromXFile(file);
           setState(() {
             _selectedFile = newFile;
           });
@@ -180,9 +179,8 @@ class NewPatientPageState extends State<NewPatientPage> {
     final file = await picker.pickImage(source: ImageSource.gallery);
 
     if (file != null) {
-      setState(() {
-        _selectedFile = File(file.path);
-      });
+      final selectedImage = await AppImage.fromXFile(file);
+      setState(() => _selectedFile = selectedImage);
     }
   }
 

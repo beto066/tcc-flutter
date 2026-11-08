@@ -55,6 +55,24 @@ class NoteService {
   }
 
   Future<void> addNote(Note note) async {
+    if (note is NoteTraining) {
+      final noteMap = {
+        'patientId': note.patient?.id,
+        'level': note.level?.id,
+        'visibilityForFamily': note.visibilityForFamily,
+        'program': note.program?.id,
+        'results': (note.results ?? []).asMap().entries.map((entry) {
+          return {
+            'resultId': entry.value.id,
+            'position': entry.key,
+          };
+        }).toList(),
+      };
+
+      await ApiService().post('/notes/training', data: noteMap);
+      return;
+    }
+
     Map<String, dynamic> noteMap = {
       'patientId': note.patient?.id,
       'level': 1,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note.dart';
 import 'package:tccflutter/models/user.dart';
 import 'package:tccflutter/stores/auth_store.dart';
@@ -63,6 +64,7 @@ class _DetailNoteState extends State<DetailNote> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     var primary = Theme.of(context).colorScheme.primary;
     var contextHeight = MediaQuery.of(context).size.height;
@@ -94,8 +96,8 @@ class _DetailNoteState extends State<DetailNote> {
                       }:
                       null,
                     tooltip: widget.note.visibilityForFamily ?? false ?
-                      'Tornar visível':
-                      'Tornar invisível',
+                      localization.note_visible:
+                      localization.note_hidden,
                     icon:  Icon(
                       widget.note.visibilityForFamily ?? false?
                         Icons.lock_open:
@@ -113,7 +115,7 @@ class _DetailNoteState extends State<DetailNote> {
                     onPressed: isAuthor && _hasChange? () async {
                       _updateNote(widget.note);
                     }: null,
-                    tooltip: 'Salvar',
+                    tooltip: localization.note_save_tooltip,
                     icon: const Icon(Icons.save_as, size: 15),
                   ),
                 ),

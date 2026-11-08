@@ -26,9 +26,13 @@ class BottomLink extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.black),
-            Text(label, style: const TextStyle(
-              color: Colors.black
-            ),)
+            Text(
+              label,
+              maxLines: 1,
+              style: const TextStyle(
+                color: Colors.black
+              ),
+            )
           ]
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_pad.dart';
 import 'package:tccflutter/widgets/molecules/text_note_pad.dart';
 
@@ -39,8 +40,9 @@ class DetailNotePadComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     if (note.body == null || note.body!.isEmpty) {
-      return const Text('Nenhum texto nessa anotação');
+      return Text(localization.note_empty_text);
     }
 
     return ListView.builder(
@@ -55,7 +57,7 @@ class DetailNotePadComponent extends StatelessWidget {
           return ListTile(
             leading: const Icon(Icons.add),
             onTap: () => onModalOpened?.call(),
-            title: const Text("Adicionar texto"),
+            title: Text(localization.note_add_text),
           );
         }
 

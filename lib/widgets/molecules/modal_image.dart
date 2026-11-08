@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/app_image.dart';
 
 class ModalImage extends StatefulWidget {
-  final File image;
-  final Future<File?> Function()? onEdit;
+  final AppImage image;
+  final Future<AppImage?> Function()? onEdit;
   final Future<void> Function()? onDelete;
 
   const ModalImage({
@@ -16,8 +16,8 @@ class ModalImage extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context, {
-    required File image,
-    Future<File?> Function()? onEdit,
+    required AppImage image,
+    Future<AppImage?> Function()? onEdit,
     Future<void> Function()? onDelete,
   }) {
     return showDialog(
@@ -37,7 +37,7 @@ class ModalImage extends StatefulWidget {
 }
 
 class _ModalImageState extends State<ModalImage> {
-  late File _currentImage;
+  late AppImage _currentImage;
 
   @override
   void initState() {
@@ -45,17 +45,10 @@ class _ModalImageState extends State<ModalImage> {
     _currentImage = widget.image;
   }
 
-  Key _getImageKey(File file) {
-    try {
-      if (file.existsSync()) {
-        return ValueKey('${file.path}_${file.lastModifiedSync().microsecondsSinceEpoch}');
-      }
-    } catch (_) {}
-    return ValueKey(file.path);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Column(
@@ -73,7 +66,7 @@ class _ModalImageState extends State<ModalImage> {
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
-                    tooltip: 'Editar imagem',
+                    tooltip: localization.image_edit,
                     onPressed: () async {
                       final newFile = await widget.onEdit!();
                       if (newFile != null && mounted) {
@@ -93,7 +86,7 @@ class _ModalImageState extends State<ModalImage> {
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.delete_rounded, color: Colors.redAccent, size: 20),
-                    tooltip: 'Apagar imagem',
+                    tooltip: localization.image_delete,
                     onPressed: () async {
                       Navigator.pop(context);
                       await widget.onDelete!();
@@ -107,7 +100,7 @@ class _ModalImageState extends State<ModalImage> {
                 ),
                 child: IconButton(
                   icon: const Icon(Icons.close_rounded, color: Colors.white, size: 20),
-                  tooltip: 'Fechar',
+                  tooltip: localization.close,
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
@@ -117,9 +110,9 @@ class _ModalImageState extends State<ModalImage> {
           InteractiveViewer(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.file(
-                _currentImage,
-                key: _getImageKey(_currentImage),
+              child: Image.memory(
+                _currentImage.bytes,
+                key: ValueKey(_currentImage.id),
               ),
             ),
           ),

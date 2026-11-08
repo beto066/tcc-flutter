@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_table_value.dart';
 
 class NoteTableComponent extends StatelessWidget {
@@ -71,6 +72,7 @@ class NoteTableComponent extends StatelessWidget {
   }
 
   List<TableRow> _formatBody(int numberOfColumns, BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     List<TableRow> tableRows = [];
     int totalRows = (values.length / numberOfColumns).ceil();
 
@@ -81,8 +83,7 @@ class NoteTableComponent extends StatelessWidget {
         if (index < values.length) {
           var isSelected = index == indexSelected;
 
-          rowCells.add(
-            PopupMenuButton(
+          rowCells.add(PopupMenuButton(
               onSelected: (value) {
                 if (value == 'edit') {
                   onEditSelected(index);
@@ -91,26 +92,27 @@ class NoteTableComponent extends StatelessWidget {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'edit',
-                  child: ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text('Editar'),
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'delete',
-                  child: ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text('Excluir'),
-                  ),
-                ),
-              ],
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: Text(localization.note_edit),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: ListTile(
+                        leading: const Icon(Icons.delete),
+                        title: Text(localization.note_delete),
+                      ),
+                    ),
+                  ],
               child: Material(
-                color: isSelected? Colors.white54: Colors.white,
-                elevation: isSelected ? 0: 8,
+                color: isSelected ? Colors.white54 : Colors.white,
+                elevation: isSelected ? 0 : 8,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -133,9 +135,7 @@ class NoteTableComponent extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-            )
-          );
+              )));
         } else {
           rowCells.add(Container());
         }
@@ -158,29 +158,28 @@ class NoteTableComponent extends StatelessWidget {
       height: height ?? MediaQuery.of(context).size.height - 150,
       child: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Table(
-              border: TableBorder.all(
-                color: Colors.blue,
-                width: 2,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              columnWidths: _generateColumnWidths(numberOfColumns),
-              children: [
-                TableRow(
-                  decoration: BoxDecoration(color: Colors.blue[100]),
-                  children: _formatHeaders(numberOfColumns),
-                ),
-                ..._formatBody(numberOfColumns, context),
-              ],
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
             ),
-          )
-        ),
+            padding: const EdgeInsets.all(16.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Table(
+                border: TableBorder.all(
+                  color: Colors.blue,
+                  width: 2,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                columnWidths: _generateColumnWidths(numberOfColumns),
+                children: [
+                  TableRow(
+                    decoration: BoxDecoration(color: Colors.blue[100]),
+                    children: _formatHeaders(numberOfColumns),
+                  ),
+                  ..._formatBody(numberOfColumns, context),
+                ],
+              ),
+            )),
       ),
     );
   }

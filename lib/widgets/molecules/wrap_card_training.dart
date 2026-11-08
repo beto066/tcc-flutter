@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/models/card_training.dart';
 import 'package:tccflutter/stores/card_store.dart';
 import 'package:tccflutter/widgets/atoms/smart_image.dart';
@@ -19,7 +18,7 @@ class WrapCardTraining extends StatelessWidget {
     this.onCardDeleted,
   });
 
-  void _onTapImage(BuildContext context, File image) {
+  void _onTapImage(BuildContext context, AppImage image) {
     ModalImage.show(
       context,
       image: image,
@@ -28,9 +27,10 @@ class WrapCardTraining extends StatelessWidget {
         final file = await picker.pickImage(source: ImageSource.gallery);
 
         if (file != null) {
-          final updated = await CardStore().editImage(image, File(file.path));
-          await FileImage(image).evict();
-          await FileImage(updated).evict();
+          final replacement = await AppImage.fromXFile(file);
+          final updated = await CardStore().editImage(image, replacement);
+          await MemoryImage(image.bytes).evict();
+          await MemoryImage(updated.bytes).evict();
           PaintingBinding.instance.imageCache.clear();
           PaintingBinding.instance.imageCache.clearLiveImages();
 
@@ -79,12 +79,7 @@ class WrapCardTraining extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: card.images?.map((image) {
-            Key? itemKey;
-            try {
-              if (image.existsSync()) {
-                itemKey = ValueKey('${image.path}_${image.lastModifiedSync().microsecondsSinceEpoch}');
-              }
-            } catch (_) {}
+            final itemKey = ValueKey(image.id);
 
             return MouseRegion(
               cursor: SystemMouseCursors.click,

@@ -5,6 +5,9 @@
   "config": "Config.",
   "settings": "Configurações",
   "home": "Início",
+  "bottom_link_settings": "Config.",
+  "bottom_link_notes": "Notas",
+  "bottom_link_logout": "Sair",
   "patient_details": "Detalhes do paciente",
   "note_table_screen": "Nova anotação em tabela",
   "note_training_screen": "Novo treinamento",
@@ -14,7 +17,7 @@
   "email": "Email",
   "password": "Senha",
   "confirm_password": "Confirmação de senha",
-  "birth": "Nacimento",
+  "birth": "Nascimento",
   "name": "Nome",
   "patient": "Paciente",
   "patients": "Pacientes",
@@ -39,7 +42,7 @@
   "auth_password_required": "Por favor, insira sua senha.",
   "auth_password_min_length": "A senha deve ter pelo menos {length} caracteres.",
   "auth_password_mismatch": "A confirmação de senha não corresponde à senha.",
-  "auth_name_required": "Por favor, introduzca su nombre.",
+  "auth_name_required": "Por favor, insira seu nome.",
   "auth_name_min_length": "O nome deve ter pelo menos {length} caracteres.",
   "auth_name_max_length": "O nome deve ter menos que {length} caracteres.",
   
@@ -61,6 +64,124 @@
   "configurations_screen_card_saved": "Card salvo com sucesso.",
   "configurations_screen_cards": "Cards",
   "configurations_screen_image_required": "Imagem é obrigatória",
+  "training_result_success": "Sucesso",
+  "training_result_success_compact": "SUC",
+  "training_result_success_with_tip": "Sucesso com dica",
+  "training_result_error": "Erro",
+  "training_result_error_compact": "ERR",
+  "training_result_tip_short": "Dica",
+  "average_short": "MÉD",
+  "training_result_select": "Selecione um resultado",
+  "training_feedback_success": "Muito bem!",
+  "training_feedback_success_with_tip": "Muito bem! Resposta com ajuda.",
+  "training_feedback_error": "Tudo bem, vamos tentar outro item.",
+  "training_feedback_try_again": "Quase! Tente mais uma vez.",
+  "training_action_success": "Sucesso",
+  "training_action_error": "Erro",
+  "training_action_tip": "Dica",
+  "training_action_success_with_tip": "Sucesso com dica",
+  "training_successes": "Acertos {count}",
+  "training_errors": "Erros {count}",
+  "training_saving": "Salvando",
+  "training_finish": "Encerrar",
+  "home_training_chart_title": "Resultados dos treinamentos",
+  "home_training_chart_description": "Este gráfico considera apenas os casos de treinamento.",
+  "error_prefix": "Erro",
+  "note_field_empty": "O campo não pode ficar vazio",
+  "note_visible": "Tornar visível",
+  "note_hidden": "Tornar invisível",
+  "note_add_text": "Adicionar texto",
+  "note_text_placeholder": "Digite o texto",
+  "note_empty_text": "Nenhum texto nesta anotação",
+  "note_empty_table": "Nenhum valor nesta anotação",
+  "note_empty_training": "Nenhum resultado nesta anotação",
+  "note_new_value": "Novo",
+  "note_edit": "Editar",
+  "note_delete": "Excluir",
+  "note_save_tooltip": "Salvar",
+  "note_filter_title": "Abrir filtros de pesquisa",
+  "note_filter_title_label": "Título",
+  "note_filter_from": "De:",
+  "note_filter_to": "Até:",
+  "note_filter_type": "Tipo",
+  "note_type_notepad": "Anotação",
+  "note_type_table": "Tabela",
+  "note_type_training": "Treinamento",
+  "patient_note_count": "Quant. anotações",
+  "patient_age": "Idade",
+  "patient_therapy_duration": "Anos de terapia",
+  "patient_collect_data": "Levantar dados",
+  "note_filter_submit": "Enviar",
+  "note_untitled": "Sem título",
+  "navigation_history_empty": "Nenhum histórico de navegação",
+  "survey_dialog_title": "Escolha o tipo de levantamento",
+  "survey_dialog_description": "Selecione como deseja registrar os dados.",
+  "survey_tests": "Testes",
+  "survey_tests_description": "Acompanhe os resultados do levantamento.",
+  "survey_notes": "Anotações",
+  "survey_notes_description": "Registre observações em texto livre.",
+  "survey_table": "Tabela",
+  "survey_table_description": "Organize os dados em formato de tabela.",
+  "close": "Fechar",
+  "image_edit": "Editar imagem",
+  "image_delete": "Apagar imagem",
+  "training_program_matching": "Correspondência",
+  "training_program_receptive": "Receptivo",
+  "training_program_expressive": "Expressivo",
+  "training_difficulty_mass": "Treino em massa",
+  "training_difficulty_distraction": "Fase de distração",
+  "training_difficulty_extended": "Treino estendido",
+  "training_difficulty_random": "Rotação aleatória",
+  "training_lets_start": "Vamos treinar!",
+  "training_type": "Tipo de treino",
+  "training_difficulty_level": "Nível de dificuldade",
+  "training_target_stimulus": "Estímulo-alvo",
+  "training_options_quantity": "Quantidade de opções",
+  "training_option_singular": "opção",
+  "training_option_plural": "opções",
+  "training_random_options_description": "A rotação aleatória usa todos os estímulos disponíveis ({count}).",
+  "training_register_target_images": "Cadastre imagens para escolher o estímulo-alvo deste nível.",
+  "training_register_images": "Cadastre imagens para os estímulos do treino.",
+  "training_start": "Começar",
+  "training_mass_description": "Treine com uma opção ou aumente a quantidade para garantir o sucesso.",
+  "training_distraction_description": "Comece com estímulos neutros e depois avance para cards distratores.",
+  "training_extended_description": "Varie imagens do estímulo-alvo e use estímulos já treinados como distratores.",
+  "training_random_description": "Estímulos e imagens são escolhidos e embaralhados aleatoriamente.",
+  "training_find_matching_image": "Encontre a imagem igual",
+  "training_tap_target": "Toque em: {target}",
+  "training_expressive_prompt": "O que é isso?",
+  "training_distraction_phase": "Fase dos distratores",
+  "training_neutral_distractions": "Neutros",
+  "training_neutral_stimulus": "Estímulo neutro",
+  "training_cards": "Cards",
+  "training_complete_title": "Treino concluído!",
+  "training_complete_summary": "Respostas registradas: {total}\nAcertos: {successes}\nTentativas incorretas: {errors}",
+  "training_complete_action": "Concluir",
+  "training_no_cards": "Cadastre imagens em pelo menos um card para começar um treino.",
+  "training_preferences_error": "Não foi possível carregar as preferências: {error}",
+  "training_cards_error": "Não foi possível carregar os cards: {error}",
+  "training_history_error": "Não foi possível carregar o histórico de treino: {error}",
+  "training_history_save_error": "Não foi possível salvar o histórico do treino: {error}",
+  "training_visual_distraction_requires_cards": "Adicione outro card para usar distratores visuais.",
+  "training_save_error": "Não foi possível salvar o treino: {error}",
+  "training_preferences_save_error": "Não foi possível salvar a preferência: {error}",
+  "training_defaults_load_error": "Não foi possível carregar os padrões: {error}",
+  "training_defaults_save_error": "Não foi possível salvar o padrão: {error}",
+  "training_unexpected_user": "Não há usuário autenticado para salvar a preferência.",
+  "training_unexpected_user_load": "Não há usuário autenticado para carregar as preferências.",
+  "training_identity_error": "Não foi possível identificar o paciente ou usuário autenticado.",
+  "training_patient_identity_error": "Não foi possível identificar o paciente do treino.",
+  "image_storage_unsupported": "O armazenamento local de imagens não é suportado nesta plataforma.",
+  "image_storage_path_missing": "A imagem não possui caminho de armazenamento.",
+  "image_view_tooltip": "Visualizar imagem",
+  "image_add_tooltip": "Adicionar imagem",
+  "training_hint_after": "Dica após",
+  "seconds": "segundos",
+  "training_default": "Treino padrão",
+  "training_difficulty_default": "Dificuldade padrão",
+  "training_defaults_title": "Padrões de treinamento",
+  "try_again": "Tentar novamente",
+  "note_pad_enter_text": "Digite algo",
 
   "@auth_password_min_length": {
     "placeholders": {
@@ -85,6 +206,73 @@
   "@date_min_value": {
     "placeholders": {
       "min_value": {}
+    }
+  },
+  "@training_successes": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_errors": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_random_options_description": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@training_history_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_tap_target": {
+    "placeholders": {
+      "target": {}
+    }
+  },
+  "@training_complete_summary": {
+    "placeholders": {
+      "total": {},
+      "successes": {},
+      "errors": {}
+    }
+  },
+  "@training_preferences_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_cards_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_history_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_preferences_save_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_defaults_load_error": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@training_defaults_save_error": {
+    "placeholders": {
+      "error": {}
     }
   }
 }

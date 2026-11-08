@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
+import 'package:tccflutter/models/app_image.dart';
 import 'package:tccflutter/widgets/atoms/smart_image.dart';
 
 class PersonImage extends StatelessWidget {
   final String? imageUrl;
-  final File? selectedImage;
+  final AppImage? selectedImage;
   final Border? border;
   final Widget? positionedChild;
   final VoidCallback? onTapImage;
@@ -23,7 +23,10 @@ class PersonImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = selectedImage != null || (imageUrl != null && imageUrl!.isNotEmpty);
+    final localization = AppLocalizations.of(context)!;
+    final hasImage =
+        selectedImage != null || (imageUrl != null && imageUrl!.isNotEmpty);
+    final theme = Theme.of(context);
 
     return SizedBox(
       width: size,
@@ -32,32 +35,51 @@ class PersonImage extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           MouseRegion(
-            cursor: onTapImage != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+            cursor: onTapImage != null
+                ? SystemMouseCursors.click
+                : SystemMouseCursors.basic,
             child: Tooltip(
-              message: onTapImage != null ? (hasImage ? 'Visualizar imagem' : 'Adicionar imagem') : '',
+              message: onTapImage != null
+                  ? (hasImage
+                      ? localization.image_view_tooltip
+                      : localization.image_add_tooltip)
+                  : '',
               child: GestureDetector(
                 onTap: onTapImage,
                 child: ClipOval(
-                  child: Container(
-                    width: size + 1,
-                    height: size + 1,
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: border ?? Border.all(width: 1),
-                      color: Colors.white,
+                      color: hasImage ? Colors.white : Colors.grey.shade100,
+                      border: border ??
+                          Border.all(
+                            width: 1,
+                            color: hasImage
+                                ? Colors.grey.shade300
+                                : Colors.blueGrey.shade200,
+                          ),
                     ),
-                    child: SmartImage(
-                      file: selectedImage,
-                      imageUrl: imageUrl,
+                    child: SizedBox(
                       width: size,
                       height: size,
+                      child: hasImage
+                          ? SmartImage(
+                              file: selectedImage,
+                              imageUrl: imageUrl,
+                              width: size,
+                              height: size,
+                            )
+                          : Icon(
+                              Icons.person_rounded,
+                              size: size * 0.56,
+                              color: Colors.blueGrey.shade600,
+                            ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-
           if (onTapImage != null && hasImage)
             Positioned(
               top: 0,
@@ -86,7 +108,27 @@ class PersonImage extends StatelessWidget {
                 ),
               ),
             ),
-
+          if (onTapImage != null && !hasImage)
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: theme.colorScheme.surface,
+                    width: 2,
+                  ),
+                ),
+                child: Icon(
+                  Icons.add,
+                  size: size * 0.16,
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
+            ),
           if (positionedChild != null)
             Positioned(
               bottom: 0,

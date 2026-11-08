@@ -49,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
     isDisabled = true;
 
     try {
-      await AuthStore().login(_emailController.value.text, _passwordController.value.text);
+      await AuthStore()
+          .login(_emailController.value.text, _passwordController.value.text);
 
       if (!context.mounted) return;
 
@@ -94,7 +95,8 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     if (value.length < minLengthPassword) {
-      return AppLocalizations.of(context)!.auth_password_min_length(minLengthPassword);
+      return AppLocalizations.of(context)!
+          .auth_password_min_length(minLengthPassword);
     }
 
     return null;
@@ -102,93 +104,115 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var contextWidth = MediaQuery.of(context).size.width;
-    var logoWidth = contextWidth * 0.8;
-    var containerLogoHeight = MediaQuery.of(context).size.height * 0.2;
+    final localization = AppLocalizations.of(context)!;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-            SizedBox(
-              height: containerLogoHeight,
-              child: OverflowBox(
-                maxHeight: logoWidth * 0.8,
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: logoWidth * 0.8,
-                  child: Center(child: Image.asset('assets/images/logo.png'))
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final contentWidth =
+            constraints.maxWidth > constraints.maxHeight ? 960.0 : 480.0;
+        final form = Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputText(
+                localization.email,
+                focusNode: _focusNodeEmail,
+                validator: _emailValidator,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                onSubmitted: _login,
+              ),
+              const SizedBox(height: 16),
+              InputText(
+                localization.password,
+                focusNode: _focusNodePassword,
+                validator: _passwordValidator,
+                controller: _passwordController,
+                obscureText: true,
+                maxLines: 1,
+                keyboardType: TextInputType.visiblePassword,
+                onSubmitted: _login,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: TextButton(
+                  style: const ButtonStyle(
+                    alignment: Alignment.centerLeft,
+                  ),
+                  onPressed: _redirectToRegister,
+                  child: Text(
+                    localization.register,
+                    textAlign: TextAlign.start,
+                  ),
                 ),
-              )
-            ),
-            const SizedBox(height: 20),
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  InputText(
-                    AppLocalizations.of(context)!.email,
-                    focusNode: _focusNodeEmail,
-                    validator: _emailValidator,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    onSubmitted: _login,
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(
+                    Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  const SizedBox(height: 16.0),
-                  InputText(
-                    AppLocalizations.of(context)!.password,
-                    focusNode: _focusNodePassword,
-                    validator: _passwordValidator,
-                    controller: _passwordController,
-                    obscureText: true,
-                    maxLines: 1,
-                    keyboardType: TextInputType.visiblePassword,
-                    onSubmitted: _login,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: TextButton(
-                      style: const ButtonStyle(
-                        alignment: Alignment.centerLeft,
-                      ),
-                      onPressed: _redirectToRegister,
-                      child: Text(
-                        AppLocalizations.of(context)!.register,
-                        textAlign: TextAlign.start,
-                      ),
+                ),
+                onPressed: _login,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  child: Text(
+                    localization.login,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 20.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).colorScheme.inversePrimary
-                        ),
-                      ),
-                      onPressed: _login,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 13),
-                        child: Text(
-                          AppLocalizations.of(context)!.login,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
+              ),
+            ],
+          ),
+        );
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: contentWidth),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: LayoutBuilder(
+                builder: (context, contentConstraints) {
+                  final isLandscape = contentConstraints.maxWidth >
+                      contentConstraints.maxHeight;
+                  final logo = Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.contain,
+                    height:
+                        (contentConstraints.maxHeight * 0.65).clamp(0.0, 220.0),
+                  );
+                  final scrollableForm = SingleChildScrollView(
+                    child: form,
+                  );
+
+                  return isLandscape
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Center(child: logo),
+                            ),
+                            const SizedBox(width: 32),
+                            Expanded(flex: 3, child: scrollableForm),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            logo,
+                            const SizedBox(height: 20),
+                            Expanded(child: scrollableForm),
+                          ],
+                        );
+                },
               ),
             ),
-          ]
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

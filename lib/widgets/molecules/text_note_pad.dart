@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_pad.dart';
 import 'package:tccflutter/widgets/atoms/input_text.dart';
 
@@ -20,6 +21,8 @@ class _TextNotePadState extends State<TextNotePad> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     Future.delayed(const Duration(milliseconds: 100), () {
       _focusNode.requestFocus();
     });
@@ -31,13 +34,13 @@ class _TextNotePadState extends State<TextNotePad> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          'Digite algo',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          localization.note_pad_enter_text,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
         InputText(
-          'label',
+          localization.note_text_placeholder,
           keyboardType: TextInputType.multiline,
           maxLines: null,
           validator: (validator) => null,
@@ -51,7 +54,7 @@ class _TextNotePadState extends State<TextNotePad> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancelar'),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
             ),
             const SizedBox(width: 10),
             ElevatedButton(
@@ -64,7 +67,7 @@ class _TextNotePadState extends State<TextNotePad> {
 
                 Navigator.pop(context);
               },
-              child: const Text('Salvar'),
+              child: Text(localization.save),
             ),
           ],
         ),

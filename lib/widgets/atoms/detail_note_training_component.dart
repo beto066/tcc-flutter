@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tccflutter/l10n/app_localizations.dart';
 import 'package:tccflutter/models/note_training.dart';
+import 'package:tccflutter/util/training_result_localization.dart';
 import 'package:tccflutter/widgets/molecules/select_note_training_result.dart';
 
 class DetailNoteTrainingComponent extends StatelessWidget {
@@ -18,34 +20,31 @@ class DetailNoteTrainingComponent extends StatelessWidget {
 
   void _openNoteTrainingModal({int? listIndex, required BuildContext context}) {
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return Padding(
             padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-          ),
-          child: SelectNoteTrainingResult(
-            note: note,
-            index: listIndex
-          ),
-        );
-      }
-    );
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            ),
+            child: SelectNoteTrainingResult(note: note, index: listIndex),
+          );
+        });
 
     onModalOpened?.call(listIndex: listIndex);
   }
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     if (note.results == null || note.results!.isEmpty) {
-      return const Text('Nenhum resultado nessa anotação');
+      return Text(localization.note_empty_training);
     }
 
     final children = note.results!.asMap().entries.map((entry) {
@@ -61,7 +60,12 @@ class DetailNoteTrainingComponent extends StatelessWidget {
             }
           },
           icon: isAuthor ? const Icon(Icons.edit) : null,
-          label: Text(value.label, textAlign: TextAlign.center),
+          label: Text(
+            localizedTrainingResult(value, localization, compact: true),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       );
     }).toList();
@@ -73,7 +77,7 @@ class DetailNoteTrainingComponent extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: () => _openNoteTrainingModal(context: context),
             icon: const Icon(Icons.add),
-            label: const Text("Novo"),
+            label: Text(localization.note_new_value),
           ),
         ),
       );

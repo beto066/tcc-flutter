@@ -10,6 +10,7 @@ import 'package:tccflutter/widgets/atoms/associative_label.dart';
 import 'package:tccflutter/widgets/atoms/button_tile.dart';
 import 'package:tccflutter/widgets/molecules/bottom_links.dart';
 import 'package:tccflutter/widgets/molecules/chart.dart';
+import 'package:tccflutter/util/training_result_localization.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Map<String, double>> _fetchStatistics() async {
+    final localization = AppLocalizations.of(context)!;
     try {
       statisticsErrorMessage = null;
 
@@ -51,15 +53,15 @@ class _HomePageState extends State<HomePage> {
         statistics = NoteStore().statistics ?? {};
       }
 
-      var average = double.tryParse(
-        statistics!.remove('average')?.toStringAsFixed(2) ?? ''
-      );
-
-      if (average != null && Navigator.of(context).mounted) {
-        statistics![AppLocalizations.of(context)!.average] = average;
-      }
-
-      return statistics!;
+      return statistics!.map((key, value) {
+        final normalizedKey = key.trim().toLowerCase();
+        final localizedKey = normalizedKey == 'average' ||
+                normalizedKey == 'media' ||
+                normalizedKey == 'promedio'
+            ? localization.average_short
+            : localizedTrainingStatisticLabel(key, localization);
+        return MapEntry(localizedKey, value);
+      });
     } on UnauthorizedException {
       await _logout();
       return {};
@@ -102,159 +104,231 @@ class _HomePageState extends State<HomePage> {
     await navigator.popAndPushNamed('Login');
   }
 
+  Widget _buildTrainingChart(
+    BuildContext context, {
+    required AppLocalizations localization,
+    required Color inversePrimary,
+    required double chartHeight,
+  }) {
+    return ConstrainedBox(
+      key: const ValueKey('home-training-chart'),
+      constraints: BoxConstraints(
+        minHeight: chartHeight,
+        maxHeight: chartHeight,
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        decoration: BoxDecoration(
+          border: Border.all(width: 4, color: inversePrimary),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            Text(
+              localization.home_training_chart_title,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            Text(
+              localization.home_training_chart_description,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: FutureBuilder<Map<String, double>>(
+                future: _fetchStatistics(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && statisticsErrorMessage == null) {
+                    final allZero =
+                        snapshot.data!.values.every((value) => value == 0);
+
+                    if (allZero) {
+                      return Center(child: Text(localization.no_data));
+                    }
+
+                    return Chart(
+                      inversePrimary: inversePrimary,
+                      statistics: snapshot.data!,
+                    );
+                  }
+                  if (snapshot.hasError || statisticsErrorMessage != null) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text(
+                        '${localization.error_prefix}: '
+                        '${statisticsErrorMessage ?? snapshot.error}',
+                      ),
+                    );
+                  }
+
+                  return const Center(
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMetric(
+    BuildContext context, {
+    required String label,
+    required Future<double?> future,
+  }) {
+    final localization = AppLocalizations.of(context)!;
+
+    return FutureBuilder<double?>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return AssociativeLabel(
+            label: label,
+            data: '${snapshot.data!.toInt()}',
+          );
+        }
+        if (snapshot.hasError) {
+          return Text(
+            '${localization.error_prefix}: ${snapshot.error}',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          );
+        }
+        return AssociativeLabel(label: label, data: '?');
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var inversePrimary = Theme.of(context).colorScheme.inversePrimary;
-    var contextHeight = MediaQuery.of(context).size.height;
+    final localization = AppLocalizations.of(context)!;
+    final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
 
-    return Column(
-      children: [
-        SizedBox(height: contextHeight * (contextHeight > 600? 0.06: 0.03)),
-        Text(
-          AppLocalizations.of(context)!.home,
-          style: TextStyle(fontSize: contextHeight * 0.03)
-        ),
-        Container(
-          margin: EdgeInsets.all(contextHeight * 0.03),
-          padding: EdgeInsets.symmetric(
-            vertical: contextHeight * 0.03,
-            horizontal: 10
-          ),
-          height: contextHeight * 0.28,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 4,
-              color: inversePrimary,
-            ),
-            borderRadius: BorderRadius.circular(20)
-          ),
-          child: FutureBuilder(
-            future: _fetchStatistics(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && statisticsErrorMessage == null) {
-                bool allZero = snapshot.data!.values.every((v) => v == 0);
-
-                if (allZero) {
-                  return const Center(
-                    child: Text("Sem dados disponíveis"),
-                  );
-                }
-
-                return Chart(
-                  inversePrimary: inversePrimary,
-                  statistics: snapshot.data!
-                );
-
-              } else if (snapshot.hasError || statisticsErrorMessage != null) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Error: ${statisticsErrorMessage ?? snapshot.error}'
-                  ),
-                );
-              }
-
-              return const SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              );
-            }
-          ),
-        ),
-
-        SizedBox(height: contextHeight * 0.02),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          width: MediaQuery.of(context).size.width,
-          child: FutureBuilder(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isLandscape = constraints.maxWidth > constraints.maxHeight;
+        final chartHeight =
+            (constraints.maxHeight * (isLandscape ? 0.42 : 0.34))
+                .clamp(140.0, isLandscape ? 220.0 : 320.0)
+                .toDouble();
+        final metrics = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildMetric(
+              context,
+              label: localization.weekly_notes,
               future: _fetchWeeklyCountNotes(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return AssociativeLabel(
-                  label: AppLocalizations.of(context)!.weekly_notes,
-                  data: '${snapshot.data!.toInt()}'
-                );
+            ),
+            const SizedBox(height: 8),
+            _buildMetric(
+              context,
+              label: localization.patients,
+              future: _fetchCountPatients(),
+            ),
+            const SizedBox(height: 8),
+            _buildMetric(
+              context,
+              label: localization.notes_quantity,
+              future: _fetchCountNotes(),
+            ),
+          ],
+        );
 
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              return AssociativeLabel(
-                label: AppLocalizations.of(context)!.weekly_notes,
-                data: '?'
-              );
-            }
+        return SingleChildScrollView(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 24 : 12,
+                  vertical: isLandscape ? 8 : 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      localization.home,
+                      style: TextStyle(
+                        fontSize: (constraints.maxHeight * 0.05).clamp(18, 30),
+                      ),
+                    ),
+                    if (isLandscape)
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: _buildTrainingChart(
+                              context,
+                              localization: localization,
+                              inversePrimary: inversePrimary,
+                              chartHeight: chartHeight,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            flex: 2,
+                            child: ConstrainedBox(
+                              key: const ValueKey('home-metrics'),
+                              constraints: BoxConstraints(
+                                minHeight: chartHeight,
+                                maxHeight: chartHeight,
+                              ),
+                              child: metrics,
+                            ),
+                          ),
+                        ],
+                      )
+                    else ...[
+                      _buildTrainingChart(
+                        context,
+                        localization: localization,
+                        inversePrimary: inversePrimary,
+                        chartHeight: chartHeight,
+                      ),
+                      Padding(
+                        key: const ValueKey('home-metrics'),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        child: metrics,
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width:
+                              isLandscape ? 360 : constraints.maxWidth * 0.85,
+                          child: ButtonTile(
+                            localization.patients,
+                            padding: 8,
+                            onTap: _redirectToPatients,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        BottomLinks(
+                          logout: _logout,
+                          toConfig: _redirectToConfig,
+                          toNotes: _redirectToNotes,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-
-        SizedBox(height: contextHeight * (contextHeight > 600? 0.02: 0.01)),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          width: MediaQuery.of(context).size.width,
-          child: FutureBuilder(
-            future: _fetchCountPatients(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return AssociativeLabel(
-                  label: AppLocalizations.of(context)!.patients,
-                  data: '${snapshot.data!.toInt()}'
-                );
-
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              return AssociativeLabel(
-                label: AppLocalizations.of(context)!.patients,
-                data: '?'
-              );
-            }
-          ),
-        ),
-
-        SizedBox(height: contextHeight * (contextHeight > 600? 0.02: 0.01)),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          width: MediaQuery.of(context).size.width,
-          child: FutureBuilder(
-            future: _fetchCountNotes(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return AssociativeLabel(
-                  label: AppLocalizations.of(context)!.notes_quantity,
-                  data: '${snapshot.data!.toInt()}'
-                );
-
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              return AssociativeLabel(
-                label: AppLocalizations.of(context)!.notes_quantity,
-                data: '?'
-              );
-            }
-          ),
-        ),
-        SizedBox(height: contextHeight * (contextHeight > 600? 0.04: 0.02)),
-
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: ButtonTile(
-            AppLocalizations.of(context)!.patients,
-            padding: contextHeight * 0.01,
-            onTap: _redirectToPatients
-          ),
-        ),
-
-        SizedBox(height: contextHeight * (contextHeight > 600? 0.04: 0.02)),
-        BottomLinks(
-          logout: _logout,
-          toConfig: _redirectToConfig,
-          toNotes: _redirectToNotes
-        ),
-      ],
+        );
+      },
     );
   }
 }
